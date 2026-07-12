@@ -43,3 +43,10 @@ export const transferRequestStatusEnum = pgEnum("transfer_request_status", [
   "REJECTED",
   "CANCELLED",
 ]);
+
+export const bookingStatusEnum = pgEnum("booking_status", [
+  "UPCOMING",
+  "ONGOING",
+  "COMPLETED",
+  "CANCELLED",
+]);
