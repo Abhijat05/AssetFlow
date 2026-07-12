@@ -15,6 +15,10 @@ import { AssetDirectory } from "../modules/assets/pages/AssetDirectory";
 import { AssetDetail } from "../modules/assets/pages/AssetDetail";
 import { AllocationDirectory } from "../modules/allocations/pages/AllocationDirectory";
 import { AllocationDetail } from "../modules/allocations/pages/AllocationDetail";
+import { BookingDirectory } from "../modules/bookings/pages/BookingDirectory";
+import { BookingDetail } from "../modules/bookings/pages/BookingDetail";
+import { MaintenanceDirectory } from "../modules/maintenance/pages/MaintenanceDirectory";
+import { MaintenanceDetail } from "../modules/maintenance/pages/MaintenanceDetail";
 import { RoleGuard } from "../components/RoleGuard";
 
 // PublicRoute redirects logged-in users away from auth pages (e.g. back to dashboard)
@@ -98,6 +102,48 @@ export const AppRoutes: React.FC = () => {
           <ProtectedRoute>
             <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
               <AllocationDetail />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/bookings"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
+              <BookingDirectory />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/bookings/:id"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
+              <BookingDetail />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/maintenance"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
+              <MaintenanceDirectory />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/maintenance/:id"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
+              <MaintenanceDetail />
             </RoleGuard>
           </ProtectedRoute>
         }

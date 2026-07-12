@@ -15,6 +15,8 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   UserCheck,
+  Calendar,
+  Wrench,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -49,6 +51,18 @@ const NAV_ITEMS: NavItem[] = [
     label: "Allocations",
     icon: <UserCheck className="h-4 w-4 flex-shrink-0" />,
     to: "/allocations",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
+  },
+  {
+    label: "Bookings",
+    icon: <Calendar className="h-4 w-4 flex-shrink-0" />,
+    to: "/bookings",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
+  },
+  {
+    label: "Maintenance",
+    icon: <Wrench className="h-4 w-4 flex-shrink-0" />,
+    to: "/maintenance",
     roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
   },
 ];
@@ -353,6 +367,20 @@ export const DashboardPlaceholder: React.FC = () => {
       description: "Assign resources to employees, track expected return dates, and approve transfers.",
       to: "/allocations",
       color: "bg-indigo-50",
+    },
+    {
+      icon: <Calendar className="h-5 w-5 text-pink-600" />,
+      label: "Resource Bookings",
+      description: "Reserve shared facilities, meeting rooms, vehicles, and company equipment.",
+      to: "/bookings",
+      color: "bg-pink-50",
+    },
+    {
+      icon: <Wrench className="h-5 w-5 text-amber-600" />,
+      label: "Maintenance Requests",
+      description: "Report issues, assign technicians, track servicing schedules and logs.",
+      to: "/maintenance",
+      color: "bg-amber-50",
     },
   ].filter(Boolean) as QuickAccessCardData[];
 
