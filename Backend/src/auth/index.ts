@@ -73,7 +73,7 @@ export const auth = betterAuth({
     },
   },
 
-  trustedOrigins: [env.BETTER_AUTH_URL],
+  trustedOrigins: [env.BETTER_AUTH_URL, "http://localhost:5173"],
 });
 
 export type Auth = typeof auth;
