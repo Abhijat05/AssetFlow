@@ -9,6 +9,10 @@ const envSchema = z.object({
   DATABASE_URL: z.string({ error: "DATABASE_URL is required" }),
   BETTER_AUTH_SECRET: z.string({ error: "BETTER_AUTH_SECRET is required" }),
   BETTER_AUTH_URL: z.string().default("http://localhost:3000"),
+  // Supabase Storage (file uploads: QR codes, attachments)
+  SUPABASE_URL: z.string({ error: "SUPABASE_URL is required" }),
+  SUPABASE_SERVICE_ROLE_KEY: z.string({ error: "SUPABASE_SERVICE_ROLE_KEY is required" }),
+  SUPABASE_STORAGE_BUCKET: z.string().default("assets"),
 });
 
 const parsed = envSchema.safeParse(process.env);
