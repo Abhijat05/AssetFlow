@@ -5,6 +5,7 @@ import assetRoutes from "../modules/assets/routes/index.js";
 import allocationRoutes from "../modules/allocations/routes/index.js";
 import bookingRoutes from "../modules/bookings/routes/index.js";
 import maintenanceRoutes from "../modules/maintenance/routes/index.js";
+import auditRoutes from "../modules/audits/routes/index.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/assets", assetRoutes);
 router.use("/allocations", allocationRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/maintenance", maintenanceRoutes);
+router.use("/audits", auditRoutes);
 
 export default router;
