@@ -18,6 +18,7 @@ import {
   Calendar,
   Wrench,
   ShieldCheck,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -70,6 +71,12 @@ const NAV_ITEMS: NavItem[] = [
     label: "Audits",
     icon: <ShieldCheck className="h-4 w-4 flex-shrink-0" />,
     to: "/audits",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"],
+  },
+  {
+    label: "Reports",
+    icon: <BarChart3 className="h-4 w-4 flex-shrink-0" />,
+    to: "/reports",
     roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"],
   },
 ];

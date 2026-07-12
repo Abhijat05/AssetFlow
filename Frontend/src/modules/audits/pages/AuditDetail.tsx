@@ -176,10 +176,13 @@ export const AuditDetail: React.FC = () => {
     );
   }
 
-  // Check if current user is an assigned auditor
-  const isAssignedAuditor = audit.auditors?.some((a) => a.auditorId === currentUserId) || false;
-  // Auditors and managers can verify
-  const canVerify = (isAssignedAuditor || canManage) && audit.status === "ACTIVE";
+  // Check if current user is an assigned auditor (supporting both flat structure and backend's nested database format)
+  const isAssignedAuditor = audit.auditors?.some((a) => {
+    const audId = a.auditorId || (a as any).assignment?.auditorId;
+    return audId === currentUserId;
+  }) || false;
+  // ONLY assigned auditors can verify on the backend (even managers must assign themselves first)
+  const canVerify = isAssignedAuditor && audit.status === "ACTIVE";
 
   // Statistics calculation
   const stats = audit.stats || { total: 0, verified: 0, missing: 0, damaged: 0, unverified: 0 };
@@ -762,7 +765,7 @@ export const AuditDetail: React.FC = () => {
                     <p className="text-xs text-slate-400 italic">No auditors allocated.</p>
                   ) : (
                     audit.auditors.map((aud) => (
-                      <div key={aud.id} className="flex items-center gap-2 p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs">
+                      <div key={(aud as any).assignment?.id || aud.id} className="flex items-center gap-2 p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs">
                         <div className="h-5 w-5 rounded-full bg-white flex items-center justify-center font-bold text-[#4262ff] border border-slate-100">
                           {aud.auditorName?.charAt(0) || "A"}
                         </div>

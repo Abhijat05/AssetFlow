@@ -9,7 +9,7 @@ import { ForgotPassword } from "../pages/ForgotPassword";
 import { ResetPassword } from "../pages/ResetPassword";
 import { Unauthorized } from "../pages/Unauthorized";
 import { NotFound } from "../pages/NotFound";
-import { DashboardPlaceholder } from "../pages/DashboardPlaceholder";
+import { DashboardPage } from "../modules/dashboard/pages/DashboardPage";
 import { OrganizationSetup } from "../modules/organization/pages/OrganizationSetup";
 import { AssetDirectory } from "../modules/assets/pages/AssetDirectory";
 import { AssetDetail } from "../modules/assets/pages/AssetDetail";
@@ -21,6 +21,7 @@ import { MaintenanceDirectory } from "../modules/maintenance/pages/MaintenanceDi
 import { MaintenanceDetail } from "../modules/maintenance/pages/MaintenanceDetail";
 import { AuditDirectory } from "../modules/audits/pages/AuditDirectory";
 import { AuditDetail } from "../modules/audits/pages/AuditDetail";
+import { ReportsPage } from "../modules/reports/pages/ReportsPage";
 import { RoleGuard } from "../components/RoleGuard";
 
 // PublicRoute redirects logged-in users away from auth pages (e.g. back to dashboard)
@@ -53,7 +54,17 @@ export const AppRoutes: React.FC = () => {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <DashboardPlaceholder />
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"]}>
+              <ReportsPage />
+            </RoleGuard>
           </ProtectedRoute>
         }
       />
