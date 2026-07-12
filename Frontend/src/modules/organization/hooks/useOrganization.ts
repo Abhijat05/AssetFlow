@@ -41,7 +41,7 @@ export function useCreateDepartment() {
       queryClient.invalidateQueries({ queryKey: ["departments"] });
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to create department");
     },
   });
@@ -57,7 +57,7 @@ export function useUpdateDepartment() {
       queryClient.invalidateQueries({ queryKey: ["departments"] });
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to update department");
     },
   });
@@ -72,7 +72,7 @@ export function useDeactivateDepartment() {
       queryClient.invalidateQueries({ queryKey: ["departments"] });
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to deactivate department");
     },
   });
@@ -86,7 +86,7 @@ export function useCreateCategory() {
       toast.success("Asset category created successfully!");
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to create asset category");
     },
   });
@@ -101,7 +101,7 @@ export function useUpdateCategory() {
       toast.success("Asset category updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to update asset category");
     },
   });
@@ -115,7 +115,7 @@ export function useDeactivateCategory() {
       toast.success("Asset category deactivated successfully!");
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to deactivate category");
     },
   });
@@ -131,7 +131,7 @@ export function useUpdateEmployeeRole() {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
       queryClient.invalidateQueries({ queryKey: ["departments"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to update employee role");
     },
   });
@@ -147,7 +147,7 @@ export function useUpdateEmployeeDepartment() {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
       queryClient.invalidateQueries({ queryKey: ["departments"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to update employee department");
     },
   });
@@ -162,7 +162,7 @@ export function useUpdateEmployeeStatus() {
       toast.success("Employee status updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || "Failed to update employee status");
     },
   });

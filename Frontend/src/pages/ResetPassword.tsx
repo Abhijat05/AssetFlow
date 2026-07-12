@@ -63,8 +63,8 @@ export const ResetPassword: React.FC = () => {
         toast.success("Password reset successfully! You can now log in.");
         navigate("/login", { replace: true });
       }
-    } catch (err: any) {
-      toast.error(err.message || "An unexpected error occurred. Please try again.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

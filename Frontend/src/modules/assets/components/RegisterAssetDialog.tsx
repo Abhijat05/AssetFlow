@@ -78,6 +78,7 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(schema) as any,
     defaultValues: {
       name: "",
@@ -119,8 +120,8 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
     try {
       if (photoFile) await assetApi.uploadAssetPhoto(assetId, photoFile);
       if (docFiles.length > 0) await assetApi.uploadDocuments(assetId, docFiles);
-    } catch (err: any) {
-      toast.warning("Asset created but some uploads failed: " + err.message);
+    } catch (err: unknown) {
+      toast.warning("Asset created but some uploads failed: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setIsUploading(false);
     }

@@ -15,10 +15,10 @@ async function apiRequest<T>(
   });
 
   const text = await response.text();
-  let json: any = {};
+  let json = {} as T & { error?: string; message?: string };
   try {
     json = text ? JSON.parse(text) : {};
-  } catch (e) {
+  } catch {
     // Ignore JSON parsing errors for empty text or non-json responses
   }
 

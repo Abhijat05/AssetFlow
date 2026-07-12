@@ -25,7 +25,7 @@ export const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Get the redirect path from location state or default to dashboard
-  const from = (location.state as any)?.from?.pathname || "/";
+  const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || "/";
 
   const {
     register,
@@ -53,8 +53,8 @@ export const Login: React.FC = () => {
         toast.success("Logged in successfully!");
         navigate(from, { replace: true });
       }
-    } catch (err: any) {
-      toast.error(err.message || "An unexpected error occurred. Please try again.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

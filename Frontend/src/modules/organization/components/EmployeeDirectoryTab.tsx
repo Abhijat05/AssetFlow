@@ -10,7 +10,7 @@ import {
   useUpdateEmployeeDepartment,
   useUpdateEmployeeStatus,
 } from "../hooks/useOrganization";
-import type { Employee } from "../types";
+import type { Employee, EmployeeQuery } from "../types";
 import { Button } from "../../../components/ui/button";
 import { Card, CardContent } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
@@ -75,7 +75,7 @@ export const EmployeeDirectoryTab: React.FC = () => {
 
   // Construct query object for server-side search
   const employeeQuery = useMemo(() => {
-    const query: any = {
+    const query: Omit<EmployeeQuery, "departmentId"> & { departmentId?: string | null } = {
       page: currentPage,
       limit: pageSize,
       sortBy,
@@ -93,13 +93,13 @@ export const EmployeeDirectoryTab: React.FC = () => {
       query.departmentId = deptFilter === "none" ? null : deptFilter;
     }
     if (roleFilter !== "all") {
-      query.role = roleFilter;
+      query.role = roleFilter as import("../../../types/auth").UserRole;
     }
     if (statusFilter !== "all") {
-      query.status = statusFilter;
+      query.status = statusFilter as "ACTIVE" | "INACTIVE";
     }
 
-    return query;
+    return query as EmployeeQuery;
   }, [currentPage, pageSize, sortBy, sortOrder, searchTerm, deptFilter, roleFilter, statusFilter]);
 
   const { data: employeesData, isLoading: isLoadingEmployees } = useEmployees(employeeQuery);
@@ -133,6 +133,7 @@ export const EmployeeDirectoryTab: React.FC = () => {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const watchedRole = watch("role");
 
   // Open Edit dialog
@@ -196,7 +197,7 @@ export const EmployeeDirectoryTab: React.FC = () => {
       setIsEditOpen(false);
       setIsConfirmRoleOpen(false);
       setPendingValues(null);
-    } catch (err) {
+    } catch {
       // Errors handled by mutation hooks (sonner toasts)
     }
   };

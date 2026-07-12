@@ -39,7 +39,7 @@ export function useRegisterAsset() {
       toast.success("Asset registered successfully!");
       qc.invalidateQueries({ queryKey: [ASSETS_KEY] });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast.error(err.message || "Failed to register asset");
     },
   });
@@ -54,7 +54,7 @@ export function useUpdateAsset(id: string) {
       qc.invalidateQueries({ queryKey: [ASSETS_KEY] });
       qc.invalidateQueries({ queryKey: ASSET_KEY(id) });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast.error(err.message || "Failed to update asset");
     },
   });
@@ -69,7 +69,7 @@ export function useUploadAssetPhoto(assetId: string) {
       qc.invalidateQueries({ queryKey: ASSET_KEY(assetId) });
       qc.invalidateQueries({ queryKey: [ASSETS_KEY] });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast.error(err.message || "Failed to upload photo");
     },
   });
@@ -83,7 +83,7 @@ export function useUploadDocuments(assetId: string) {
       toast.success("Documents uploaded successfully!");
       qc.invalidateQueries({ queryKey: ASSET_KEY(assetId) });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast.error(err.message || "Failed to upload documents");
     },
   });

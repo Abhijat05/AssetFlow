@@ -60,8 +60,8 @@ export const Signup: React.FC = () => {
         toast.success("Account created successfully! Welcome to AssetFlow.");
         navigate("/", { replace: true });
       }
-    } catch (err: any) {
-      toast.error(err.message || "An unexpected error occurred. Please try again.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

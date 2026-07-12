@@ -63,8 +63,8 @@ const Sidebar: React.FC<{
       await logout();
       toast.success("Logged out successfully");
       navigate("/login");
-    } catch (err: any) {
-      toast.error(err.message || "Failed to log out");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to log out");
     } finally {
       setIsLoggingOut(false);
     }
@@ -314,10 +314,18 @@ const QuickAccessCard: React.FC<{
   );
 };
 
+interface QuickAccessCardData {
+  icon: React.ReactNode;
+  label: string;
+  description: string;
+  to: string;
+  color: string;
+}
+
 export const DashboardPlaceholder: React.FC = () => {
   const { user, role } = useAuth();
 
-  const cards = [
+  const cards: QuickAccessCardData[] = [
     role && ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"].includes(role) && {
       icon: <Database className="h-5 w-5 text-[#4262ff]" />,
       label: "Asset Registry",
@@ -332,7 +340,7 @@ export const DashboardPlaceholder: React.FC = () => {
       to: "/organization",
       color: "bg-emerald-50",
     },
-  ].filter(Boolean) as any[];
+  ].filter(Boolean) as QuickAccessCardData[];
 
   return (
     <AppShell>
@@ -359,7 +367,7 @@ export const DashboardPlaceholder: React.FC = () => {
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Quick Access</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {cards.map((card: any) => (
+              {cards.map((card) => (
                 <QuickAccessCard key={card.to} {...card} />
               ))}
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -61,7 +61,7 @@ export const DepartmentTab: React.FC = () => {
   // Queries
   const { data: departments = [], isLoading: isLoadingDepts } = useDepartments();
   const { data: employeesData, isLoading: isLoadingEmployees } = useEmployees({ limit: 1000 });
-  const employees = employeesData?.data || [];
+  const employees = useMemo(() => employeesData?.data || [], [employeesData?.data]);
 
   // Mutations
   const createDeptMutation = useCreateDepartment();
@@ -158,18 +158,18 @@ export const DepartmentTab: React.FC = () => {
   };
 
   // Resolve Parent Department Name
-  const getParentDeptName = (parentId: string | null) => {
+  const getParentDeptName = useCallback((parentId: string | null) => {
     if (!parentId) return "-";
     const parent = departments.find((d) => d.id === parentId);
     return parent ? parent.name : "-";
-  };
+  }, [departments]);
 
   // Resolve Department Head Name
-  const getHeadName = (headId: string | null) => {
+  const getHeadName = useCallback((headId: string | null) => {
     if (!headId) return "-";
     const employee = employees.find((e) => e.id === headId);
     return employee ? employee.name : "-";
-  };
+  }, [employees]);
 
   // Sorting Handler
   const handleSort = (field: SortField) => {
@@ -220,7 +220,7 @@ export const DepartmentTab: React.FC = () => {
     });
 
     return result;
-  }, [departments, searchTerm, sortField, sortOrder, employees]);
+  }, [departments, searchTerm, sortField, sortOrder, getHeadName, getParentDeptName]);
 
   // Pagination logic
   const paginatedDepts = useMemo(() => {

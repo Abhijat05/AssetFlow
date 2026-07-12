@@ -10,7 +10,7 @@ async function apiRequest<T>(url: string, options: RequestInit = {}): Promise<T>
 
   const response = await fetch(url, { ...options, headers });
   const text = await response.text();
-  let json: any = {};
+  let json = {} as T & { error?: string; message?: string };
   try {
     json = text ? JSON.parse(text) : {};
   } catch {

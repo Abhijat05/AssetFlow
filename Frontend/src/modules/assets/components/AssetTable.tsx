@@ -27,6 +27,7 @@ interface Props {
 export const AssetTable: React.FC<Props> = ({ data, isLoading, page, totalPages, onPageChange, total }) => {
   const navigate = useNavigate();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const columns: ColumnDef<Asset, any>[] = useMemo(
     () => [
       colHelper.accessor("photoUrl", {
@@ -129,6 +130,7 @@ export const AssetTable: React.FC<Props> = ({ data, isLoading, page, totalPages,
     [navigate]
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
