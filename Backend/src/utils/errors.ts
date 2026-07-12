@@ -44,3 +44,11 @@ export class InactiveAccountError extends AppError {
     super("Account is inactive. Please contact support.", 403, "ACCOUNT_INACTIVE");
   }
 }
+
+export class AssetAlreadyAllocatedError extends AppError {
+  readonly currentAllocation: Record<string, unknown>;
+  constructor(currentAllocation: Record<string, unknown>) {
+    super("Asset is already allocated", 409, "ASSET_ALREADY_ALLOCATED");
+    this.currentAllocation = currentAllocation;
+  }
+}
