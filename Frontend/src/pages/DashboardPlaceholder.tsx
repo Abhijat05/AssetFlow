@@ -19,6 +19,8 @@ import {
   Wrench,
   ShieldCheck,
   BarChart3,
+  Activity,
+  Bell,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -78,6 +80,18 @@ const NAV_ITEMS: NavItem[] = [
     icon: <BarChart3 className="h-4 w-4 flex-shrink-0" />,
     to: "/reports",
     roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"],
+  },
+  {
+    label: "Notifications",
+    icon: <Bell className="h-4 w-4 flex-shrink-0" />,
+    to: "/notifications",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
+  },
+  {
+    label: "Activity Logs",
+    icon: <Activity className="h-4 w-4 flex-shrink-0" />,
+    to: "/activity",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
   },
 ];
 

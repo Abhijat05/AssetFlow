@@ -22,6 +22,8 @@ import { MaintenanceDetail } from "../modules/maintenance/pages/MaintenanceDetai
 import { AuditDirectory } from "../modules/audits/pages/AuditDirectory";
 import { AuditDetail } from "../modules/audits/pages/AuditDetail";
 import { ReportsPage } from "../modules/reports/pages/ReportsPage";
+import { NotificationsPage } from "../modules/activity/pages/NotificationsPage";
+import { ActivityPage } from "../modules/activity/pages/ActivityPage";
 import { RoleGuard } from "../components/RoleGuard";
 
 // PublicRoute redirects logged-in users away from auth pages (e.g. back to dashboard)
@@ -55,6 +57,22 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <NotificationsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/activity"
+        element={
+          <ProtectedRoute>
+            <ActivityPage />
           </ProtectedRoute>
         }
       />
