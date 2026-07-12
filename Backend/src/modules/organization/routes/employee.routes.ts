@@ -1,15 +1,13 @@
 import { Router } from "express";
 import { employeeController } from "../controllers/employee.controller.js";
-import { requireAdmin } from "../../../middleware/auth.middleware.js";
+import { requireAdmin, requireRole } from "../../../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.use(requireAdmin());
-
-router.get("/", employeeController.getAll);
-router.get("/:id", employeeController.getById);
-router.patch("/:id/department", employeeController.updateDepartment);
-router.patch("/:id/role", employeeController.updateRole);
-router.patch("/:id/status", employeeController.updateStatus);
+router.get("/", requireRole("ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"), employeeController.getAll);
+router.get("/:id", requireRole("ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"), employeeController.getById);
+router.patch("/:id/department", requireRole("ADMIN", "ASSET_MANAGER"), employeeController.updateDepartment);
+router.patch("/:id/role", requireAdmin(), employeeController.updateRole);
+router.patch("/:id/status", requireAdmin(), employeeController.updateStatus);
 
 export default router;
