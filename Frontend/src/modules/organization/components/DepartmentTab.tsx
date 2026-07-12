@@ -60,7 +60,7 @@ type SortOrder = "asc" | "desc";
 export const DepartmentTab: React.FC = () => {
   // Queries
   const { data: departments = [], isLoading: isLoadingDepts } = useDepartments();
-  const { data: employeesData, isLoading: isLoadingEmployees } = useEmployees({ limit: 1000 });
+  const { data: employeesData, isLoading: isLoadingEmployees } = useEmployees({ limit: 100 });
   const employees = useMemo(() => employeesData?.data || [], [employeesData?.data]);
 
   // Mutations

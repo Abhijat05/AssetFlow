@@ -13,6 +13,8 @@ import { DashboardPlaceholder } from "../pages/DashboardPlaceholder";
 import { OrganizationSetup } from "../modules/organization/pages/OrganizationSetup";
 import { AssetDirectory } from "../modules/assets/pages/AssetDirectory";
 import { AssetDetail } from "../modules/assets/pages/AssetDetail";
+import { AllocationDirectory } from "../modules/allocations/pages/AllocationDirectory";
+import { AllocationDetail } from "../modules/allocations/pages/AllocationDetail";
 import { RoleGuard } from "../components/RoleGuard";
 
 // PublicRoute redirects logged-in users away from auth pages (e.g. back to dashboard)
@@ -75,6 +77,27 @@ export const AppRoutes: React.FC = () => {
           <ProtectedRoute>
             <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"]}>
               <AssetDetail />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/allocations"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
+              <AllocationDirectory />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/allocations/:id"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
+              <AllocationDetail />
             </RoleGuard>
           </ProtectedRoute>
         }

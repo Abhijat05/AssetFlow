@@ -14,6 +14,7 @@ import {
   Database,
   PanelLeftClose,
   PanelLeftOpen,
+  UserCheck,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -43,6 +44,12 @@ const NAV_ITEMS: NavItem[] = [
     icon: <Building2 className="h-4 w-4 flex-shrink-0" />,
     to: "/organization",
     roles: ["ADMIN"],
+  },
+  {
+    label: "Allocations",
+    icon: <UserCheck className="h-4 w-4 flex-shrink-0" />,
+    to: "/allocations",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
   },
 ];
 
@@ -339,6 +346,13 @@ export const DashboardPlaceholder: React.FC = () => {
       description: "Manage departments, asset categories, and employee directory.",
       to: "/organization",
       color: "bg-emerald-50",
+    },
+    {
+      icon: <UserCheck className="h-5 w-5 text-indigo-600" />,
+      label: "Resource Allocations",
+      description: "Assign resources to employees, track expected return dates, and approve transfers.",
+      to: "/allocations",
+      color: "bg-indigo-50",
     },
   ].filter(Boolean) as QuickAccessCardData[];
 
