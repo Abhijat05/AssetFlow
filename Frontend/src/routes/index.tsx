@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import { Landing } from "../pages/Landing";
 import { Login } from "../pages/Login";
 import { Signup } from "../pages/Signup";
 import { ForgotPassword } from "../pages/ForgotPassword";
@@ -25,17 +26,21 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
 };
+
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
+      {/* Public Landing Page */}
+      <Route path="/" element={<Landing />} />
+
       {/* Protected Routes */}
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <DashboardPlaceholder />

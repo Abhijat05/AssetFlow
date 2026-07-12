@@ -126,6 +126,8 @@
 
 body {
   background-color: var(--canvas);
+  background-image: radial-gradient(rgba(5, 0, 56, 0.05) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
   color: var(--foreground);
   font-family: var(--font-sans);
   margin: 0;

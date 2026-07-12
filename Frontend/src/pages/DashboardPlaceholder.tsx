@@ -220,7 +220,7 @@ export const DashboardPlaceholder: React.FC = () => {
                 </Card>
               }
             >
-              <Card className="border-[#00a3a3]/30 bg-[#e6f7f7]/60 rounded-xl">
+              <Card className="border-[#00a3a3]/30 bg-[#e6f7f7]/60 rounded-xl transition-all duration-200 hover:-rotate-1 hover:scale-105 hover:shadow-lg">
                 <CardHeader className="p-4">
                   <CardTitle className="text-sm flex items-center gap-1.5 text-[#004d4d] font-semibold">
                     <UserIcon className="h-4 w-4" /> Employee Section
@@ -249,7 +249,7 @@ export const DashboardPlaceholder: React.FC = () => {
                 </Card>
               }
             >
-              <Card className="border-[#ff7c65]/30 bg-[#fff0ed] rounded-xl">
+              <Card className="border-[#ff7c65]/30 bg-[#fff0ed] rounded-xl transition-all duration-200 hover:rotate-1 hover:scale-105 hover:shadow-lg">
                 <CardHeader className="p-4">
                   <CardTitle className="text-sm flex items-center gap-1.5 text-[#802313] font-semibold">
                     <Building className="h-4 w-4" /> Dept Head Section
@@ -278,7 +278,7 @@ export const DashboardPlaceholder: React.FC = () => {
                 </Card>
               }
             >
-              <Card className="border-[#4262ff]/30 bg-[#f5f6fc] rounded-xl">
+              <Card className="border-[#4262ff]/30 bg-[#f5f6fc] rounded-xl transition-all duration-200 hover:-rotate-1 hover:scale-105 hover:shadow-lg">
                 <CardHeader className="p-4">
                   <CardTitle className="text-sm flex items-center gap-1.5 text-[#050038] font-semibold">
                     <Briefcase className="h-4 w-4" /> Asset Manager Section
@@ -307,7 +307,7 @@ export const DashboardPlaceholder: React.FC = () => {
                 </Card>
               }
             >
-              <Card className="border-[#ffd02f]/40 bg-[#ffd02f]/10 rounded-xl">
+              <Card className="border-[#ffd02f]/40 bg-[#ffd02f]/10 rounded-xl transition-all duration-200 hover:rotate-1 hover:scale-105 hover:shadow-lg">
                 <CardHeader className="p-4">
                   <CardTitle className="text-sm flex items-center gap-1.5 text-primary font-semibold">
                     <Shield className="h-4 w-4" /> Admin Console
