@@ -85,3 +85,32 @@ export const maintenanceStatusEnum = pgEnum("maintenance_status", [
   "IN_PROGRESS",
   "RESOLVED",
 ]);
+
+export const notificationTypeEnum = pgEnum("notification_type", [
+  "ASSET_ASSIGNED",
+  "ASSET_RETURNED",
+  "TRANSFER_REQUEST",
+  "TRANSFER_APPROVED",
+  "TRANSFER_REJECTED",
+  "BOOKING_CREATED",
+  "BOOKING_CANCELLED",
+  "BOOKING_REMINDER",
+  "BOOKING_COMPLETED",
+  "MAINTENANCE_REQUEST",
+  "MAINTENANCE_APPROVED",
+  "MAINTENANCE_REJECTED",
+  "MAINTENANCE_COMPLETED",
+  "AUDIT_CREATED",
+  "AUDIT_ASSIGNED",
+  "AUDIT_COMPLETED",
+  "AUDIT_DISCREPANCY",
+  "OVERDUE_RETURN",
+  "SYSTEM",
+]);
+
+export const notificationPriorityEnum = pgEnum("notification_priority", [
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "CRITICAL",
+]);
