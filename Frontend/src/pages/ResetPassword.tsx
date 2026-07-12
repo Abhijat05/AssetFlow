@@ -71,9 +71,9 @@ export const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 dark:bg-[#0b0f19]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
       <div className="mb-8 flex items-center gap-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -87,33 +87,33 @@ export const ResetPassword: React.FC = () => {
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
-        <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <span className="text-xl font-bold tracking-tight text-foreground">
           AssetFlow
         </span>
       </div>
 
-      <Card className="w-full max-w-md border-slate-200/80 shadow-lg dark:border-slate-800">
+      <Card className="w-full max-w-md shadow-2xl border border-hairline">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white text-center">
+          <CardTitle className="text-2xl font-bold tracking-tight text-foreground text-center">
             Set new password
           </CardTitle>
-          <CardDescription className="text-center text-slate-500 dark:text-slate-400">
+          <CardDescription className="text-center text-slate-400">
             Please enter your new password below.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {!token ? (
-            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-900/30 dark:bg-yellow-950/20 text-yellow-800 dark:text-yellow-400 text-sm space-y-2">
+            <div className="rounded-lg border border-yellow-900/30 bg-yellow-950/20 text-yellow-400 text-sm space-y-2 p-4">
               <p className="font-semibold flex items-center gap-2">
                 <ShieldAlert className="h-4 w-4 shrink-0" />
                 Invalid Password Reset Link
               </p>
-              <p className="text-xs leading-relaxed text-yellow-700 dark:text-yellow-500">
+              <p className="text-xs leading-relaxed text-yellow-500">
                 It looks like you clicked an invalid or expired reset link. The reset token is missing. Please request a new password reset.
               </p>
               <div className="pt-2">
                 <Link to="/forgot-password">
-                  <Button variant="outline" size="sm" className="border-yellow-300 dark:border-yellow-900 text-yellow-800 dark:text-yellow-400 hover:bg-yellow-100 dark:hover:bg-yellow-950/30">
+                  <Button variant="outline" size="sm" className="border-yellow-900 text-yellow-400 hover:bg-yellow-950/30">
                     Request new link
                   </Button>
                 </Link>
@@ -122,23 +122,23 @@ export const ResetPassword: React.FC = () => {
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">New Password</Label>
+                <Label htmlFor="password" className="text-slate-400">New Password</Label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
                     <Lock className="h-4 w-4" />
                   </span>
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className={`pl-10 pr-10 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : "border-slate-200 dark:border-slate-800"}`}
+                    className={`pl-10 pr-10 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     disabled={isLoading}
                     {...register("password")}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500 hover:text-slate-300"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -153,23 +153,23 @@ export const ResetPassword: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-slate-300">Confirm New Password</Label>
+                <Label htmlFor="confirmPassword" className="text-slate-400">Confirm New Password</Label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
                     <Lock className="h-4 w-4" />
                   </span>
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className={`pl-10 pr-10 ${errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : "border-slate-200 dark:border-slate-800"}`}
+                    className={`pl-10 pr-10 ${errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     disabled={isLoading}
                     {...register("confirmPassword")}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500 hover:text-slate-300"
                     disabled={isLoading}
                   >
                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -186,7 +186,7 @@ export const ResetPassword: React.FC = () => {
               <Button type="submit" className="w-full mt-2" disabled={isLoading}>
                 {isLoading ? (
                   <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-100 border-t-transparent" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     <span>Resetting password...</span>
                   </div>
                 ) : (
@@ -196,10 +196,10 @@ export const ResetPassword: React.FC = () => {
             </form>
           )}
         </CardContent>
-        <CardFooter className="flex items-center justify-center border-t border-slate-100 dark:border-slate-800 p-6 bg-slate-50/50 dark:bg-slate-900/20 rounded-b-xl">
+        <CardFooter className="flex items-center justify-center border-t border-hairline p-6 bg-surface-2/40 rounded-b-lg">
           <Link
             to="/login"
-            className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+            className="flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to login

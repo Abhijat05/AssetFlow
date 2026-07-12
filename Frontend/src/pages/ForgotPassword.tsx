@@ -54,9 +54,9 @@ export const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 dark:bg-[#0b0f19]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
       <div className="mb-8 flex items-center gap-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -70,17 +70,17 @@ export const ForgotPassword: React.FC = () => {
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
-        <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <span className="text-xl font-bold tracking-tight text-foreground">
           AssetFlow
         </span>
       </div>
 
-      <Card className="w-full max-w-md border-slate-200/80 shadow-lg dark:border-slate-800">
+      <Card className="w-full max-w-md shadow-2xl border border-hairline">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white text-center">
+          <CardTitle className="text-2xl font-bold tracking-tight text-foreground text-center">
             Reset password
           </CardTitle>
-          <CardDescription className="text-center text-slate-500 dark:text-slate-400">
+          <CardDescription className="text-center text-slate-400">
             {isSubmitted
               ? "Check your email for recovery instructions"
               : "Enter your email address and we'll send you a link to reset your password"}
@@ -89,14 +89,14 @@ export const ForgotPassword: React.FC = () => {
         <CardContent>
           {isSubmitted ? (
             <div className="flex flex-col items-center justify-center space-y-4 py-4 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-950/30 text-green-400 border border-green-900/30">
                 <CheckCircle2 className="h-6 w-6" />
               </div>
               <div className="space-y-2">
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <p className="text-sm text-slate-300">
                   We've sent a password reset link to your email. Please follow the instructions to secure your account.
                 </p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Be sure to check your spam or junk folder if you don't see it in a few minutes.
                 </p>
               </div>
@@ -104,16 +104,16 @@ export const ForgotPassword: React.FC = () => {
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-700 dark:text-slate-300">Email Address</Label>
+                <Label htmlFor="email" className="text-slate-400">Email Address</Label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
                     <Mail className="h-4 w-4" />
                   </span>
                   <Input
                     id="email"
                     type="email"
                     placeholder="name@company.com"
-                    className={`pl-10 ${errors.email ? "border-red-500 focus-visible:ring-red-500" : "border-slate-200 dark:border-slate-800"}`}
+                    className={`pl-10 ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     disabled={isLoading}
                     {...register("email")}
                   />
@@ -129,7 +129,7 @@ export const ForgotPassword: React.FC = () => {
               <Button type="submit" className="w-full mt-2" disabled={isLoading}>
                 {isLoading ? (
                   <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-100 border-t-transparent" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     <span>Sending link...</span>
                   </div>
                 ) : (
@@ -139,10 +139,10 @@ export const ForgotPassword: React.FC = () => {
             </form>
           )}
         </CardContent>
-        <CardFooter className="flex items-center justify-center border-t border-slate-100 dark:border-slate-800 p-6 bg-slate-50/50 dark:bg-slate-900/20 rounded-b-xl">
+        <CardFooter className="flex items-center justify-center border-t border-hairline p-6 bg-surface-2/40 rounded-b-lg">
           <Link
             to="/login"
-            className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+            className="flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to login
