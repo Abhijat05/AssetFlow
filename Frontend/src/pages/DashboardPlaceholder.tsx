@@ -1,23 +1,59 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { RoleGuard } from "../components/RoleGuard";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import {
-  User as UserIcon,
-  Shield,
-  Briefcase,
-  Lock,
-  Building,
+  LayoutDashboard,
+  Package,
+  Building2,
   LogOut,
+  Menu,
+  X,
   ChevronRight,
-  UserCheck
+  UserCircle2,
+  Database,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
+import { cn } from "../lib/utils";
 
-export const DashboardPlaceholder: React.FC = () => {
-  const { user, session, role, logout } = useAuth();
+// ─── Nav item definition ───────────────────────────────────────────────────────
+interface NavItem {
+  label: string;
+  icon: React.ReactNode;
+  to: string;
+  roles: string[];
+}
+
+const NAV_ITEMS: NavItem[] = [
+  {
+    label: "Dashboard",
+    icon: <LayoutDashboard className="h-4 w-4 flex-shrink-0" />,
+    to: "/dashboard",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
+  },
+  {
+    label: "Asset Registry",
+    icon: <Database className="h-4 w-4 flex-shrink-0" />,
+    to: "/assets",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"],
+  },
+  {
+    label: "Organization",
+    icon: <Building2 className="h-4 w-4 flex-shrink-0" />,
+    to: "/organization",
+    roles: ["ADMIN"],
+  },
+];
+
+// ─── Sidebar ───────────────────────────────────────────────────────────────────
+const Sidebar: React.FC<{
+  mobileOpen: boolean;
+  onMobileClose: () => void;
+  collapsed: boolean;
+  onCollapseToggle: () => void;
+}> = ({ mobileOpen, onMobileClose, collapsed, onCollapseToggle }) => {
+  const { user, role, logout } = useAuth();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -25,308 +61,349 @@ export const DashboardPlaceholder: React.FC = () => {
     setIsLoggingOut(true);
     try {
       await logout();
-      toast.success("Successfully logged out!");
+      toast.success("Logged out successfully");
       navigate("/login");
     } catch (err: any) {
-      toast.error(err.message || "Failed to log out. Please try again.");
+      toast.error(err.message || "Failed to log out");
     } finally {
       setIsLoggingOut(false);
     }
   };
 
-  const getRoleBadgeColor = (userRole: string | null) => {
-    switch (userRole) {
-      case "ADMIN":
-        return "bg-purple-950/10 text-purple-600 border-purple-900/20 rounded-full";
-      case "ASSET_MANAGER":
-        return "bg-blue-950/10 text-blue-600 border-blue-900/20 rounded-full";
-      case "DEPARTMENT_HEAD":
-        return "bg-amber-950/10 text-amber-600 border-amber-900/20 rounded-full";
-      default:
-        return "bg-surface-2 text-ink-muted border-hairline rounded-full";
-    }
-  };
+  const visibleItems = NAV_ITEMS.filter((item) => role && item.roles.includes(role));
 
   return (
-    <div className="min-h-screen bg-canvas flex flex-col text-ink">
-      {/* Header Bar */}
-      <header className="sticky top-0 z-40 w-full border-b border-hairline bg-canvas/80 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-yellow text-primary shadow-sm font-black">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
+    <>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/30 backdrop-blur-sm lg:hidden"
+          onClick={onMobileClose}
+        />
+      )}
+
+      <aside
+        className={cn(
+          // Base
+          "fixed top-0 left-0 z-40 h-full flex flex-col bg-white border-r border-slate-200 shadow-sm",
+          // Desktop collapse transition
+          "lg:static lg:z-auto lg:translate-x-0",
+          "transition-[width,transform] duration-200 ease-in-out",
+          // Desktop width
+          collapsed ? "lg:w-16" : "lg:w-60",
+          // Mobile: always full width, slide in/out
+          "w-60",
+          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        )}
+      >
+        {/* Logo / Collapse Toggle */}
+        <div
+          className={cn(
+            "h-16 flex items-center border-b border-slate-100 flex-shrink-0 overflow-hidden",
+            collapsed ? "px-0 justify-center" : "px-5 justify-between"
+          )}
+        >
+          {/* Logo mark — always visible */}
+          <div
+            className={cn(
+              "flex items-center gap-2.5 min-w-0",
+              collapsed && "lg:hidden"
+            )}
+          >
+            <div className="h-8 w-8 rounded-xl bg-[#ffd02f] flex items-center justify-center shadow-sm flex-shrink-0">
+              <Package className="h-4 w-4 text-[#050038]" strokeWidth={2.5} />
             </div>
-            <span className="font-bold -tracking-body text-ink">
-              AssetFlow <span className="text-xs font-normal text-ink-subtle">ERP</span>
+            <span className="font-bold text-sm text-[#050038] tracking-tight whitespace-nowrap overflow-hidden">
+              AssetFlow <span className="text-[10px] font-normal text-slate-400">ERP</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex flex-col text-right">
-              <span className="text-xs font-semibold text-ink">{user?.name}</span>
-              <span className="text-[10px] text-ink-subtle capitalize">{role?.toLowerCase().replace("_", " ")}</span>
-            </div>
-            <div className="h-8 w-8 rounded-full bg-surface-2 flex items-center justify-center border border-hairline">
-              <UserIcon className="h-4 w-4 text-ink-subtle" />
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs"
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-            >
-              <LogOut className="h-3 w-3 mr-1.5" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Welcome Section */}
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold -tracking-heading-2 text-ink animate-reveal">
-            Dashboard
-          </h1>
-          <p className="text-ink-subtle text-sm">
-            Welcome back, <span className="font-semibold text-ink">{user?.name}</span>. This is your authentication and authorization center.
-          </p>
-        </div>
-
-        {/* Info Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* User Details */}
-          <Card className="border border-hairline shadow-2xl col-span-1 lg:col-span-2 rounded-xl">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-ink">Authentication Details</CardTitle>
-              <CardDescription className="text-ink-subtle">Verify your user properties loaded from Better Auth</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <span className="text-xs font-semibold text-ink-subtle uppercase tracking-[0.4px]">User ID</span>
-                  <p className="text-sm font-mono bg-surface-2 p-2 rounded-md border border-hairline text-ink-muted break-all">
-                    {user?.id}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-xs font-semibold text-ink-subtle uppercase tracking-[0.4px]">Email Address</span>
-                  <p className="text-sm font-medium text-ink bg-surface-2 p-2 rounded-md border border-hairline">
-                    {user?.email}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-xs font-semibold text-ink-subtle uppercase tracking-[0.4px]">Role Assigned</span>
-                  <div className="pt-1">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold border ${getRoleBadgeColor(role)}`}>
-                      <Shield className="h-3 w-3" />
-                      {role}
-                    </span>
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-xs font-semibold text-ink-subtle uppercase tracking-[0.4px]">Account Status</span>
-                  <div className="pt-1">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold border border-success-green/20 bg-success-green/10 text-success-green">
-                      <UserCheck className="h-3 w-3" />
-                      {user?.status}
-                    </span>
-                  </div>
-                </div>
+          {/* Collapsed state: just icon */}
+          {collapsed && (
+            <div className="hidden lg:flex items-center justify-center w-full">
+              <div className="h-8 w-8 rounded-xl bg-[#ffd02f] flex items-center justify-center shadow-sm">
+                <Package className="h-4 w-4 text-[#050038]" strokeWidth={2.5} />
               </div>
+            </div>
+          )}
 
-              <div className="pt-4 border-t border-hairline space-y-2">
-                <span className="text-xs font-semibold text-ink-subtle uppercase tracking-[0.4px]">Session Key (expiresAt)</span>
-                <p className="text-sm text-ink-muted">
-                  {session?.expiresAt ? new Date(session.expiresAt).toLocaleString() : "N/A"}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Collapse toggle — desktop only */}
+          <button
+            onClick={onCollapseToggle}
+            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-700 flex-shrink-0"
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <PanelLeftOpen className="h-4 w-4" />
+            ) : (
+              <PanelLeftClose className="h-4 w-4" />
+            )}
+          </button>
 
-          {/* Quick Actions */}
-          <Card className="border border-hairline shadow-2xl col-span-1 rounded-xl">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-ink">Authentication Demo</CardTitle>
-              <CardDescription className="text-ink-subtle">Try out routing & notifications</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button
-                variant="outline"
-                className="w-full text-left justify-start"
-                onClick={() => toast.success("This toast triggers using Sonner!")}
-              >
-                <ChevronRight className="h-4 w-4 mr-2 text-brand-blue" />
-                Test toast notification
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full text-left justify-start text-[#d9383a] hover:text-[#d9383a]/80 hover:bg-[#ffeef0]/50"
-                onClick={() => navigate("/unauthorized")}
-              >
-                <ChevronRight className="h-4 w-4 mr-2" />
-                Manually trigger 403 Page
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full text-left justify-start"
-                onClick={() => navigate("/some-nonexistent-page")}
-              >
-                <ChevronRight className="h-4 w-4 mr-2 text-brand-blue" />
-                Manually trigger 404 Page
-              </Button>
-            </CardContent>
-          </Card>
+          {/* Mobile close */}
+          <button
+            onClick={onMobileClose}
+            className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 flex-shrink-0"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
 
-        {/* Authorization Demo (RoleGuard checks) */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold tracking-tight text-ink">
-            Role-Based Access Control Showcase
-          </h2>
-          <p className="text-sm text-ink-subtle max-w-2xl">
-            The sections below demonstrate the usage of the <code className="text-xs px-1.5 py-0.5 bg-surface-2 rounded-md border border-hairline">&lt;RoleGuard&gt;</code> component.
-            Sections will render their contents if you match the role, otherwise they will display the custom fallback.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* EMPLOYEE Guard */}
-            <RoleGuard
-              allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}
-              redirect={false}
-              fallback={
-                <Card className="border-[#d9383a]/30 bg-[#ffeef0]/50 opacity-70 rounded-xl">
-                  <CardHeader className="p-4">
-                    <CardTitle className="text-sm flex items-center gap-1.5 text-[#d9383a]">
-                      <Lock className="h-4 w-4" /> Employee Area
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0 text-xs text-[#d9383a]/80">
-                    Access Denied. Employee role required.
-                  </CardContent>
-                </Card>
+        {/* Nav Links */}
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-4 space-y-0.5">
+          {visibleItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/dashboard"}
+              onClick={() => onMobileClose()}
+              title={collapsed ? item.label : undefined}
+              className={({ isActive }) =>
+                cn(
+                  "group relative flex items-center gap-3 rounded-xl text-sm font-medium transition-all duration-150 overflow-hidden",
+                  // Width-aware padding
+                  collapsed ? "lg:px-0 lg:justify-center px-3 py-2.5" : "px-3 py-2.5",
+                  isActive
+                    ? "bg-[#4262ff]/10 text-[#4262ff] font-semibold"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                )
               }
             >
-              <Card className="border-[#00a3a3]/30 bg-[#e6f7f7]/60 rounded-xl transition-all duration-200 hover:-rotate-1 hover:scale-105 hover:shadow-lg">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-sm flex items-center gap-1.5 text-[#004d4d] font-semibold">
-                    <UserIcon className="h-4 w-4" /> Employee Section
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0 text-xs text-[#004d4d]/90 font-medium">
-                  Unlocked! Available to all registered employees.
-                </CardContent>
-              </Card>
-            </RoleGuard>
+              {() => (
+                <>
+                  <span className={cn(
+                    "flex items-center justify-center flex-shrink-0",
+                    collapsed ? "lg:w-full" : ""
+                  )}>
+                    {item.icon}
+                  </span>
+                  <span className={cn(
+                    "whitespace-nowrap transition-all duration-200",
+                    collapsed ? "lg:hidden" : "block"
+                  )}>
+                    {item.label}
+                  </span>
 
-            {/* DEPARTMENT HEAD Guard */}
-            <RoleGuard
-              allowedRoles={["ADMIN", "DEPARTMENT_HEAD"]}
-              redirect={false}
-              fallback={
-                <Card className="border-hairline bg-surface-2/30 opacity-75 rounded-xl">
-                  <CardHeader className="p-4">
-                    <CardTitle className="text-sm flex items-center gap-1.5 text-ink-subtle">
-                      <Lock className="h-4 w-4" /> Dept Head Area
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0 text-xs text-ink-subtle">
-                    Restricted. Requires DEPARTMENT_HEAD or ADMIN.
-                  </CardContent>
-                </Card>
-              }
-            >
-              <Card className="border-[#ff7c65]/30 bg-[#fff0ed] rounded-xl transition-all duration-200 hover:rotate-1 hover:scale-105 hover:shadow-lg">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-sm flex items-center gap-1.5 text-[#802313] font-semibold">
-                    <Building className="h-4 w-4" /> Dept Head Section
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0 text-xs text-[#802313]/90 font-medium">
-                  Unlocked! Visible to Department Heads and Admins.
-                </CardContent>
-              </Card>
-            </RoleGuard>
+                  {/* Tooltip when collapsed */}
+                  {collapsed && (
+                    <span className="hidden lg:block absolute left-full ml-3 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50 shadow-lg">
+                      {item.label}
+                    </span>
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
 
-            {/* ASSET_MANAGER Guard */}
-            <RoleGuard
-              allowedRoles={["ADMIN", "ASSET_MANAGER"]}
-              redirect={false}
-              fallback={
-                <Card className="border-hairline bg-surface-2/30 opacity-75 rounded-xl">
-                  <CardHeader className="p-4">
-                    <CardTitle className="text-sm flex items-center gap-1.5 text-ink-subtle">
-                      <Lock className="h-4 w-4" /> Asset Manager Area
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0 text-xs text-ink-subtle">
-                    Restricted. Requires ASSET_MANAGER or ADMIN.
-                  </CardContent>
-                </Card>
-              }
-            >
-              <Card className="border-[#4262ff]/30 bg-[#f5f6fc] rounded-xl transition-all duration-200 hover:-rotate-1 hover:scale-105 hover:shadow-lg">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-sm flex items-center gap-1.5 text-[#050038] font-semibold">
-                    <Briefcase className="h-4 w-4" /> Asset Manager Section
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0 text-xs text-[#050038]/90 font-medium">
-                  Unlocked! Visible to Asset Managers and Admins.
-                </CardContent>
-              </Card>
-            </RoleGuard>
-
-            {/* ADMIN Guard */}
-            <RoleGuard
-              allowedRoles={["ADMIN"]}
-              redirect={false}
-              fallback={
-                <Card className="border-hairline bg-surface-2/30 opacity-75 rounded-xl">
-                  <CardHeader className="p-4">
-                    <CardTitle className="text-sm flex items-center gap-1.5 text-ink-subtle">
-                      <Lock className="h-4 w-4" /> Admin Console
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0 text-xs text-ink-subtle">
-                    Restricted. Requires ADMIN role.
-                  </CardContent>
-                </Card>
-              }
-            >
-              <Card className="border-[#ffd02f]/40 bg-[#ffd02f]/10 rounded-xl transition-all duration-200 hover:rotate-1 hover:scale-105 hover:shadow-lg">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-sm flex items-center gap-1.5 text-primary font-semibold">
-                    <Shield className="h-4 w-4" /> Admin Console
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0 text-xs text-primary/95 flex flex-col gap-2 font-medium">
-                  <p>Unlocked! Only accessible to System Administrators.</p>
-                  <Button
-                    onClick={() => navigate("/organization")}
-                    className="w-full text-xs bg-primary hover:bg-primary-hover text-white cursor-pointer mt-1 font-semibold transition-colors rounded-full"
-                  >
-                    Go to Organization Setup
-                  </Button>
-                </CardContent>
-              </Card>
-            </RoleGuard>
+        {/* User Footer */}
+        <div className="border-t border-slate-100 p-2 space-y-0.5 flex-shrink-0">
+          {/* User info */}
+          <div
+            className={cn(
+              "flex items-center gap-3 px-3 py-2.5 rounded-xl overflow-hidden",
+              collapsed && "lg:justify-center lg:px-0"
+            )}
+            title={collapsed ? `${user?.name}` : undefined}
+          >
+            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+              <UserCircle2 className="h-5 w-5 text-slate-500" />
+            </div>
+            <div className={cn("flex-1 min-w-0", collapsed && "lg:hidden")}>
+              <p className="text-xs font-semibold text-slate-800 truncate">{user?.name}</p>
+              <p className="text-[10px] text-slate-400 truncate capitalize">
+                {role?.toLowerCase().replace(/_/g, " ")}
+              </p>
+            </div>
           </div>
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            title={collapsed ? "Log Out" : undefined}
+            className={cn(
+              "group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors overflow-hidden",
+              collapsed && "lg:justify-center lg:px-0"
+            )}
+          >
+            <LogOut className="h-4 w-4 flex-shrink-0" />
+            <span className={cn(collapsed && "lg:hidden")}>
+              {isLoggingOut ? "Logging out…" : "Log Out"}
+            </span>
+
+            {/* Tooltip */}
+            {collapsed && (
+              <span className="hidden lg:block absolute left-full ml-3 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50 shadow-lg">
+                Log Out
+              </span>
+            )}
+          </button>
         </div>
-      </main>
+      </aside>
+    </>
+  );
+};
+
+// ─── App Shell ─────────────────────────────────────────────────────────────────
+export const AppShell: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <div className="flex h-screen bg-canvas overflow-hidden">
+      <Sidebar
+        mobileOpen={mobileOpen}
+        onMobileClose={() => setMobileOpen(false)}
+        collapsed={collapsed}
+        onCollapseToggle={() => setCollapsed((c) => !c)}
+      />
+
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Mobile Top Bar */}
+        <header className="lg:hidden h-14 flex items-center justify-between px-4 border-b border-slate-200 bg-white flex-shrink-0">
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="p-2 rounded-xl hover:bg-slate-100 transition-colors"
+          >
+            <Menu className="h-5 w-5 text-slate-600" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="h-7 w-7 rounded-lg bg-[#ffd02f] flex items-center justify-center">
+              <Package className="h-3.5 w-3.5 text-[#050038]" strokeWidth={2.5} />
+            </div>
+            <span className="font-bold text-sm text-[#050038]">AssetFlow</span>
+          </div>
+          <div className="w-9" />
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
     </div>
+  );
+};
+
+// ─── Dashboard Home ────────────────────────────────────────────────────────────
+const QuickAccessCard: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  description: string;
+  to: string;
+  color: string;
+}> = ({ icon, label, description, to, color }) => {
+  const navigate = useNavigate();
+  return (
+    <button
+      onClick={() => navigate(to)}
+      className="group text-left w-full rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-md hover:border-slate-300 transition-all duration-200"
+    >
+      <div className={cn("h-10 w-10 rounded-xl flex items-center justify-center mb-4", color)}>
+        {icon}
+      </div>
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-sm font-bold text-ink">{label}</p>
+          <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{description}</p>
+        </div>
+        <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-[#4262ff] group-hover:translate-x-0.5 transition-all mt-0.5 flex-shrink-0" />
+      </div>
+    </button>
+  );
+};
+
+export const DashboardPlaceholder: React.FC = () => {
+  const { user, role } = useAuth();
+
+  const cards = [
+    role && ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"].includes(role) && {
+      icon: <Database className="h-5 w-5 text-[#4262ff]" />,
+      label: "Asset Registry",
+      description: "Register, track and manage all organizational assets with full history.",
+      to: "/assets",
+      color: "bg-[#4262ff]/10",
+    },
+    role === "ADMIN" && {
+      icon: <Building2 className="h-5 w-5 text-emerald-600" />,
+      label: "Organization Setup",
+      description: "Manage departments, asset categories, and employee directory.",
+      to: "/organization",
+      color: "bg-emerald-50",
+    },
+  ].filter(Boolean) as any[];
+
+  return (
+    <AppShell>
+      <div className="max-w-4xl mx-auto px-6 py-10 space-y-8">
+        {/* Welcome */}
+        <div className="space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+            {new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}
+          </p>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">
+            Welcome back, {user?.name?.split(" ")[0]} 👋
+          </h1>
+          <p className="text-sm text-slate-500">
+            You're signed in as{" "}
+            <span className="font-semibold text-[#4262ff] capitalize">
+              {role?.toLowerCase().replace(/_/g, " ")}
+            </span>
+            . Here's a quick overview of your access.
+          </p>
+        </div>
+
+        {/* Quick Access */}
+        {cards.length > 0 && (
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Quick Access</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {cards.map((card: any) => (
+                <QuickAccessCard key={card.to} {...card} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Account Info */}
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-4">
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Account Details</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            {[
+              { label: "Full Name", value: user?.name },
+              { label: "Email", value: user?.email },
+              { label: "Role", value: role?.replace(/_/g, " ") },
+              { label: "Status", value: user?.status },
+              {
+                label: "Member Since",
+                value: user?.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "—",
+              },
+            ].map(({ label, value }) => (
+              <div key={label} className="space-y-0.5">
+                <p className="text-xs text-slate-400 font-medium">{label}</p>
+                <p className="font-semibold text-ink capitalize">{value ?? "—"}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Employee message */}
+        {role === "EMPLOYEE" && (
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-800">
+            <p className="font-semibold mb-1">Limited Access Role</p>
+            <p className="text-amber-700 leading-relaxed">
+              Your current role as <strong>Employee</strong> provides read-only access. Contact your admin to request elevated permissions for asset management.
+            </p>
+          </div>
+        )}
+      </div>
+    </AppShell>
   );
 };
