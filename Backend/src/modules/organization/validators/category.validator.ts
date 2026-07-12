@@ -10,6 +10,7 @@ export const updateCategorySchema = z.object({
   name: z.string().min(1).max(100).optional(),
   description: z.string().max(500).optional().nullable(),
   customFields: z.record(z.string(), z.unknown()).optional().nullable(),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
 
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;

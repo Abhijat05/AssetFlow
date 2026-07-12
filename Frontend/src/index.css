@@ -33,11 +33,14 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   
-  --radius-lg: var(--radius-lg);
-  --radius-md: var(--radius-md);
-  --radius-sm: var(--radius-sm);
   --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+  --radius-xxl: var(--radius-xxl);
+  --radius-xxxl: var(--radius-xxxl);
+  --radius-full: 9999px;
   
   --color-canvas: var(--canvas);
   --color-surface-1: var(--surface-1);
@@ -46,55 +49,79 @@
   --color-surface-4: var(--surface-4);
   --color-hairline: var(--hairline);
   --color-hairline-strong: var(--hairline-strong);
-  --color-hairline-tertiary: var(--hairline-tertiary);
+  --color-hairline-soft: var(--hairline-soft);
+  --color-brand-yellow: #ffd02f;
+  --color-brand-yellow-deep: #ebc020;
+  --color-brand-blue: #4262ff;
+  --color-brand-coral: #ff7c65;
+  --color-brand-rose: #ffd9e2;
+  --color-brand-teal: #00a3a3;
+
+  --color-ink: var(--foreground);
+  --color-ink-muted: #53565a;
+  --color-ink-subtle: #6f7276;
+  --color-ink-tertiary: #86868c;
+  --color-success-green: #25a244;
+  --color-semantic-success: #25a244;
+
+  --tracking-hero-display: -2.0px;
+  --tracking-display-lg: -1.5px;
+  --tracking-heading-1: -1.0px;
+  --tracking-heading-2: -0.5px;
+  --tracking-heading-3: 0px;
+  --tracking-heading-4: 0px;
+  --tracking-body: 0px;
 }
 
 :root {
-  --canvas: #010102;
-  --background: #010102;
-  --foreground: #f7f8f8;
+  --canvas: #ffffff;
+  --background: #ffffff;
+  --foreground: #050038;
   
-  --card: #0f1011;
-  --card-foreground: #f7f8f8;
+  --card: #ffffff;
+  --card-foreground: #050038;
   
-  --popover: #0f1011;
-  --popover-foreground: #f7f8f8;
+  --popover: #ffffff;
+  --popover-foreground: #050038;
   
-  --primary: #5e6ad2;
+  /* Black-pill dominates primary CTAs in Miro */
+  --primary: #050038;
   --primary-foreground: #ffffff;
-  --primary-hover: #828fff;
-  --primary-focus: #5e69d1;
+  --primary-hover: #1e1e24;
+  --primary-focus: #050038;
   
-  --secondary: #0f1011;
-  --secondary-foreground: #f7f8f8;
+  --secondary: #f5f5f7;
+  --secondary-foreground: #050038;
   
-  --muted: #141516;
-  --muted-foreground: #8a8f98;
+  --muted: #f5f5f7;
+  --muted-foreground: #6f7276;
   
-  --accent: #141516;
-  --accent-foreground: #f7f8f8;
+  --accent: #f5f5f7;
+  --accent-foreground: #050038;
   
-  --destructive: #ef4444;
+  --destructive: #d9383a;
   --destructive-foreground: #ffffff;
   
-  --border: #23252a;
-  --input: #23252a;
-  --ring: #5e69d1;
+  --border: #e1e1e6;
+  --input: #e1e1e6;
+  --ring: #4262ff;
   
   --radius-xs: 4px;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-xxl: 20px;
+  --radius-xxxl: 28px;
   
-  /* Linear specific design tokens */
-  --surface-1: #0f1011;
-  --surface-2: #141516;
-  --surface-3: #18191a;
-  --surface-4: #191a1b;
-  --hairline: #23252a;
-  --hairline-strong: #34343a;
-  --hairline-tertiary: #3e3e44;
+  /* Miro specific surfaces and borders */
+  --surface-1: #ffffff;
+  --surface-2: #f5f5f7;
+  --surface-3: #fafafa;
+  --surface-4: #ffffff;
+  --hairline: #e1e1e6;
+  --hairline-soft: #edeef0;
+  --hairline-strong: #9e9ea6;
 }
 
 body {
@@ -104,7 +131,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  letter-spacing: -0.05px;
+  letter-spacing: 0px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -113,4 +140,19 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+@utility animate-reveal {
+  animation: reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

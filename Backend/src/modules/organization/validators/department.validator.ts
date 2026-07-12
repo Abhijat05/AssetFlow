@@ -12,6 +12,7 @@ export const updateDepartmentSchema = z.object({
   description: z.string().max(500).optional().nullable(),
   parentDepartmentId: z.string().optional().nullable(),
   departmentHeadId: z.string().optional().nullable(),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
 
 export type CreateDepartmentInput = z.infer<typeof createDepartmentSchema>;

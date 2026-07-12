@@ -9,6 +9,8 @@ import { ResetPassword } from "../pages/ResetPassword";
 import { Unauthorized } from "../pages/Unauthorized";
 import { NotFound } from "../pages/NotFound";
 import { DashboardPlaceholder } from "../pages/DashboardPlaceholder";
+import { OrganizationSetup } from "../modules/organization/pages/OrganizationSetup";
+import { RoleGuard } from "../components/RoleGuard";
 
 // PublicRoute redirects logged-in users away from auth pages (e.g. back to dashboard)
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -28,7 +30,6 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return <>{children}</>;
 };
-
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
@@ -38,6 +39,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <DashboardPlaceholder />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/organization"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN"]}>
+              <OrganizationSetup />
+            </RoleGuard>
           </ProtectedRoute>
         }
       />
