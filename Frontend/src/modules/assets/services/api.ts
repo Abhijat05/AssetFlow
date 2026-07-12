@@ -10,7 +10,7 @@ async function apiRequest<T>(url: string, options: RequestInit = {}): Promise<T>
 
   const response = await fetch(url, { ...options, headers });
   const text = await response.text();
-  let json = {} as T & { error?: string; message?: string };
+  let json = {} as T & { error?: string | string[]; message?: string };
   try {
     json = text ? JSON.parse(text) : {};
   } catch {
@@ -18,7 +18,11 @@ async function apiRequest<T>(url: string, options: RequestInit = {}): Promise<T>
   }
 
   if (!response.ok) {
-    throw new Error(json.error || json.message || `Request failed with status ${response.status}`);
+    const err = json.error;
+    const msg = Array.isArray(err)
+      ? err.join(", ")
+      : err || json.message || `Request failed with status ${response.status}`;
+    throw new Error(msg);
   }
   return json;
 }
