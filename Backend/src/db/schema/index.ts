@@ -6,3 +6,4 @@ export * from "./allocation.schema.js";
 export * from "./booking.schema.js";
 export * from "./maintenance.schema.js";
 export * from "./audit.schema.js";
+export * from "./activity.schema.js";
