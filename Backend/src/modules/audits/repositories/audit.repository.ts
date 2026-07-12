@@ -341,6 +341,26 @@ export const auditRepository = {
       );
   },
 
+  async findRecords(auditCycleId: string) {
+    const verifier = aliasedTable(user, "audit_verifier");
+    return db
+      .select({
+        record: auditRecord,
+        assetTag: asset.assetTag,
+        assetName: asset.name,
+        assetStatus: asset.status,
+        assetLocation: asset.currentLocation,
+        departmentName: department.name,
+        verifierName: verifier.name,
+      })
+      .from(auditRecord)
+      .leftJoin(asset, eq(auditRecord.assetId, asset.id))
+      .leftJoin(department, eq(asset.departmentId, department.id))
+      .leftJoin(verifier, eq(auditRecord.verifiedBy, verifier.id))
+      .where(eq(auditRecord.auditCycleId, auditCycleId))
+      .orderBy(asc(asset.name));
+  },
+
   // Fetch assets in scope for auto-populating audit records
   async findAssetsInScope(scopeType: "ORGANIZATION" | "DEPARTMENT" | "LOCATION", scopeValue?: string | null) {
     const conditions: SQL[] = [];

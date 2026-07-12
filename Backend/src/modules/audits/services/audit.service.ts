@@ -201,20 +201,39 @@ export const auditService = {
 
     await this._assertCanView(found.cycle, requesterId, requesterRole);
 
-    const [assignments, stats] = await Promise.all([
+    const [assignments, stats, records] = await Promise.all([
       auditRepository.findAssignments(id),
       auditRepository.findRecordStats(id),
+      auditRepository.findRecords(id),
     ]);
 
-    return { ...found, auditors: assignments, stats };
+    return { ...found, auditors: assignments, stats, records };
   },
 
   async getAll(query: AuditQueryInput, requesterId: string, requesterRole: Role) {
     const scopedQuery = await this._scopeQuery(query, requesterId, requesterRole);
     const { rows, total } = await auditRepository.findAllCycles(scopedQuery);
+
+    const rowsWithDetails = await Promise.all(
+      rows.map(async (r) => {
+        const [assignments, stats] = await Promise.all([
+          auditRepository.findAssignments(r.cycle.id),
+          auditRepository.findRecordStats(r.cycle.id),
+        ]);
+        return {
+          ...r,
+          cycle: {
+            ...r.cycle,
+            auditors: assignments,
+            stats,
+          },
+        };
+      })
+    );
+
     const totalPages = Math.ceil(total / query.limit);
     return {
-      data: rows,
+      data: rowsWithDetails,
       meta: { total, page: query.page, limit: query.limit, totalPages },
     };
   },

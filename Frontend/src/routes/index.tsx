@@ -19,6 +19,8 @@ import { BookingDirectory } from "../modules/bookings/pages/BookingDirectory";
 import { BookingDetail } from "../modules/bookings/pages/BookingDetail";
 import { MaintenanceDirectory } from "../modules/maintenance/pages/MaintenanceDirectory";
 import { MaintenanceDetail } from "../modules/maintenance/pages/MaintenanceDetail";
+import { AuditDirectory } from "../modules/audits/pages/AuditDirectory";
+import { AuditDetail } from "../modules/audits/pages/AuditDetail";
 import { RoleGuard } from "../components/RoleGuard";
 
 // PublicRoute redirects logged-in users away from auth pages (e.g. back to dashboard)
@@ -144,6 +146,27 @@ export const AppRoutes: React.FC = () => {
           <ProtectedRoute>
             <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"]}>
               <MaintenanceDetail />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/audits"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"]}>
+              <AuditDirectory />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/audits/:id"
+        element={
+          <ProtectedRoute>
+            <RoleGuard allowedRoles={["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"]}>
+              <AuditDetail />
             </RoleGuard>
           </ProtectedRoute>
         }

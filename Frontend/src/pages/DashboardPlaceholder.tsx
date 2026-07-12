@@ -17,6 +17,7 @@ import {
   UserCheck,
   Calendar,
   Wrench,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -64,6 +65,12 @@ const NAV_ITEMS: NavItem[] = [
     icon: <Wrench className="h-4 w-4 flex-shrink-0" />,
     to: "/maintenance",
     roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD", "EMPLOYEE"],
+  },
+  {
+    label: "Audits",
+    icon: <ShieldCheck className="h-4 w-4 flex-shrink-0" />,
+    to: "/audits",
+    roles: ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"],
   },
 ];
 
@@ -381,6 +388,13 @@ export const DashboardPlaceholder: React.FC = () => {
       description: "Report issues, assign technicians, track servicing schedules and logs.",
       to: "/maintenance",
       color: "bg-amber-50",
+    },
+    role && ["ADMIN", "ASSET_MANAGER", "DEPARTMENT_HEAD"].includes(role) && {
+      icon: <ShieldCheck className="h-5 w-5 text-teal-600" />,
+      label: "Asset Reconciliation & Audits",
+      description: "Establish physical verification sheets, assign auditors, track reconciliation progress and export logs.",
+      to: "/audits",
+      color: "bg-teal-55",
     },
   ].filter(Boolean) as QuickAccessCardData[];
 
