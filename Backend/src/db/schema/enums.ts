@@ -50,3 +50,19 @@ export const bookingStatusEnum = pgEnum("booking_status", [
   "COMPLETED",
   "CANCELLED",
 ]);
+
+export const maintenancePriorityEnum = pgEnum("maintenance_priority", [
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+  "CRITICAL",
+]);
+
+export const maintenanceStatusEnum = pgEnum("maintenance_status", [
+  "PENDING",
+  "APPROVED",
+  "REJECTED",
+  "TECHNICIAN_ASSIGNED",
+  "IN_PROGRESS",
+  "RESOLVED",
+]);
