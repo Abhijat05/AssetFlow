@@ -35,8 +35,9 @@ export const auditController = {
   async assignAuditors(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params["id"] as string;
+      const assignedBy = res.locals.user.id as string;
       const body = assignAuditorsSchema.parse(req.body);
-      const data = await auditService.assignAuditors(id, body);
+      const data = await auditService.assignAuditors(id, body, assignedBy);
       res.json({ success: true, data });
     } catch (err) {
       next(err);

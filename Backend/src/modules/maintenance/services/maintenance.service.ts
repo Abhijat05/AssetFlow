@@ -19,6 +19,9 @@ import type {
   MaintenanceQueryInput,
 } from "../validators/maintenance.validator.js";
 import type { Role } from "../../../types/index.js";
+import { ActivityLogger } from "../../activity/services/activity-logger.js";
+import { NotificationService } from "../../activity/services/notification.service.js";
+import type { NotificationPriority } from "../../activity/types/index.js";
 
 export const maintenanceService = {
   async create(data: CreateMaintenanceRequestInput, reportedBy: string) {
@@ -52,6 +55,25 @@ export const maintenanceService = {
       },
     });
 
+    NotificationService.send({
+      userId: reportedBy,
+      title: "Maintenance Request Submitted",
+      message: `Your request "${data.issueTitle}" has been submitted and is pending review.`,
+      type: "MAINTENANCE_REQUEST",
+      priority: data.priority as NotificationPriority,
+      referenceType: "maintenance",
+      referenceId: created.id,
+    });
+    ActivityLogger.log({
+      userId: reportedBy,
+      module: "MAINTENANCE",
+      action: "MAINTENANCE_REQUESTED",
+      entityType: "maintenance",
+      entityId: created.id,
+      description: `Maintenance request "${data.issueTitle}" created for asset ${data.assetId}`,
+      metadata: { assetId: data.assetId, maintenanceRequestId: created.id, priority: data.priority },
+    });
+
     return created;
   },
 
@@ -81,6 +103,25 @@ export const maintenanceService = {
       },
     });
 
+    NotificationService.send({
+      userId: request.reportedBy,
+      title: "Maintenance Request Approved",
+      message: `Your maintenance request has been approved and the asset is now under maintenance.${data.approvalRemarks ? ` Note: ${data.approvalRemarks}` : ""}`,
+      type: "MAINTENANCE_APPROVED",
+      priority: "MEDIUM",
+      referenceType: "maintenance",
+      referenceId: id,
+    });
+    ActivityLogger.log({
+      userId: approverId,
+      module: "MAINTENANCE",
+      action: "MAINTENANCE_APPROVED",
+      entityType: "maintenance",
+      entityId: id,
+      description: `Maintenance request ${id} approved`,
+      metadata: { maintenanceRequestId: id, approvalRemarks: data.approvalRemarks ?? null },
+    });
+
     return updated;
   },
 
@@ -93,6 +134,25 @@ export const maintenanceService = {
     const updated = await maintenanceRepository.update(id, {
       status: "REJECTED",
       approvalRemarks: data.approvalRemarks ?? null,
+    });
+
+    NotificationService.send({
+      userId: request.reportedBy,
+      title: "Maintenance Request Rejected",
+      message: `Your maintenance request has been rejected.${data.approvalRemarks ? ` Reason: ${data.approvalRemarks}` : ""}`,
+      type: "MAINTENANCE_REJECTED",
+      priority: "MEDIUM",
+      referenceType: "maintenance",
+      referenceId: id,
+    });
+    ActivityLogger.log({
+      userId: rejectedBy,
+      module: "MAINTENANCE",
+      action: "MAINTENANCE_REJECTED",
+      entityType: "maintenance",
+      entityId: id,
+      description: `Maintenance request ${id} rejected`,
+      metadata: { maintenanceRequestId: id, approvalRemarks: data.approvalRemarks ?? null },
     });
 
     return updated;
@@ -178,6 +238,25 @@ export const maintenanceService = {
         maintenanceRequestId: id,
         resolutionNotes: data.resolutionNotes ?? null,
       },
+    });
+
+    NotificationService.send({
+      userId: request.reportedBy,
+      title: "Maintenance Completed",
+      message: `Your maintenance request has been resolved and the asset is available again.${data.resolutionNotes ? ` Notes: ${data.resolutionNotes}` : ""}`,
+      type: "MAINTENANCE_COMPLETED",
+      priority: "LOW",
+      referenceType: "maintenance",
+      referenceId: id,
+    });
+    ActivityLogger.log({
+      userId: resolvedBy,
+      module: "MAINTENANCE",
+      action: "MAINTENANCE_RESOLVED",
+      entityType: "maintenance",
+      entityId: id,
+      description: `Maintenance request ${id} resolved`,
+      metadata: { maintenanceRequestId: id, resolutionNotes: data.resolutionNotes ?? null },
     });
 
     return updated;

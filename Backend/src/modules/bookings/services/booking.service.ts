@@ -18,6 +18,8 @@ import type {
   CalendarQueryInput,
 } from "../validators/booking.validator.js";
 import type { Role } from "../../../types/index.js";
+import { ActivityLogger } from "../../activity/services/activity-logger.js";
+import { NotificationService } from "../../activity/services/notification.service.js";
 
 // Asset statuses that block booking
 const UNbookable_STATUSES = new Set([
@@ -76,6 +78,25 @@ export const bookingService = {
         startTime: startTime.toISOString(),
         endTime: endTime.toISOString(),
       },
+    });
+
+    NotificationService.send({
+      userId: bookedBy,
+      title: "Booking Confirmed",
+      message: `Your booking "${data.title}" is confirmed for ${startTime.toISOString().slice(0, 16).replace("T", " ")}.`,
+      type: "BOOKING_CREATED",
+      priority: "LOW",
+      referenceType: "booking",
+      referenceId: created.id,
+    });
+    ActivityLogger.log({
+      userId: bookedBy,
+      module: "BOOKINGS",
+      action: "BOOKING_CREATED",
+      entityType: "booking",
+      entityId: created.id,
+      description: `Booking "${data.title}" created for asset ${data.assetId}`,
+      metadata: { assetId: data.assetId, bookingId: created.id, startTime: startTime.toISOString() },
     });
 
     return created;
@@ -158,6 +179,25 @@ export const bookingService = {
         cancelReason: data.cancelReason ?? null,
         previousStatus: existing.status,
       },
+    });
+
+    NotificationService.send({
+      userId: existing.bookedBy,
+      title: "Booking Cancelled",
+      message: `Your booking "${existing.title}" has been cancelled.${data.cancelReason ? ` Reason: ${data.cancelReason}` : ""}`,
+      type: "BOOKING_CANCELLED",
+      priority: "MEDIUM",
+      referenceType: "booking",
+      referenceId: id,
+    });
+    ActivityLogger.log({
+      userId: requesterId,
+      module: "BOOKINGS",
+      action: "BOOKING_CANCELLED",
+      entityType: "booking",
+      entityId: id,
+      description: `Booking "${existing.title}" cancelled`,
+      metadata: { bookingId: id, cancelReason: data.cancelReason ?? null },
     });
 
     return cancelled;

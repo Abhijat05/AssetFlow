@@ -11,6 +11,8 @@ import { db } from "../../../db/index.js";
 import { user, department } from "../../../db/schema/index.js";
 import type { AllocateAssetInput, ApproveReturnInput, CreateTransferRequestInput, RejectTransferInput, AllocationQueryInput, TransferQueryInput } from "../validators/allocation.validator.js";
 import type { Role } from "../../../types/index.js";
+import { ActivityLogger } from "../../activity/services/activity-logger.js";
+import { NotificationService } from "../../activity/services/notification.service.js";
 
 export const allocationService = {
   // ── Allocate ───────────────────────────────────────────────────────────────
@@ -68,6 +70,25 @@ export const allocationService = {
       }),
     ]);
 
+    NotificationService.send({
+      userId: data.employeeId,
+      title: "Asset Assigned to You",
+      message: `Asset "${foundAsset.name}" (${foundAsset.assetTag}) has been assigned to you.`,
+      type: "ASSET_ASSIGNED",
+      priority: "MEDIUM",
+      referenceType: "allocation",
+      referenceId: allocation.id,
+    });
+    ActivityLogger.log({
+      userId: allocatedBy,
+      module: "ALLOCATIONS",
+      action: "ASSET_ALLOCATED",
+      entityType: "allocation",
+      entityId: allocation.id,
+      description: `Asset ${foundAsset.assetTag} allocated to employee ${data.employeeId}`,
+      metadata: { assetId: data.assetId, employeeId: data.employeeId, allocationId: allocation.id },
+    });
+
     return allocation;
   },
 
@@ -118,6 +139,25 @@ export const allocationService = {
         },
       }),
     ]);
+
+    NotificationService.send({
+      userId: allocation.employeeId,
+      title: "Asset Return Approved",
+      message: `Your asset return has been approved. Condition recorded: ${data.returnCondition}.`,
+      type: "ASSET_RETURNED",
+      priority: "LOW",
+      referenceType: "allocation",
+      referenceId: allocationId,
+    });
+    ActivityLogger.log({
+      userId: approvedBy,
+      module: "ALLOCATIONS",
+      action: "ASSET_RETURNED",
+      entityType: "allocation",
+      entityId: allocationId,
+      description: `Return approved for allocation ${allocationId}`,
+      metadata: { allocationId, returnCondition: data.returnCondition },
+    });
 
     return updated;
   },
@@ -195,6 +235,25 @@ export const allocationService = {
       },
     });
 
+    NotificationService.send({
+      userId: activeAllocation.employeeId,
+      title: "Transfer Request Raised for Your Asset",
+      message: `A transfer request has been submitted for an asset currently assigned to you.`,
+      type: "TRANSFER_REQUEST",
+      priority: "MEDIUM",
+      referenceType: "transfer",
+      referenceId: transfer.id,
+    });
+    ActivityLogger.log({
+      userId: requestedBy,
+      module: "ALLOCATIONS",
+      action: "TRANSFER_REQUESTED",
+      entityType: "transfer",
+      entityId: transfer.id,
+      description: `Transfer request created for asset ${data.assetId}`,
+      metadata: { assetId: data.assetId, transferId: transfer.id },
+    });
+
     return transfer;
   },
 
@@ -266,6 +325,25 @@ export const allocationService = {
 
     await Promise.all(updates);
 
+    NotificationService.send({
+      userId: transfer.requestedBy,
+      title: "Transfer Request Approved",
+      message: `Your transfer request has been approved. The asset has been reassigned.`,
+      type: "TRANSFER_APPROVED",
+      priority: "MEDIUM",
+      referenceType: "transfer",
+      referenceId: transferId,
+    });
+    ActivityLogger.log({
+      userId: approver.id,
+      module: "ALLOCATIONS",
+      action: "TRANSFER_APPROVED",
+      entityType: "transfer",
+      entityId: transferId,
+      description: `Transfer request ${transferId} approved`,
+      metadata: { transferId, fromEmployee: transfer.currentHolderId, toEmployee: newEmployeeId },
+    });
+
     return newAllocation;
   },
 
@@ -294,6 +372,25 @@ export const allocationService = {
         metadata: { transferId, reason: data.reason ?? null },
       }),
     ]);
+
+    NotificationService.send({
+      userId: transfer.requestedBy,
+      title: "Transfer Request Rejected",
+      message: `Your transfer request has been rejected.${data.reason ? ` Reason: ${data.reason}` : ""}`,
+      type: "TRANSFER_REJECTED",
+      priority: "MEDIUM",
+      referenceType: "transfer",
+      referenceId: transferId,
+    });
+    ActivityLogger.log({
+      userId: rejectedBy,
+      module: "ALLOCATIONS",
+      action: "TRANSFER_REJECTED",
+      entityType: "transfer",
+      entityId: transferId,
+      description: `Transfer request ${transferId} rejected`,
+      metadata: { transferId, reason: data.reason ?? null },
+    });
   },
 
   async cancelTransfer(

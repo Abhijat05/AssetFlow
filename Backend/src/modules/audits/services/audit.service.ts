@@ -18,6 +18,8 @@ import type {
 } from "../validators/audit.validator.js";
 import type { AuditStatus } from "../types/index.js";
 import type { Role } from "../../../types/index.js";
+import { ActivityLogger } from "../../activity/services/activity-logger.js";
+import { NotificationService } from "../../activity/services/notification.service.js";
 
 const generateId = () => crypto.randomUUID();
 
@@ -77,6 +79,16 @@ export const auditService = {
       );
     }
 
+    ActivityLogger.log({
+      userId: createdBy,
+      module: "AUDITS",
+      action: "AUDIT_CREATED",
+      entityType: "audit_cycle",
+      entityId: cycle.id,
+      description: `Audit cycle "${data.name}" created with ${assets.length} assets in scope`,
+      metadata: { auditCycleId: cycle.id, scopeType: data.scopeType, assetCount: assets.length },
+    });
+
     return { ...cycle, assetCount: assets.length };
   },
 
@@ -112,7 +124,7 @@ export const auditService = {
     return auditRepository.updateCycle(id, values);
   },
 
-  async assignAuditors(id: string, data: AssignAuditorsInput) {
+  async assignAuditors(id: string, data: AssignAuditorsInput, assignedBy?: string) {
     const cycle = await auditRepository.findCycleRawById(id);
     if (!cycle) throw new NotFoundError("Audit cycle not found");
 
@@ -134,7 +146,27 @@ export const auditService = {
         throw new ValidationError(`Auditor "${auditorId}" account is inactive`);
     }
 
-    return auditRepository.setAuditors(id, uniqueIds);
+    const result = await auditRepository.setAuditors(id, uniqueIds);
+
+    NotificationService.sendBulk(uniqueIds, {
+      title: "You Have Been Assigned to an Audit",
+      message: `You have been assigned as an auditor for audit cycle "${cycle.name}".`,
+      type: "AUDIT_ASSIGNED",
+      priority: "MEDIUM",
+      referenceType: "audit_cycle",
+      referenceId: id,
+    });
+    ActivityLogger.log({
+      userId: assignedBy,
+      module: "AUDITS",
+      action: "AUDITORS_ASSIGNED",
+      entityType: "audit_cycle",
+      entityId: id,
+      description: `${uniqueIds.length} auditor(s) assigned to audit cycle "${cycle.name}"`,
+      metadata: { auditCycleId: id, auditorIds: uniqueIds },
+    });
+
+    return result;
   },
 
   async verifyAsset(
@@ -190,6 +222,27 @@ export const auditService = {
         verificationStatus: data.verificationStatus,
         remarks: data.remarks ?? null,
       },
+    });
+
+    if (data.verificationStatus === "MISSING" || data.verificationStatus === "DAMAGED") {
+      NotificationService.send({
+        userId: cycle.createdBy,
+        title: "Audit Discrepancy Detected",
+        message: `Asset was marked ${data.verificationStatus} during audit "${cycle.name}".${data.remarks ? ` Remarks: ${data.remarks}` : ""}`,
+        type: "AUDIT_DISCREPANCY",
+        priority: "HIGH",
+        referenceType: "audit_cycle",
+        referenceId: auditCycleId,
+      });
+    }
+    ActivityLogger.log({
+      userId: verifiedBy,
+      module: "AUDITS",
+      action: historyAction,
+      entityType: "audit_record",
+      entityId: record.id,
+      description: `Asset ${assetId} verified as ${data.verificationStatus} in audit "${cycle.name}"`,
+      metadata: { assetId, auditCycleId, verificationStatus: data.verificationStatus },
     });
 
     return verified;
@@ -302,6 +355,16 @@ export const auditService = {
     }
 
     const closed = await auditRepository.closeCycle(id, closedBy);
+
+    ActivityLogger.log({
+      userId: closedBy,
+      module: "AUDITS",
+      action: "AUDIT_COMPLETED",
+      entityType: "audit_cycle",
+      entityId: id,
+      description: `Audit cycle "${cycle.name}" closed. Missing: ${missingRecords.length}, Damaged: ${damagedRecords.length}`,
+      metadata: { auditCycleId: id, missingCount: missingRecords.length, damagedCount: damagedRecords.length },
+    });
 
     return closed;
   },
