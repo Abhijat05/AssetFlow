@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { categoryController } from "../controllers/category.controller.js";
-import { requireAdmin } from "../../../middleware/auth.middleware.js";
+import { requireRole } from "../../../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.use(requireAdmin());
+router.use(requireRole("ADMIN", "ASSET_MANAGER"));
 
 router.get("/", categoryController.getAll);
 router.get("/:id", categoryController.getById);
