@@ -1,4 +1,4 @@
-import { eq, and, ilike, gte, lte, inArray, asc, desc, count, isNull, isNotNull, SQL } from "drizzle-orm";
+import { eq, and, ilike, gte, lte, inArray, asc, desc, count, isNull, sql, SQL } from "drizzle-orm";
 import { aliasedTable } from "drizzle-orm";
 import { db } from "../../../db/index.js";
 import {
@@ -10,7 +10,7 @@ import {
   department,
 } from "../../../db/schema/index.js";
 import type { AuditQueryInput } from "../validators/audit.validator.js";
-import type { AuditStatus, VerificationStatus } from "../types/index.js";
+import type { VerificationStatus } from "../types/index.js";
 
 const generateId = () => crypto.randomUUID();
 
@@ -273,21 +273,25 @@ export const auditRepository = {
   },
 
   async findRecordStats(auditCycleId: string) {
-    const [totalRow, verifiedRow, missingRow, damagedRow, unverifiedRow] = await Promise.all([
-      db.select({ value: count() }).from(auditRecord).where(eq(auditRecord.auditCycleId, auditCycleId)),
-      db.select({ value: count() }).from(auditRecord).where(and(eq(auditRecord.auditCycleId, auditCycleId), eq(auditRecord.verificationStatus, "VERIFIED"))),
-      db.select({ value: count() }).from(auditRecord).where(and(eq(auditRecord.auditCycleId, auditCycleId), eq(auditRecord.verificationStatus, "MISSING"))),
-      db.select({ value: count() }).from(auditRecord).where(and(eq(auditRecord.auditCycleId, auditCycleId), eq(auditRecord.verificationStatus, "DAMAGED"))),
-      db.select({ value: count() }).from(auditRecord).where(and(eq(auditRecord.auditCycleId, auditCycleId), isNull(auditRecord.verificationStatus))),
-    ]);
+    const rows = await db
+      .select({
+        status: auditRecord.verificationStatus,
+        total: count(),
+      })
+      .from(auditRecord)
+      .where(eq(auditRecord.auditCycleId, auditCycleId))
+      .groupBy(auditRecord.verificationStatus);
 
-    return {
-      total: Number(totalRow[0].value),
-      verified: Number(verifiedRow[0].value),
-      missing: Number(missingRow[0].value),
-      damaged: Number(damagedRow[0].value),
-      unverified: Number(unverifiedRow[0].value),
-    };
+    const result = { total: 0, verified: 0, missing: 0, damaged: 0, unverified: 0 };
+    for (const row of rows) {
+      const c = Number(row.total);
+      result.total += c;
+      if (row.status === "VERIFIED") result.verified = c;
+      else if (row.status === "MISSING") result.missing = c;
+      else if (row.status === "DAMAGED") result.damaged = c;
+      else result.unverified = c;
+    }
+    return result;
   },
 
   async findDiscrepancies(auditCycleId: string) {
@@ -307,7 +311,7 @@ export const auditRepository = {
       .where(
         and(
           eq(auditRecord.auditCycleId, auditCycleId),
-          inArray(auditRecord.verificationStatus, ["MISSING", "DAMAGED"])
+          sql`${auditRecord.verificationStatus} IN ('MISSING'::verification_status, 'DAMAGED'::verification_status)`
         )
       )
       .orderBy(asc(auditRecord.verificationStatus));
@@ -320,7 +324,7 @@ export const auditRepository = {
       .where(
         and(
           eq(auditRecord.auditCycleId, auditCycleId),
-          eq(auditRecord.verificationStatus, status)
+          sql`${auditRecord.verificationStatus} = ${status}::verification_status`
         )
       );
   },
