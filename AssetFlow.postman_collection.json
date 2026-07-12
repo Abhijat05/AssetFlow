@@ -1,0 +1,1921 @@
+{
+  "info": {
+    "_postman_id": "assetflow-api-collection",
+    "name": "AssetFlow API",
+    "description": "Enterprise Asset & Resource Management System\n\n**Setup before testing:**\n1. In Postman → Settings → enable \"Automatically follow redirects\" and cookie management\n2. Run **Sign In** — the session cookie is stored automatically\n3. `assetId`, `allocationId`, `transferId` are auto-set after each Create request via Tests scripts\n4. Fill in `employeeId` and `attachmentId` manually after fetching them from list endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000", "type": "string" },
+    { "key": "categoryId", "value": "0d6a1fe4-a46e-48dc-9e8a-ab34803ca18b", "type": "string", "description": "Electronics category" },
+    { "key": "departmentId", "value": "d6cb2e56-fca1-4d3d-be6e-69cd4796079e", "type": "string", "description": "Engineering dept" },
+    { "key": "frontendDeptId", "value": "e067c96c-13bb-496e-bf37-b2a74dd89fa3", "type": "string", "description": "Frontend dept (child of Engineering)" },
+    { "key": "employeeId", "value": "REPLACE_WITH_EMPLOYEE_ID", "type": "string" },
+    { "key": "assetId", "value": "REPLACE_WITH_ASSET_ID", "type": "string" },
+    { "key": "attachmentId", "value": "REPLACE_WITH_ATTACHMENT_ID", "type": "string" },
+    { "key": "allocationId", "value": "REPLACE_WITH_ALLOCATION_ID", "type": "string" },
+    { "key": "transferId", "value": "REPLACE_WITH_TRANSFER_ID", "type": "string" },
+    { "key": "bookingId", "value": "REPLACE_WITH_BOOKING_ID", "type": "string" },
+    { "key": "maintenanceRequestId", "value": "REPLACE_WITH_MAINTENANCE_REQUEST_ID", "type": "string" },
+    { "key": "maintenanceAttachmentId", "value": "REPLACE_WITH_MAINTENANCE_ATTACHMENT_ID", "type": "string" },
+    { "key": "technicianId", "value": "REPLACE_WITH_TECHNICIAN_USER_ID", "type": "string" },
+    { "key": "auditCycleId", "value": "REPLACE_WITH_AUDIT_CYCLE_ID", "type": "string" },
+    { "key": "auditorId", "value": "REPLACE_WITH_AUDITOR_USER_ID", "type": "string" },
+    { "key": "notificationId", "value": "REPLACE_WITH_NOTIFICATION_ID", "type": "string" },
+    { "key": "logId", "value": "REPLACE_WITH_LOG_ID", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-up/email",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "sign-up", "email"]
+            }
+          }
+        },
+        {
+          "name": "Sign In",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.user?.id) {",
+                  "  pm.collectionVariables.set('employeeId', data.user.id);",
+                  "  console.log('Set employeeId:', data.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-in/email",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "sign-in", "email"]
+            }
+          }
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/get-session",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "get-session"]
+            }
+          }
+        },
+        {
+          "name": "Get Me (own profile)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Sign Out",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-out",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "sign-out"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"redirectTo\": \"http://localhost:5173/reset-password\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forget-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "forget-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"RESET_TOKEN_FROM_EMAIL\",\n  \"newPassword\": \"newpassword123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Organization",
+      "item": [
+        {
+          "name": "Departments",
+          "item": [
+            {
+              "name": "List Departments",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/departments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "departments"]
+                }
+              }
+            },
+            {
+              "name": "Get Department",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/departments/{{departmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "departments", "{{departmentId}}"]
+                }
+              }
+            },
+            {
+              "name": "Create Department",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Design\",\n  \"description\": \"Product design team\",\n  \"parentDepartmentId\": null,\n  \"departmentHeadId\": null\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/departments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "departments"]
+                }
+              }
+            },
+            {
+              "name": "Update Department",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"Updated description\",\n  \"departmentHeadId\": null\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/departments/{{departmentId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "departments", "{{departmentId}}"]
+                }
+              }
+            },
+            {
+              "name": "Deactivate Department",
+              "request": {
+                "method": "PATCH",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/departments/{{departmentId}}/deactivate",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "departments", "{{departmentId}}", "deactivate"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "List Categories",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "categories"]
+                }
+              }
+            },
+            {
+              "name": "Get Category",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/categories/{{categoryId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "categories", "{{categoryId}}"]
+                }
+              }
+            },
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Furniture\",\n  \"description\": \"Office furniture\",\n  \"customFields\": {\n    \"material\": \"string\",\n    \"color\": \"string\"\n  }\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "categories"]
+                }
+              }
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"All electronics and peripherals\",\n  \"status\": \"ACTIVE\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/categories/{{categoryId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "categories", "{{categoryId}}"]
+                }
+              }
+            },
+            {
+              "name": "Deactivate Category",
+              "request": {
+                "method": "PATCH",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/categories/{{categoryId}}/deactivate",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "categories", "{{categoryId}}", "deactivate"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Employees",
+          "item": [
+            {
+              "name": "List Employees",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/employees?page=1&limit=20",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "employees"],
+                  "query": [
+                    { "key": "name", "value": "", "disabled": true },
+                    { "key": "email", "value": "", "disabled": true },
+                    { "key": "role", "value": "EMPLOYEE", "disabled": true },
+                    { "key": "status", "value": "ACTIVE", "disabled": true },
+                    { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "20" }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Employee",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/employees/{{employeeId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "employees", "{{employeeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Employee Department",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"departmentId\": \"{{departmentId}}\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/employees/{{employeeId}}/department",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "employees", "{{employeeId}}", "department"]
+                }
+              }
+            },
+            {
+              "name": "Update Employee Role",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"role\": \"ASSET_MANAGER\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/employees/{{employeeId}}/role",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "employees", "{{employeeId}}", "role"]
+                }
+              }
+            },
+            {
+              "name": "Update Employee Status",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"INACTIVE\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/organization/employees/{{employeeId}}/status",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "organization", "employees", "{{employeeId}}", "status"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "📦 Assets",
+      "item": [
+        {
+          "name": "List Assets",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets?page=1&limit=20&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets"],
+              "query": [
+                { "key": "assetTag", "value": "", "disabled": true },
+                { "key": "name", "value": "", "disabled": true },
+                { "key": "serialNumber", "value": "", "disabled": true },
+                { "key": "categoryId", "value": "{{categoryId}}", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "location", "value": "", "disabled": true },
+                { "key": "status", "value": "AVAILABLE", "disabled": true },
+                { "key": "condition", "value": "NEW", "disabled": true },
+                { "key": "isBookable", "value": "true", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "sortBy", "value": "createdAt" },
+                { "key": "sortOrder", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Asset",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets/{{assetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets", "{{assetId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Asset",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('assetId', data.data.id);",
+                  "  console.log('Set assetId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dell Laptop XPS 15\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"departmentId\": \"{{departmentId}}\",\n  \"serialNumber\": \"SN-XPS15-001\",\n  \"description\": \"Developer workstation\",\n  \"currentLocation\": \"Floor 2, Desk 14\",\n  \"acquisitionDate\": \"2025-01-15T00:00:00.000Z\",\n  \"acquisitionCost\": 1499.99,\n  \"condition\": \"NEW\",\n  \"isBookable\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets"]
+            }
+          }
+        },
+        {
+          "name": "Update Asset",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"condition\": \"GOOD\",\n  \"currentLocation\": \"Floor 3, Storage Room A\",\n  \"isBookable\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets/{{assetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets", "{{assetId}}"]
+            }
+          }
+        },
+        {
+          "name": "Archive Asset",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets/{{assetId}}/archive",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets", "{{assetId}}", "archive"]
+            }
+          }
+        },
+        {
+          "name": "Upload Attachment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('attachmentId', data.data.id);",
+                  "  console.log('Set attachmentId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "type", "value": "photo", "type": "text", "description": "photo | warranty | invoice | manual | document" },
+                { "key": "file", "type": "file", "src": [], "description": "Max 20MB" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets/{{assetId}}/attachments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets", "{{assetId}}", "attachments"]
+            }
+          }
+        },
+        {
+          "name": "Delete Attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/assets/{{assetId}}/attachments/{{attachmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "assets", "{{assetId}}", "attachments", "{{attachmentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔄 Allocations",
+      "item": [
+        {
+          "name": "Allocate Asset",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('allocationId', data.data.id);",
+                  "  console.log('Set allocationId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetId\": \"{{assetId}}\",\n  \"employeeId\": \"{{employeeId}}\",\n  \"departmentId\": \"{{departmentId}}\",\n  \"expectedReturnDate\": \"2026-12-31T00:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations"]
+            }
+          }
+        },
+        {
+          "name": "List Allocations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations?page=1&limit=20&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations"],
+              "query": [
+                { "key": "assetId", "value": "{{assetId}}", "disabled": true },
+                { "key": "employeeId", "value": "{{employeeId}}", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "status", "value": "ACTIVE", "disabled": true },
+                { "key": "expectedReturnDateFrom", "value": "2025-01-01T00:00:00.000Z", "disabled": true },
+                { "key": "expectedReturnDateTo", "value": "2026-12-31T00:00:00.000Z", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "sortBy", "value": "createdAt", "disabled": true },
+                { "key": "sortOrder", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Overdue Allocations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations/overdue",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations", "overdue"]
+            }
+          }
+        },
+        {
+          "name": "Get My Allocations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations/my?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations", "my"],
+              "query": [
+                { "key": "status", "value": "ACTIVE", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Allocation",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations/{{allocationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations", "{{allocationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Request Return",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations/{{allocationId}}/return-request",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations", "{{allocationId}}", "return-request"]
+            }
+          }
+        },
+        {
+          "name": "Approve Return",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returnCondition\": \"GOOD\",\n  \"returnNotes\": \"Asset returned in good condition, minor scratches on the lid\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/allocations/{{allocationId}}/approve-return",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "allocations", "{{allocationId}}", "approve-return"]
+            }
+          }
+        },
+        {
+          "name": "Transfers",
+          "item": [
+            {
+              "name": "List Transfer Requests",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/allocations/transfers?page=1&limit=20",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "allocations", "transfers"],
+                  "query": [
+                    { "key": "assetId", "value": "{{assetId}}", "disabled": true },
+                    { "key": "requestedBy", "value": "{{employeeId}}", "disabled": true },
+                    { "key": "status", "value": "PENDING", "disabled": true },
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "20" }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Create Transfer Request",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const data = pm.response.json();",
+                      "if (data.data?.id) {",
+                      "  pm.collectionVariables.set('transferId', data.data.id);",
+                      "  console.log('Set transferId:', data.data.id);",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assetId\": \"{{assetId}}\",\n  \"requestedEmployeeId\": \"{{employeeId}}\",\n  \"requestedDepartmentId\": \"{{frontendDeptId}}\",\n  \"reason\": \"Reassigning to frontend team for project work\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/allocations/transfers",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "allocations", "transfers"]
+                }
+              }
+            },
+            {
+              "name": "Get Transfer Request",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/allocations/transfers/{{transferId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "allocations", "transfers", "{{transferId}}"]
+                }
+              }
+            },
+            {
+              "name": "Approve Transfer",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/allocations/transfers/{{transferId}}/approve",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "allocations", "transfers", "{{transferId}}", "approve"]
+                }
+              }
+            },
+            {
+              "name": "Reject Transfer",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Origin", "value": "{{baseUrl}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reason\": \"Asset is needed by the current team for an ongoing project\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/allocations/transfers/{{transferId}}/reject",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "allocations", "transfers", "{{transferId}}", "reject"]
+                }
+              }
+            },
+            {
+              "name": "Cancel Transfer",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/allocations/transfers/{{transferId}}/cancel",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "allocations", "transfers", "{{transferId}}", "cancel"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "📅 Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('bookingId', data.data.id);",
+                  "  console.log('Set bookingId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetId\": \"{{assetId}}\",\n  \"departmentId\": \"{{departmentId}}\",\n  \"title\": \"Team Standup\",\n  \"purpose\": \"Weekly engineering sync\",\n  \"startTime\": \"2026-09-01T09:00:00.000Z\",\n  \"endTime\": \"2026-09-01T10:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "List Bookings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings?page=1&limit=20&sortBy=startTime&sortOrder=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings"],
+              "query": [
+                { "key": "assetId", "value": "{{assetId}}", "disabled": true },
+                { "key": "bookedBy", "value": "{{employeeId}}", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "status", "value": "UPCOMING", "disabled": true },
+                { "key": "startFrom", "value": "2026-01-01T00:00:00.000Z", "disabled": true },
+                { "key": "startTo", "value": "2026-12-31T23:59:59.000Z", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "sortBy", "value": "startTime" },
+                { "key": "sortOrder", "value": "asc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Booking",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "{{bookingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Calendar (by Asset)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/calendar/{{assetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "calendar", "{{assetId}}"],
+              "query": [
+                { "key": "from", "value": "2026-09-01T00:00:00.000Z", "disabled": true },
+                { "key": "to", "value": "2026-09-30T23:59:59.000Z", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Engineering All-Hands\",\n  \"purpose\": \"Updated agenda for Q3 review\",\n  \"startTime\": \"2026-09-01T10:00:00.000Z\",\n  \"endTime\": \"2026-09-01T11:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "{{bookingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cancelReason\": \"Meeting rescheduled to next week\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "bookings", "{{bookingId}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 Maintenance",
+      "item": [
+        {
+          "name": "Create Maintenance Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('maintenanceRequestId', data.data.id);",
+                  "  console.log('Set maintenanceRequestId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assetId\": \"{{assetId}}\",\n  \"issueTitle\": \"Screen flickering intermittently\",\n  \"issueDescription\": \"The laptop screen flickers every few minutes, making it hard to work. Issue started after a minor drop last week.\",\n  \"priority\": \"HIGH\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance"]
+            }
+          }
+        },
+        {
+          "name": "List Maintenance Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance?page=1&limit=20&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance"],
+              "query": [
+                { "key": "assetId", "value": "{{assetId}}", "disabled": true },
+                { "key": "reportedBy", "value": "{{employeeId}}", "disabled": true },
+                { "key": "technicianId", "value": "{{technicianId}}", "disabled": true },
+                { "key": "priority", "value": "HIGH", "disabled": true },
+                { "key": "status", "value": "PENDING", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "createdFrom", "value": "2026-01-01T00:00:00.000Z", "disabled": true },
+                { "key": "createdTo", "value": "2026-12-31T23:59:59.000Z", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "sortBy", "value": "createdAt" },
+                { "key": "sortOrder", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Maintenance Request",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}"]
+            }
+          }
+        },
+        {
+          "name": "Approve Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approvalRemarks\": \"Approved. Asset will be sent for repair immediately.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approvalRemarks\": \"Issue could not be reproduced. Please resubmit with more details or a video.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "reject"]
+            }
+          }
+        },
+        {
+          "name": "Assign Technician",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"technicianId\": \"{{technicianId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/assign-technician",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "assign-technician"]
+            }
+          }
+        },
+        {
+          "name": "Start Maintenance",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/start",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "start"]
+            }
+          }
+        },
+        {
+          "name": "Resolve Maintenance",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resolutionNotes\": \"Replaced the display cable. Screen flickering resolved. Asset tested and confirmed working.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/resolve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "resolve"]
+            }
+          }
+        },
+        {
+          "name": "Upload Attachment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('maintenanceAttachmentId', data.data.id);",
+                  "  console.log('Set maintenanceAttachmentId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [], "description": "Image, PDF, or document. Max 20MB." }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/attachments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "attachments"]
+            }
+          }
+        },
+        {
+          "name": "Delete Attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/maintenance/{{maintenanceRequestId}}/attachments/{{maintenanceAttachmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "maintenance", "{{maintenanceRequestId}}", "attachments", "{{maintenanceAttachmentId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔍 Audits",
+      "item": [
+        {
+          "name": "Create Audit Cycle",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.data?.id) {",
+                  "  pm.collectionVariables.set('auditCycleId', data.data.id);",
+                  "  console.log('Set auditCycleId:', data.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Q3 2026 Engineering Department Audit\",\n  \"description\": \"Quarterly asset verification for all engineering assets\",\n  \"scopeType\": \"DEPARTMENT\",\n  \"departmentId\": \"{{departmentId}}\",\n  \"startDate\": \"2026-09-01T00:00:00.000Z\",\n  \"endDate\": \"2026-09-30T23:59:59.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits"]
+            },
+            "description": "scopeType: ORGANIZATION | DEPARTMENT | LOCATION\n\n- DEPARTMENT requires departmentId\n- LOCATION requires location string\n- ORGANIZATION needs neither"
+          }
+        },
+        {
+          "name": "Create Audit Cycle (Organization-wide)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Annual Full Inventory Audit 2026\",\n  \"description\": \"Complete organisation-wide asset verification\",\n  \"scopeType\": \"ORGANIZATION\",\n  \"startDate\": \"2026-12-01T00:00:00.000Z\",\n  \"endDate\": \"2026-12-31T23:59:59.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits"]
+            }
+          }
+        },
+        {
+          "name": "List Audit Cycles",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits?page=1&limit=20&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits"],
+              "query": [
+                { "key": "name", "value": "Engineering", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "location", "value": "Floor 2", "disabled": true },
+                { "key": "status", "value": "ACTIVE", "disabled": true },
+                { "key": "auditorId", "value": "{{auditorId}}", "disabled": true },
+                { "key": "startDateFrom", "value": "2026-01-01T00:00:00.000Z", "disabled": true },
+                { "key": "startDateTo", "value": "2026-12-31T23:59:59.000Z", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "sortBy", "value": "createdAt" },
+                { "key": "sortOrder", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Audit Cycle",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}"]
+            },
+            "description": "Returns audit cycle details, assigned auditors, and verification stats (total/verified/missing/damaged/unverified)."
+          }
+        },
+        {
+          "name": "Update Audit Cycle",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Q3 2026 Engineering Audit (Updated)\",\n  \"description\": \"Updated description\",\n  \"status\": \"ACTIVE\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}"]
+            },
+            "description": "Allowed status transitions:\n- PLANNED → ACTIVE\n- PLANNED / ACTIVE → CANCELLED\n\nCannot update dates once ACTIVE."
+          }
+        },
+        {
+          "name": "Assign Auditors",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"auditorIds\": [\"{{auditorId}}\", \"{{employeeId}}\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}/auditors",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}", "auditors"]
+            },
+            "description": "Replaces the full auditor list. Only assigned auditors can verify assets."
+          }
+        },
+        {
+          "name": "Verify Asset",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verificationStatus\": \"VERIFIED\",\n  \"remarks\": \"Asset found at expected location, in good condition.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}/verify/{{assetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}", "verify", "{{assetId}}"]
+            },
+            "description": "verificationStatus: VERIFIED | MISSING | DAMAGED\n\nCaller must be an assigned auditor. Audit must be ACTIVE."
+          }
+        },
+        {
+          "name": "Verify Asset (Missing)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verificationStatus\": \"MISSING\",\n  \"remarks\": \"Asset not found at recorded location. Last seen at Floor 2.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}/verify/{{assetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}", "verify", "{{assetId}}"]
+            }
+          }
+        },
+        {
+          "name": "Verify Asset (Damaged)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Origin", "value": "{{baseUrl}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verificationStatus\": \"DAMAGED\",\n  \"remarks\": \"Screen cracked, keyboard keys missing. Needs repair before use.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}/verify/{{assetId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}", "verify", "{{assetId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Discrepancy Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}/discrepancy-report",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}", "discrepancy-report"]
+            },
+            "description": "Returns all MISSING and DAMAGED records with asset details, plus overall verification stats."
+          }
+        },
+        {
+          "name": "Close Audit Cycle",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/audits/{{auditCycleId}}/close",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "audits", "{{auditCycleId}}", "close"]
+            },
+            "description": "ADMIN only. Audit must be ACTIVE.\n\nOn close:\n- MISSING assets → status set to LOST\n- DAMAGED assets → flagged for review in asset history\n- VERIFIED assets → no change\n- All records locked (no further verification allowed)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏠 Dashboard",
+      "description": "Role-scoped dashboard endpoints. All roles can access these — data is automatically filtered by your role:\n- ADMIN / ASSET_MANAGER → org-wide data\n- DEPARTMENT_HEAD → their department only\n- EMPLOYEE → personal data only\n\nLog in first to establish a session.",
+      "item": [
+        {
+          "name": "Full Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard"]
+            },
+            "description": "Returns all dashboard sections in a single request: KPIs, quick actions, recent activity, returns, booking summary, maintenance summary, and audit summary.\n\nAll sections run in parallel server-side."
+          }
+        },
+        {
+          "name": "KPI Cards",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/kpis",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "kpis"]
+            },
+            "description": "Returns 14 KPI counters:\n- assetsAvailable, assetsAllocated, assetsUnderMaintenance, assetsReserved, assetsLost, assetsRetired\n- activeBookings, todaysBookings\n- pendingTransferRequests, pendingMaintenanceRequests\n- upcomingReturns (due within 7 days), overdueReturns\n- activeAuditCycles, completedAuditCycles\n\nEMPLOYEE: asset counts reflect their own allocations; transfer/audit KPIs are 0."
+          }
+        },
+        {
+          "name": "Recent Activity",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/activity",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "activity"]
+            },
+            "description": "Latest 20 asset history entries.\n\nIncludes: timestamp, action, asset tag/name, performer name, metadata.\n\n- ADMIN / ASSET_MANAGER → org-wide history\n- DEPARTMENT_HEAD → history for assets in their department\n- EMPLOYEE → history entries they personally performed"
+          }
+        },
+        {
+          "name": "Returns (Overdue + Upcoming)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/returns",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "returns"]
+            },
+            "description": "Returns two arrays:\n\n**overdue** — allocations with status OVERDUE. Includes daysOverdue (integer).\n**upcoming** — active allocations with expectedReturnDate within the next 7 days.\n\nBoth include: asset tag/name, employee name, department name, expectedReturnDate."
+          }
+        },
+        {
+          "name": "Booking Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "bookings"]
+            },
+            "description": "Returns three arrays (up to 20 each):\n\n**today** — bookings with startTime on today's date\n**ongoing** — bookings with status ONGOING\n**upcoming** — bookings with status UPCOMING\n\nEach item includes: asset name/tag, booker name, startTime, endTime, title, purpose."
+          }
+        },
+        {
+          "name": "Maintenance Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/maintenance",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "maintenance"]
+            },
+            "description": "Returns counts grouped by status:\n- pending (PENDING)\n- approved (APPROVED + TECHNICIAN_ASSIGNED combined)\n- inProgress (IN_PROGRESS)\n- resolved (RESOLVED)\n- rejected (REJECTED)\n\nDEPARTMENT_HEAD: scoped to assets in their department.\nEMPLOYEE: scoped to requests they raised."
+          }
+        },
+        {
+          "name": "Audit Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dashboard/audits",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "dashboard", "audits"]
+            },
+            "description": "Returns audit cycle counts and discrepancy total:\n- planned, active, completed (audit cycle status counts)\n- discrepancies (total audit records with verificationStatus MISSING or DAMAGED)\n\nEMPLOYEE: returns all zeros (no audit visibility).\nDEPARTMENT_HEAD: scoped to DEPARTMENT-type cycles for their department."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📈 Reports",
+      "description": "Reports & Analytics endpoints. EMPLOYEE has no access — only ADMIN, ASSET_MANAGER, and DEPARTMENT_HEAD.\n\nDEPARTMENT_HEAD sees only data scoped to their department (departmentId is auto-injected).\n\nAll JSON endpoints accept common filters as query params:\n- dateFrom / dateTo (ISO date strings)\n- departmentId, categoryId, assetId, employeeId, location\n- page (default 1), limit (default 50, max 500)\n\nThe export endpoint adds: report (required) and format=pdf|xlsx|csv.",
+      "item": [
+        {
+          "name": "Utilization Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/utilization",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "utilization"],
+              "query": [
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "categoryId", "value": "{{categoryId}}", "disabled": true }
+              ]
+            },
+            "description": "Asset utilization summary:\n\n**summary** — total, utilized (ALLOCATED + RESERVED + UNDER_MAINTENANCE), idle (AVAILABLE), utilizationPercentage\n**mostUsed** — top 10 assets by allocation count\n**leastUsed** — bottom 10 assets by allocation count"
+          }
+        },
+        {
+          "name": "Maintenance Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/maintenance",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "maintenance"],
+              "query": [
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "categoryId", "value": "{{categoryId}}", "disabled": true },
+                { "key": "assetId", "value": "{{assetId}}", "disabled": true }
+              ]
+            },
+            "description": "Maintenance request analytics:\n\n**summary** — total, pending, approved (APPROVED + TECHNICIAN_ASSIGNED), inProgress, resolved, rejected\n**byAsset** — request counts per asset\n**byCategory** — request counts per category\n**byDepartment** — request counts per department\n**dueForMaintenance** — upcoming (PENDING/APPROVED/TECHNICIAN_ASSIGNED, up to 50), overdue (IN_PROGRESS > 14 days), recentlyServiced (RESOLVED in last 30 days)"
+          }
+        },
+        {
+          "name": "Lifecycle Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/lifecycle",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "lifecycle"],
+              "query": [
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "categoryId", "value": "{{categoryId}}", "disabled": true },
+                { "key": "location", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Asset lifecycle distribution:\n\n**total** — total asset count\n**byStatus** — array of { status, count, percentage } for every asset status (AVAILABLE, ALLOCATED, RESERVED, UNDER_MAINTENANCE, LOST, RETIRED)"
+          }
+        },
+        {
+          "name": "Department Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/departments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "departments"]
+            },
+            "description": "Department allocation summary:\n\n**departments** — array of { departmentId, departmentName, totalAssets, allocatedAssets, availableAssets, bookableAssets, employeeCount } for every department.\n\nDEPARTMENT_HEAD: returns only their own department."
+          }
+        },
+        {
+          "name": "Bookings Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "bookings"],
+              "query": [
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "assetId", "value": "{{assetId}}", "disabled": true }
+              ]
+            },
+            "description": "Booking analytics:\n\n**summary** — total, completed, cancelled, ongoing, upcoming, completionRate (%), cancellationRate (%)\n**perDay** — daily booking counts (date string + count)\n**peakHours** — hourly booking counts sorted by busiest (label: \"HH:00–HH:00\")\n**mostBooked** — top 10 bookable assets by booking count\n**leastBooked** — bottom 10 bookable assets (includes 0-booking assets)"
+          }
+        },
+        {
+          "name": "Audits Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/audits",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "audits"],
+              "query": [
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true }
+              ]
+            },
+            "description": "Audit cycle analytics:\n\n**summary** — total, planned, active, completed, cancelled, completionRate (%)\n**discrepancies** — missing, damaged, resolvedDiscrepancies counts across all audit records\n**recentCycles** — last 10 audit cycles (name, status, scopeType, startDate, endDate)"
+          }
+        },
+        {
+          "name": "Export Report (PDF)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/export?report=utilization&format=pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "export"],
+              "query": [
+                { "key": "report", "value": "utilization", "description": "One of: utilization, maintenance, lifecycle, bookings, departments, audits" },
+                { "key": "format", "value": "pdf", "description": "One of: pdf, xlsx, csv" },
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "departmentId", "value": "{{departmentId}}", "disabled": true },
+                { "key": "categoryId", "value": "{{categoryId}}", "disabled": true },
+                { "key": "assetId", "value": "{{assetId}}", "disabled": true }
+              ]
+            },
+            "description": "Download any report as a file. Returns a binary attachment.\n\n**Required params:**\n- report: utilization | maintenance | lifecycle | bookings | departments | audits\n- format: pdf | xlsx | csv\n\nAll report filter params (dateFrom, dateTo, departmentId, etc.) are also accepted.\n\nIn Postman: click **Send and Download** to save the file."
+          }
+        },
+        {
+          "name": "Export Report (Excel)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/export?report=maintenance&format=xlsx",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "export"],
+              "query": [
+                { "key": "report", "value": "maintenance" },
+                { "key": "format", "value": "xlsx" },
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Download maintenance report as Excel (.xlsx). Use **Send and Download** in Postman.\n\nWorkbook has a single sheet with multiple sections (summary, by asset, by category, by department, upcoming, overdue, recently serviced).\n\nHeader rows have a blue fill; columns are auto-sized."
+          }
+        },
+        {
+          "name": "Export Report (CSV)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reports/export?report=bookings&format=csv",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reports", "export"],
+              "query": [
+                { "key": "report", "value": "bookings" },
+                { "key": "format", "value": "csv" },
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Download bookings report as CSV. Sections are separated by a blank line, each preceded by a title row."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "description": "Notification endpoints. All roles can access their own notifications. ADMIN can see all notifications.\n\nFilters: type, priority, isRead (true/false), dateFrom, dateTo, page, limit.",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications"],
+              "query": [
+                { "key": "type", "value": "ASSET_ASSIGNED", "disabled": true, "description": "ASSET_ASSIGNED | ASSET_RETURNED | TRANSFER_REQUEST | TRANSFER_APPROVED | TRANSFER_REJECTED | BOOKING_CREATED | BOOKING_CANCELLED | BOOKING_REMINDER | BOOKING_COMPLETED | MAINTENANCE_REQUEST | MAINTENANCE_APPROVED | MAINTENANCE_REJECTED | MAINTENANCE_COMPLETED | AUDIT_CREATED | AUDIT_ASSIGNED | AUDIT_COMPLETED | AUDIT_DISCREPANCY | OVERDUE_RETURN | SYSTEM" },
+                { "key": "priority", "value": "HIGH", "disabled": true, "description": "LOW | MEDIUM | HIGH | CRITICAL" },
+                { "key": "isRead", "value": "false", "disabled": true },
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "page", "value": "1", "disabled": true },
+                { "key": "limit", "value": "20", "disabled": true }
+              ]
+            },
+            "description": "Returns paginated notifications. ADMIN sees all; other roles see only their own.\n\nEach item includes: id, userId, title, message, type, priority, referenceType, referenceId, isRead, readAt, createdAt."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('notificationId', res.data[0].id);",
+                  "  console.log('notificationId set to', res.data[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unread Count",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/unread-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "unread-count"]
+            },
+            "description": "Returns { count: number } — total unread notifications for the current user (or org-wide for ADMIN)."
+          }
+        },
+        {
+          "name": "Get Notification",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "{{notificationId}}"]
+            },
+            "description": "Returns a single notification by ID. Non-ADMIN users can only fetch their own notifications."
+          }
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/{{notificationId}}/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "{{notificationId}}", "read"]
+            },
+            "description": "Marks a single notification as read and sets readAt to now. Returns 404 if already read or not found."
+          }
+        },
+        {
+          "name": "Mark All Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/read-all",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "read-all"]
+            },
+            "description": "Marks all unread notifications as read for the current user."
+          }
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "{{notificationId}}"]
+            },
+            "description": "Permanently deletes a notification. Non-ADMIN users can only delete their own."
+          }
+        },
+        {
+          "name": "Overdue Return Alerts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/overdue",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "overdue"]
+            },
+            "description": "Returns all allocations with status OVERDUE.\n\nEach item: allocationId, assetId, assetTag, assetName, employeeId, employeeName, expectedReturnDate, allocatedAt.\n\nEMPLOYEE: only their own overdue allocations.\nADMIN / ASSET_MANAGER / DEPT_HEAD: all overdue allocations."
+          }
+        },
+        {
+          "name": "Upcoming Booking Reminders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/notifications/upcoming-bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "notifications", "upcoming-bookings"]
+            },
+            "description": "Returns UPCOMING bookings that start within the next 30 minutes.\n\nEach item: bookingId, title, purpose, assetTag, assetName, bookerName, startTime, endTime.\n\nEMPLOYEE / DEPT_HEAD: only their own bookings.\nADMIN / ASSET_MANAGER: all upcoming bookings across the org."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Activity Logs",
+      "description": "Activity log endpoints. All roles can access logs but with different scopes:\n- ADMIN / ASSET_MANAGER / DEPT_HEAD → org-wide (can filter by userId)\n- EMPLOYEE → only their own actions\n\nFilters: module, userId, entityType, entityId, action, search, dateFrom, dateTo, page, limit.",
+      "item": [
+        {
+          "name": "Get Activity Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "logs"],
+              "query": [
+                { "key": "module", "value": "ASSETS", "disabled": true, "description": "ASSETS | ALLOCATIONS | BOOKINGS | MAINTENANCE | AUDITS | ORGANIZATION | AUTH | SYSTEM" },
+                { "key": "userId", "value": "{{employeeId}}", "disabled": true },
+                { "key": "entityType", "value": "", "disabled": true, "description": "e.g. asset, allocation, booking" },
+                { "key": "entityId", "value": "{{assetId}}", "disabled": true },
+                { "key": "action", "value": "", "disabled": true, "description": "partial match, e.g. ALLOCATED" },
+                { "key": "search", "value": "", "disabled": true, "description": "searches description, action, entityType" },
+                { "key": "dateFrom", "value": "", "disabled": true },
+                { "key": "dateTo", "value": "", "disabled": true },
+                { "key": "page", "value": "1", "disabled": true },
+                { "key": "limit", "value": "50", "disabled": true }
+              ]
+            },
+            "description": "Returns paginated activity logs ordered by most recent first.\n\nEach item: id, userId, userName, userEmail, action, module, entityType, entityId, description, metadata, ipAddress, userAgent, createdAt."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('logId', res.data[0].id);",
+                  "  console.log('logId set to', res.data[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Log by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/logs/{{logId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "logs", "{{logId}}"]
+            },
+            "description": "Returns a single activity log entry. EMPLOYEE gets a 403 if the log belongs to another user."
+          }
+        },
+        {
+          "name": "Filter by Module",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/logs?module=ASSETS",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "logs"],
+              "query": [
+                { "key": "module", "value": "ASSETS" }
+              ]
+            },
+            "description": "Example: fetch only asset-related logs. Change module to ALLOCATIONS, BOOKINGS, MAINTENANCE, AUDITS, ORGANIZATION, AUTH, or SYSTEM."
+          }
+        },
+        {
+          "name": "Search Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Origin", "value": "{{baseUrl}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activity/logs?search=ALLOCATED",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activity", "logs"],
+              "query": [
+                { "key": "search", "value": "ALLOCATED" }
+              ]
+            },
+            "description": "Full-text search across description, action, and entityType fields (case-insensitive partial match)."
+          }
+        }
+      ]
+    }
+  ]
+}
