@@ -1,5 +1,5 @@
 import { assetRepository } from "../repositories/asset.repository.js";
-import { ConflictError, NotFoundError, ValidationError, AppError } from "../../../utils/errors.js";
+import { ConflictError, NotFoundError, ValidationError } from "../../../utils/errors.js";
 import { storageService } from "./storage.service.js";
 import { qrcodeService } from "./qrcode.service.js";
 import { db } from "../../../db/index.js";
@@ -8,12 +8,24 @@ import { eq } from "drizzle-orm";
 import type { CreateAssetInput, UpdateAssetInput, AssetQueryInput } from "../validators/asset.validator.js";
 import type { AttachmentType } from "../types/index.js";
 
+const NON_BOOKABLE_STATUSES = new Set([
+  "ALLOCATED",
+  "UNDER_MAINTENANCE",
+  "LOST",
+  "RETIRED",
+  "DISPOSED",
+]);
+
+function resolveIsBookable<T extends { isBookable: boolean; status: string }>(row: T): T {
+  return { ...row, isBookable: row.isBookable && !NON_BOOKABLE_STATUSES.has(row.status) };
+}
+
 export const assetService = {
   async getAll(query: AssetQueryInput) {
     const { rows, total } = await assetRepository.findAll(query);
     const totalPages = Math.ceil(total / query.limit);
     return {
-      data: rows,
+      data: rows.map(resolveIsBookable),
       meta: { total, page: query.page, limit: query.limit, totalPages },
     };
   },
@@ -27,7 +39,7 @@ export const assetService = {
       assetRepository.findHistoryByAsset(id),
     ]);
 
-    return { ...found, attachments, history };
+    return { ...resolveIsBookable(found), attachments, history };
   },
 
   async create(data: CreateAssetInput, createdBy: string) {
