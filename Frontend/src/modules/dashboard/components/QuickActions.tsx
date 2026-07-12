@@ -36,8 +36,8 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ actions }) => {
       description: "Add a new asset to the company registry",
       icon: <PlusCircle className="h-5 w-5" />,
       to: "/assets",
-      colorClass: "text-[#4262ff]",
-      bgClass: "bg-[#4262ff]/10",
+      colorClass: "text-brand-blue",
+      bgClass: "bg-brand-blue/10",
     },
     {
       key: "allocateAsset",
@@ -54,8 +54,8 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ actions }) => {
       description: "Reserve a shared facility, vehicle, or equipment",
       icon: <CalendarPlus className="h-5 w-5" />,
       to: "/bookings",
-      colorClass: "text-[#00a3a3]",
-      bgClass: "bg-[#00a3a3]/10",
+      colorClass: "text-brand-teal",
+      bgClass: "bg-brand-teal/10",
     },
     {
       key: "raiseMaintenanceRequest",
@@ -92,7 +92,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ actions }) => {
           onClick={() => navigate(action.to)}
           className="group text-left w-full focus:outline-none"
         >
-          <Card className="rounded-2xl border border-slate-200 bg-white p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200">
+          <Card className="rounded-2xl border border-slate-200 bg-white p-4 hover-lift">
             <CardContent className="p-0 flex items-center justify-between">
               <div className="flex items-center gap-3.5 min-w-0">
                 <div
@@ -105,7 +105,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ actions }) => {
                   {action.icon}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-[#050038] group-hover:text-[#4262ff] transition-colors truncate">
+                  <p className="text-sm font-bold text-primary group-hover:text-brand-blue transition-colors truncate">
                     {action.label}
                   </p>
                   <p className="text-[10px] text-slate-400 font-medium leading-relaxed truncate mt-0.5">
@@ -113,7 +113,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ actions }) => {
                   </p>
                 </div>
               </div>
-              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-[#4262ff] group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2" />
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-brand-blue group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2" />
             </CardContent>
           </Card>
         </button>

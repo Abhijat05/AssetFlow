@@ -2,10 +2,10 @@ import React from "react";
 import type { BookingStatus } from "../types";
 
 const STYLES: Record<BookingStatus, string> = {
-  UPCOMING: "text-blue-700 bg-blue-50/80 border-blue-200 dark:text-blue-400 dark:bg-blue-950/20 dark:border-blue-900/30",
-  ONGOING: "text-amber-700 bg-amber-50/80 border-amber-200 dark:text-amber-400 dark:bg-amber-950/20 dark:border-amber-900/30",
-  COMPLETED: "text-emerald-700 bg-emerald-50/80 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950/20 dark:border-emerald-900/30",
-  CANCELLED: "text-rose-700 bg-rose-50/80 border-rose-200 dark:text-rose-400 dark:bg-rose-950/20 dark:border-rose-900/30",
+  UPCOMING: "text-blue-800 bg-blue-100/90 border-blue-300 dark:text-blue-400 dark:bg-blue-950/20 dark:border-blue-900/30",
+  ONGOING: "text-amber-800 bg-amber-100/90 border-amber-300 dark:text-amber-400 dark:bg-amber-950/20 dark:border-amber-900/30",
+  COMPLETED: "text-emerald-800 bg-emerald-100/90 border-emerald-300 dark:text-emerald-400 dark:bg-emerald-950/20 dark:border-emerald-900/30",
+  CANCELLED: "text-rose-800 bg-rose-100/90 border-rose-300 dark:text-rose-400 dark:bg-rose-950/20 dark:border-rose-900/30",
 };
 
 interface Props {

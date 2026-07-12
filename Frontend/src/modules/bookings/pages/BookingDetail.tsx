@@ -199,7 +199,7 @@ export const BookingDetail: React.FC = () => {
               {/* Booking Info Card */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-[#4262ff]" />
+                  <Calendar className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Reservation Details</h2>
                 </div>
 
@@ -261,7 +261,7 @@ export const BookingDetail: React.FC = () => {
               {/* Timeline Flow */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-[#4262ff]" />
+                  <Clock className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Timeline Flow</h2>
                 </div>
 
@@ -319,7 +319,7 @@ export const BookingDetail: React.FC = () => {
               {/* History Audit Log */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center gap-2">
-                  <History className="h-4 w-4 text-[#4262ff]" />
+                  <History className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">History Log</h2>
                 </div>
 
@@ -337,12 +337,12 @@ export const BookingDetail: React.FC = () => {
                   <ol className="relative border-l border-slate-200 space-y-6 ml-3">
                     {history.map((entry) => (
                       <li key={entry.id} className="ml-6">
-                        <span className="absolute -left-[9px] h-4 w-4 rounded-full border-2 border-white bg-[#4262ff] flex items-center justify-center">
+                        <span className="absolute -left-[9px] h-4 w-4 rounded-full border-2 border-white bg-brand-blue flex items-center justify-center">
                           <span className="h-1.5 w-1.5 rounded-full bg-white" />
                         </span>
                         <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
                           <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="text-xs font-bold text-[#4262ff] uppercase tracking-wide">
+                            <span className="text-xs font-bold text-brand-blue uppercase tracking-wide">
                               {entry.action.replace("BOOKING_", "")}
                             </span>
                             <span className="text-xs text-slate-400">
@@ -365,14 +365,14 @@ export const BookingDetail: React.FC = () => {
               
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5 h-fit">
                 <div className="flex items-center gap-2">
-                  <Package className="h-4 w-4 text-[#4262ff]" />
+                  <Package className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Resource Info</h2>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-base font-bold text-ink">{booking.resource?.name}</h3>
-                    <span className="font-mono text-xs font-semibold text-[#4262ff] bg-[#4262ff]/8 px-2 py-0.5 rounded-md mt-1.5 inline-block">
+                    <span className="font-mono text-xs font-semibold text-brand-blue bg-brand-blue/8 px-2 py-0.5 rounded-md mt-1.5 inline-block">
                       {booking.resource?.assetTag}
                     </span>
                   </div>

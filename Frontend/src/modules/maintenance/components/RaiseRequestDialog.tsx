@@ -234,7 +234,7 @@ export const RaiseRequestDialog: React.FC<Props> = ({ open, onOpenChange }) => {
                 {selectedFiles.map((file, idx) => (
                   <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs">
                     <div className="flex items-center gap-2 min-w-0">
-                      <File className="h-3.5 w-3.5 text-[#4262ff] flex-shrink-0" />
+                      <File className="h-3.5 w-3.5 text-brand-blue flex-shrink-0" />
                       <span className="truncate font-medium text-slate-700">{file.name}</span>
                       <span className="text-[10px] text-slate-400 flex-shrink-0">
                         ({(file.size / 1024 / 1024).toFixed(2)} MB)
@@ -255,7 +255,7 @@ export const RaiseRequestDialog: React.FC<Props> = ({ open, onOpenChange }) => {
 
           {/* Upload Progress Loader */}
           {uploadProgress && (
-            <div className="flex items-center gap-2 text-xs font-medium text-[#4262ff] bg-[#4262ff]/5 border border-[#4262ff]/10 rounded-xl p-2.5 animate-pulse">
+            <div className="flex items-center gap-2 text-xs font-medium text-brand-blue bg-brand-blue/5 border border-brand-blue/10 rounded-xl p-2.5 animate-pulse">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               {uploadProgress}
             </div>
@@ -265,7 +265,7 @@ export const RaiseRequestDialog: React.FC<Props> = ({ open, onOpenChange }) => {
             <Button type="button" variant="outline" onClick={handleClose} disabled={isBusy} className="rounded-full">
               Cancel
             </Button>
-            <Button type="submit" disabled={isBusy} className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white">
+            <Button type="submit" disabled={isBusy} className="rounded-full bg-brand-blue hover:bg-brand-blue/90 text-white">
               {isBusy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Submit Request
             </Button>

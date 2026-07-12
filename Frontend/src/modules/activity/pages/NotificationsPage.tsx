@@ -176,7 +176,7 @@ export const NotificationsPage: React.FC = () => {
       <Link
         to={url}
         onClick={() => setSelectedNotif(null)}
-        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4262ff] bg-[#4262ff]/5 border border-[#4262ff]/10 hover:bg-[#4262ff]/10 px-3.5 py-1.5 rounded-xl transition-all"
+        className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-blue bg-brand-blue/5 border border-brand-blue/10 hover:bg-brand-blue/10 px-3.5 py-1.5 rounded-xl transition-all"
       >
         Go to Reference Resource
         <ArrowUpRight className="h-3.5 w-3.5" />
@@ -191,13 +191,13 @@ export const NotificationsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-6">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[10px]">
-              <Bell className="h-3.5 w-3.5 text-[#4262ff]" />
+              <Bell className="h-3.5 w-3.5 text-brand-blue" />
               <span>Inbox & Messages</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-[#050038] tracking-tight flex items-center gap-2.5">
+            <h1 className="text-2xl font-extrabold text-primary tracking-tight flex items-center gap-2.5">
               Notifications
               {unreadCount > 0 && (
-                <span className="text-[11px] font-extrabold bg-[#4262ff] text-white px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                <span className="text-[11px] font-extrabold bg-brand-blue text-white px-2 py-0.5 rounded-full shadow-sm animate-pulse">
                   {unreadCount} Unread
                 </span>
               )}
@@ -223,8 +223,8 @@ export const NotificationsPage: React.FC = () => {
 
         {/* Collapsible Filter Card */}
         <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-sm animate-reveal">
-          <div className="flex items-center gap-2 text-[#050038] font-bold text-sm">
-            <Filter className="h-4 w-4 text-[#4262ff]" />
+          <div className="flex items-center gap-2 text-primary font-bold text-sm">
+            <Filter className="h-4 w-4 text-brand-blue" />
             <span>Search & Filter Inbox</span>
           </div>
 
@@ -396,7 +396,7 @@ export const NotificationsPage: React.FC = () => {
                   </span>
                 </div>
 
-                <DialogTitle className="text-sm font-bold text-[#050038] tracking-tight leading-snug">
+                <DialogTitle className="text-sm font-bold text-primary tracking-tight leading-snug">
                   {selectedNotif.title}
                 </DialogTitle>
                 <div className="text-[10px] text-slate-400 font-bold">
@@ -418,7 +418,7 @@ export const NotificationsPage: React.FC = () => {
                     <div className="flex items-center justify-between text-xs">
                       <div>
                         <span className="font-bold text-slate-500">Resource:</span>{" "}
-                        <span className="font-bold text-[#050038] capitalize">
+                        <span className="font-bold text-primary capitalize">
                           {selectedNotif.referenceType?.toLowerCase()}
                         </span>
                       </div>
@@ -449,7 +449,7 @@ export const NotificationsPage: React.FC = () => {
                   {getReferenceLink(selectedNotif)}
                   <Button
                     onClick={() => setSelectedNotif(null)}
-                    className="h-9 text-xs rounded-xl bg-[#050038] hover:bg-[#050038]/90 text-white font-bold px-4"
+                    className="h-9 text-xs rounded-xl bg-primary hover:bg-primary/90 text-white font-bold px-4"
                   >
                     Close
                   </Button>

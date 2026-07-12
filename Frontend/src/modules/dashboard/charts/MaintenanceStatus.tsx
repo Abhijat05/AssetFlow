@@ -74,11 +74,11 @@ export const MaintenanceStatus: React.FC<MaintenanceStatusProps> = ({ stats }) =
         <span className="text-slate-400">Total Requests: <strong className="text-slate-700">{total}</strong></span>
         <div className="flex gap-2">
           <span className="flex items-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#25a244]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-success-green" />
             Resolved: <strong className="text-slate-700">{stats.resolved}</strong>
           </span>
           <span className="flex items-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#4262ff]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-blue" />
             In Progress: <strong className="text-slate-700">{stats.inProgress}</strong>
           </span>
         </div>

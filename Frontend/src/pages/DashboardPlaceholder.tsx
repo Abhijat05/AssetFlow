@@ -134,7 +134,7 @@ const Sidebar: React.FC<{
       <aside
         className={cn(
           // Base
-          "fixed top-0 left-0 z-40 h-full flex flex-col bg-white border-r border-slate-200 shadow-sm",
+          "fixed top-0 left-0 z-40 h-full flex flex-col bg-canvas border-r border-slate-200 shadow-sm text-ink",
           // Desktop collapse transition
           "lg:static lg:z-auto lg:translate-x-0",
           "transition-[width,transform] duration-200 ease-in-out",
@@ -159,19 +159,19 @@ const Sidebar: React.FC<{
               collapsed && "lg:hidden"
             )}
           >
-            <div className="h-8 w-8 rounded-xl bg-[#ffd02f] flex items-center justify-center shadow-sm flex-shrink-0">
-              <Package className="h-4 w-4 text-[#050038]" strokeWidth={2.5} />
+            <div className="h-8 w-8 rounded-xl bg-brand-yellow flex items-center justify-center shadow-sm flex-shrink-0">
+              <Package className="h-4 w-4 text-primary" strokeWidth={2.5} />
             </div>
-            <span className="font-bold text-sm text-[#050038] tracking-tight whitespace-nowrap overflow-hidden">
-              AssetFlow <span className="text-[10px] font-normal text-slate-400">ERP</span>
+            <span className="font-extrabold text-sm text-primary tracking-tight whitespace-nowrap overflow-hidden">
+              AssetFlow <span className="text-[10px] font-semibold text-brand-blue">ERP</span>
             </span>
           </div>
 
           {/* Collapsed state: just icon */}
           {collapsed && (
             <div className="hidden lg:flex items-center justify-center w-full">
-              <div className="h-8 w-8 rounded-xl bg-[#ffd02f] flex items-center justify-center shadow-sm">
-                <Package className="h-4 w-4 text-[#050038]" strokeWidth={2.5} />
+              <div className="h-8 w-8 rounded-xl bg-brand-yellow flex items-center justify-center shadow-sm">
+                <Package className="h-4 w-4 text-primary" strokeWidth={2.5} />
               </div>
             </div>
           )}
@@ -179,7 +179,7 @@ const Sidebar: React.FC<{
           {/* Collapse toggle — desktop only */}
           <button
             onClick={onCollapseToggle}
-            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-700 flex-shrink-0"
+            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg hover:bg-slate-50 transition-colors text-slate-400 hover:text-slate-600 flex-shrink-0"
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
@@ -192,14 +192,14 @@ const Sidebar: React.FC<{
           {/* Mobile close */}
           <button
             onClick={onMobileClose}
-            className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 flex-shrink-0"
+            className="lg:hidden h-7 w-7 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-400 hover:text-slate-600 flex-shrink-0"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Nav Links */}
-        <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-4 space-y-0.5">
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2.5 py-4 space-y-1">
           {visibleItems.map((item) => (
             <NavLink
               key={item.to}
@@ -209,19 +209,20 @@ const Sidebar: React.FC<{
               title={collapsed ? item.label : undefined}
               className={({ isActive }) =>
                 cn(
-                  "group relative flex items-center gap-3 rounded-xl text-sm font-medium transition-all duration-150 overflow-hidden",
+                  "group relative flex items-center gap-3 rounded-xl text-xs font-semibold transition-all duration-150 overflow-hidden",
                   // Width-aware padding
-                  collapsed ? "lg:px-0 lg:justify-center px-3 py-2.5" : "px-3 py-2.5",
+                  collapsed ? "lg:px-0 lg:justify-center px-3.5 py-2.5" : "px-3.5 py-2.5",
                   isActive
-                    ? "bg-[#4262ff]/10 text-[#4262ff] font-semibold"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-brand-blue text-white shadow-sm font-bold"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-primary"
                 )
               }
             >
-              {() => (
+              {({ isActive }) => (
                 <>
                   <span className={cn(
-                    "flex items-center justify-center flex-shrink-0",
+                    "flex items-center justify-center flex-shrink-0 transition-colors",
+                    isActive ? "text-white" : "text-slate-400 group-hover:text-slate-600",
                     collapsed ? "lg:w-full" : ""
                   )}>
                     {item.icon}
@@ -250,7 +251,7 @@ const Sidebar: React.FC<{
           {/* User info */}
           <div
             className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-xl overflow-hidden",
+              "flex items-center gap-3 px-3.5 py-2.5 rounded-xl overflow-hidden hover:bg-slate-50 transition-colors",
               collapsed && "lg:justify-center lg:px-0"
             )}
             title={collapsed ? `${user?.name}` : undefined}
@@ -259,8 +260,8 @@ const Sidebar: React.FC<{
               <UserCircle2 className="h-5 w-5 text-slate-500" />
             </div>
             <div className={cn("flex-1 min-w-0", collapsed && "lg:hidden")}>
-              <p className="text-xs font-semibold text-slate-800 truncate">{user?.name}</p>
-              <p className="text-[10px] text-slate-400 truncate capitalize">
+              <p className="text-xs font-bold text-ink truncate">{user?.name}</p>
+              <p className="text-[10px] text-slate-500 truncate capitalize font-medium">
                 {role?.toLowerCase().replace(/_/g, " ")}
               </p>
             </div>
@@ -272,7 +273,7 @@ const Sidebar: React.FC<{
             disabled={isLoggingOut}
             title={collapsed ? "Log Out" : undefined}
             className={cn(
-              "group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors overflow-hidden",
+              "group relative w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs text-slate-500 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors overflow-hidden",
               collapsed && "lg:justify-center lg:px-0"
             )}
           >

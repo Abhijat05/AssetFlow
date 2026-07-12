@@ -50,7 +50,7 @@ export const TabsTrigger: React.FC<
   return (
     <button
       type="button"
-      className={`${className || ""} ${isActive ? "data-[state=active]:bg-[#4262ff] data-[state=active]:text-white shadow-sm" : ""}`}
+      className={`${className || ""} ${isActive ? "data-[state=active]:bg-brand-blue data-[state=active]:text-white shadow-sm" : ""}`}
       data-state={isActive ? "active" : "inactive"}
       onClick={() => context.onValueChange(value)}
       {...props}

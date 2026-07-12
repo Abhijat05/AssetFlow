@@ -31,8 +31,8 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activity }) => {
     if (act.includes("ALLOCATE") || act.includes("ASSIGN")) {
       return {
         label: "Allocated Asset",
-        icon: <UserCheck className="h-3.5 w-3.5 text-[#4262ff]" />,
-        bg: "bg-[#4262ff]/10 border border-[#4262ff]/10",
+        icon: <UserCheck className="h-3.5 w-3.5 text-brand-blue" />,
+        bg: "bg-brand-blue/10 border border-brand-blue/10",
       };
     }
     if (act.includes("DEALLOCATE") || act.includes("RETURN")) {
@@ -97,7 +97,7 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activity }) => {
   return (
     <Card className="rounded-2xl border border-slate-200 bg-white h-full flex flex-col">
       <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
-        <CardTitle className="text-sm font-bold text-[#050038]">Recent Activity</CardTitle>
+        <CardTitle className="text-sm font-bold text-primary">Recent Activity</CardTitle>
       </CardHeader>
       <CardContent className="p-5 flex-1 min-h-0 overflow-y-auto">
         {activity.length === 0 ? (
@@ -137,13 +137,13 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activity }) => {
                     </div>
 
                     <div className="text-slate-500 font-medium leading-relaxed">
-                      <span className="text-[#4262ff] font-semibold">{details.label}</span>
+                      <span className="text-brand-blue font-semibold">{details.label}</span>
                       {item.assetId && item.assetName ? (
                         <>
                           {" for "}
                           <Link
                             to={`/assets/${item.assetId}`}
-                            className="font-bold text-slate-700 hover:text-[#4262ff] transition-colors underline decoration-dotted"
+                            className="font-bold text-slate-700 hover:text-brand-blue transition-colors underline decoration-dotted"
                           >
                             {item.assetName}
                           </Link>

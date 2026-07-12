@@ -95,13 +95,13 @@ export const DashboardPage: React.FC = () => {
           <div className="h-16 w-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto border border-red-100">
             ⚠️
           </div>
-          <h2 className="text-lg font-bold text-[#050038]">Failed to Load Dashboard</h2>
+          <h2 className="text-lg font-bold text-primary">Failed to Load Dashboard</h2>
           <p className="text-sm text-slate-500 leading-normal">
             {error instanceof Error ? error.message : "An error occurred while fetching dashboard statistics."}
           </p>
           <Button
             onClick={() => refetch()}
-            className="rounded-xl px-5 bg-[#4262ff] hover:bg-[#4262ff]/90 text-white font-bold"
+            className="rounded-xl px-5 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold"
           >
             Try Again
           </Button>
@@ -116,35 +116,37 @@ export const DashboardPage: React.FC = () => {
   return (
     <AppShell>
       <div className="px-6 py-8 space-y-8 max-w-7xl mx-auto">
-        {/* Welcome / Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-6">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+        {/* Welcome / Header Banner Card */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary/95 to-brand-blue p-6 text-white shadow-md border border-primary/20 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          {/* Decorative mesh circle backgrounds */}
+          <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-white/[0.03] blur-3xl pointer-events-none transform translate-x-12 -translate-y-12" />
+          <div className="absolute bottom-0 right-1/4 h-32 w-32 rounded-full bg-brand-yellow/8 blur-2xl pointer-events-none" />
+
+          <div className="space-y-2 relative z-10">
+            <div className="flex items-center gap-1.5 text-brand-yellow font-extrabold uppercase tracking-widest text-[9px]">
               <CalendarDays className="h-3.5 w-3.5" />
               <span>{formatDate()}</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-[#050038] tracking-tight">
-              Welcome back, {user?.name?.split(" ")[0]} 👋
+            <h1 className="text-2xl font-extrabold tracking-tight">
+              Welcome back, {user?.name} 👋
             </h1>
-            <p className="text-xs text-slate-500">
-              Operational overview for{" "}
-              <span className="font-extrabold text-[#4262ff] capitalize">
+            <p className="text-xs text-slate-300 font-medium">
+              You are logged in as a{" "}
+              <span className="font-extrabold text-brand-yellow capitalize">
                 {currentRole.toLowerCase().replace(/_/g, " ")}
               </span>
-              .
+              . Access your custom operations feed, charts, and metrics below.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 relative z-10 shrink-0">
             <Button
-              variant="outline"
-              size="sm"
               onClick={() => refetch()}
               disabled={isRefetching}
-              className="rounded-xl border-slate-200 hover:bg-slate-50 text-slate-600 gap-1.5 h-9"
+              className="rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white font-extrabold text-xs gap-1.5 h-9 px-4"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isRefetching && "animate-spin")} />
-              {isRefetching ? "Refreshing..." : "Refresh"}
+              {isRefetching ? "Refreshing..." : "Refresh Status"}
             </Button>
           </div>
         </div>
@@ -169,9 +171,9 @@ export const DashboardPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Status Distribution (Inapplicable to Employee) */}
             {currentRole !== "EMPLOYEE" && (
-              <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-all">
+              <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
-                  <CardTitle className="text-sm font-bold text-[#050038]">Asset Status Distribution</CardTitle>
+                  <CardTitle className="text-sm font-bold text-primary">Asset Status Distribution</CardTitle>
                 </CardHeader>
                 <CardContent className="p-5">
                   <AssetStatusDistribution kpis={kpis} />
@@ -181,9 +183,9 @@ export const DashboardPage: React.FC = () => {
 
             {/* Department Distribution (ADMIN / ASSET_MANAGER only) */}
             {showDeptDistribution && (
-              <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-all">
+              <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
-                  <CardTitle className="text-sm font-bold text-[#050038]">Department Asset Distribution</CardTitle>
+                  <CardTitle className="text-sm font-bold text-primary">Department Asset Distribution</CardTitle>
                 </CardHeader>
                 <CardContent className="p-5">
                   <DepartmentAssetDistribution data={deptDistribution} isLoading={isDeptLoading} />
@@ -192,9 +194,9 @@ export const DashboardPage: React.FC = () => {
             )}
 
             {/* Maintenance Status (All roles) */}
-            <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-all">
+            <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
               <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
-                <CardTitle className="text-sm font-bold text-[#050038]">Maintenance Requests Status</CardTitle>
+                <CardTitle className="text-sm font-bold text-primary">Maintenance Requests Status</CardTitle>
               </CardHeader>
               <CardContent className="p-5">
                 <MaintenanceStatus stats={data.maintenance} />
@@ -202,9 +204,9 @@ export const DashboardPage: React.FC = () => {
             </Card>
 
             {/* Booking Status (All roles) */}
-            <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-all">
+            <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
               <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
-                <CardTitle className="text-sm font-bold text-[#050038]">Booking Status Overview</CardTitle>
+                <CardTitle className="text-sm font-bold text-primary">Booking Status Overview</CardTitle>
               </CardHeader>
               <CardContent className="p-5">
                 <BookingStatus bookings={data.bookings} />
@@ -213,9 +215,9 @@ export const DashboardPage: React.FC = () => {
 
             {/* Audit Progress (Inapplicable to Employee) */}
             {currentRole !== "EMPLOYEE" && (
-              <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-sm transition-all">
+              <Card className="rounded-2xl border border-slate-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
-                  <CardTitle className="text-sm font-bold text-[#050038]">Audit Progress & Compliance</CardTitle>
+                  <CardTitle className="text-sm font-bold text-primary">Audit Progress & Compliance</CardTitle>
                 </CardHeader>
                 <CardContent className="p-5">
                   <AuditProgress stats={data.audits} />

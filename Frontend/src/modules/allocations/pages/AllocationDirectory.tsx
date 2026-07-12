@@ -112,37 +112,37 @@ export const AllocationDirectory: React.FC = () => {
 
   return (
     <AppShell>
-      <div className="min-h-screen bg-canvas">
-        {/* Page Header */}
-        <div className="border-b border-slate-200 bg-white">
-          <div className="max-w-screen-xl mx-auto px-6 py-5">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-2xl bg-[#4262ff]/10 flex items-center justify-center">
-                  <UserCheck className="h-5 w-5 text-[#4262ff]" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-ink tracking-tight">Resource Allocations</h1>
-                  <p className="text-sm text-ink-subtle">
-                    {meta ? `${meta.total} total allocations` : "Track asset holders & transfer requests"}
-                  </p>
-                </div>
-              </div>
-              {isAdminOrManager && (
-                <Button
-                  onClick={() => setIsAllocateOpen(true)}
-                  className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white font-semibold px-5 h-10 shadow-sm"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Allocate Asset
-                </Button>
-              )}
+      <div className="p-6 space-y-6 max-w-7xl mx-auto">
+        {/* Page Header Card */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary/95 to-brand-blue p-6 text-white shadow-md border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-6 animate-reveal">
+          <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-white/[0.03] blur-3xl pointer-events-none transform translate-x-12 -translate-y-12" />
+          <div className="absolute bottom-0 right-1/4 h-32 w-32 rounded-full bg-brand-yellow/8 blur-2xl pointer-events-none" />
+
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 shrink-0">
+              <UserCheck className="h-6 w-6 text-brand-yellow" />
+            </div>
+            <div>
+              <h1 className="text-xl font-extrabold tracking-tight">Resource Allocations</h1>
+              <p className="text-xs text-slate-300 font-semibold mt-1">
+                {meta ? `${meta.total} active resource allocations` : "Track asset allocations & transfer requests"}
+              </p>
             </div>
           </div>
+          
+          {isAdminOrManager && (
+            <Button
+              onClick={() => setIsAllocateOpen(true)}
+              className="relative z-10 rounded-xl bg-white hover:bg-slate-50 text-primary font-bold text-xs px-5 h-9 shrink-0 shadow-sm"
+            >
+              <Plus className="h-4 w-4 mr-1.5" />
+              Allocate Asset
+            </Button>
+          )}
         </div>
 
         {/* Body content */}
-        <div className="max-w-screen-xl mx-auto px-6 py-6">
+        <div className="animate-reveal">
           <div className="flex gap-6 items-start">
             {/* Sidebar filter panel */}
             <div className="w-64 flex-shrink-0 space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -242,7 +242,7 @@ export const AllocationDirectory: React.FC = () => {
                   placeholder="Search by asset, tag, or employee..."
                   value={search}
                   onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                  className="pl-10 h-10 rounded-full border-slate-200 bg-white shadow-sm focus:ring-2 focus:ring-[#4262ff]/20"
+                  className="pl-10 h-10 rounded-full border-slate-200 bg-white shadow-sm focus:ring-2 focus:ring-brand-blue/20"
                 />
               </div>
 

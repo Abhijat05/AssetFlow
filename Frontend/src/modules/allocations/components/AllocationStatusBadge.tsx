@@ -4,27 +4,27 @@ import type { AllocationStatus } from "../types";
 const statusConfig: Record<AllocationStatus, { label: string; className: string }> = {
   ACTIVE: {
     label: "Active",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-emerald-100/90 text-emerald-800 border-emerald-300",
   },
   RETURN_REQUESTED: {
     label: "Return Requested",
-    className: "bg-amber-50 text-amber-700 border-amber-200",
+    className: "bg-amber-100/90 text-amber-800 border-amber-300",
   },
   RETURNED: {
     label: "Returned",
-    className: "bg-slate-100 text-slate-500 border-slate-200",
+    className: "bg-slate-100 text-slate-700 border-slate-300",
   },
   OVERDUE: {
     label: "Overdue",
-    className: "bg-red-50 text-red-700 border-red-200",
+    className: "bg-red-100/90 text-red-800 border-red-300",
   },
   TRANSFER_PENDING: {
     label: "Transfer Pending",
-    className: "bg-blue-50 text-blue-700 border-blue-200",
+    className: "bg-blue-100/90 text-blue-800 border-blue-300",
   },
   TRANSFERRED: {
     label: "Transferred",
-    className: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    className: "bg-indigo-100/90 text-indigo-800 border-indigo-300",
   },
 };
 

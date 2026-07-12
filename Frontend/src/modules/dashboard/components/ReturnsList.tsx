@@ -27,7 +27,7 @@ export const ReturnsList: React.FC<ReturnsListProps> = ({ overdue, upcoming }) =
     <Card className="rounded-2xl border border-slate-200 bg-white h-full flex flex-col">
       <CardHeader className="p-5 border-b border-slate-100 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-bold text-[#050038]">Returns Monitor</CardTitle>
+          <CardTitle className="text-sm font-bold text-primary">Returns Monitor</CardTitle>
           <span className="text-[10px] text-slate-400 font-bold px-2 py-0.5 rounded-full bg-slate-100 uppercase tracking-wider">
             7 Days window
           </span>
@@ -39,7 +39,7 @@ export const ReturnsList: React.FC<ReturnsListProps> = ({ overdue, upcoming }) =
           <TabsList className="grid w-full grid-cols-2 bg-slate-100 rounded-xl p-1 mb-4 flex-shrink-0">
             <TabsTrigger
               value="overdue"
-              className="rounded-lg text-xs py-1.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500"
+              className="rounded-lg text-xs py-1.5 font-bold data-[state=active]:bg-white data-[state=active]:text-primary text-slate-500"
             >
               Overdue
               {overdue.length > 0 && (
@@ -50,11 +50,11 @@ export const ReturnsList: React.FC<ReturnsListProps> = ({ overdue, upcoming }) =
             </TabsTrigger>
             <TabsTrigger
               value="upcoming"
-              className="rounded-lg text-xs py-1.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500"
+              className="rounded-lg text-xs py-1.5 font-bold data-[state=active]:bg-white data-[state=active]:text-primary text-slate-500"
             >
               Upcoming
               {upcoming.length > 0 && (
-                <span className="ml-1.5 bg-[#4262ff] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full">
+                <span className="ml-1.5 bg-brand-blue text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full">
                   {upcoming.length}
                 </span>
               )}
@@ -65,7 +65,7 @@ export const ReturnsList: React.FC<ReturnsListProps> = ({ overdue, upcoming }) =
           <TabsContent value="overdue" className="flex-1 min-h-0 overflow-y-auto mt-0">
             {overdue.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center p-6 h-full min-h-[160px]">
-                <span className="h-9 w-9 rounded-xl bg-emerald-50 text-[#25a244] flex items-center justify-center mb-2">
+                <span className="h-9 w-9 rounded-xl bg-emerald-50 text-success-green flex items-center justify-center mb-2">
                   ✓
                 </span>
                 <p className="text-xs text-slate-400 font-bold">No Overdue Returns</p>
@@ -131,7 +131,7 @@ export const ReturnsList: React.FC<ReturnsListProps> = ({ overdue, upcoming }) =
                       <div className="min-w-0">
                         <Link
                           to={`/assets/${item.assetId}`}
-                          className="text-xs font-bold text-slate-700 hover:text-[#4262ff] hover:underline truncate block"
+                          className="text-xs font-bold text-slate-700 hover:text-brand-blue hover:underline truncate block"
                         >
                           {item.assetName}
                         </Link>
@@ -139,7 +139,7 @@ export const ReturnsList: React.FC<ReturnsListProps> = ({ overdue, upcoming }) =
                           Tag: {item.assetTag}
                         </span>
                       </div>
-                      <span className="text-[9px] font-bold text-[#4262ff] bg-[#4262ff]/10 px-2 py-0.5 rounded-full shrink-0">
+                      <span className="text-[9px] font-bold text-brand-blue bg-brand-blue/10 px-2 py-0.5 rounded-full shrink-0">
                         Due soon
                       </span>
                     </div>

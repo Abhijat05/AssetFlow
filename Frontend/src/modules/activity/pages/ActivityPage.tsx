@@ -61,7 +61,7 @@ export const ActivityPage: React.FC = () => {
       label: "User",
       render: (_, row) => (
         <div className="flex flex-col">
-          <span className="font-bold text-[#050038] text-xs">{row.userName || "System"}</span>
+          <span className="font-bold text-primary text-xs">{row.userName || "System"}</span>
           <span className="text-[10px] text-slate-400 font-semibold">{row.userEmail || "system@assetflow.com"}</span>
         </div>
       ),
@@ -132,10 +132,10 @@ export const ActivityPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-6">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[10px]">
-              <Activity className="h-3.5 w-3.5 text-[#4262ff]" />
+              <Activity className="h-3.5 w-3.5 text-brand-blue" />
               <span>Security & Audit Trails</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-[#050038] tracking-tight">
+            <h1 className="text-2xl font-extrabold text-primary tracking-tight">
               Activity Audit Logs
             </h1>
             <p className="text-xs text-slate-500">

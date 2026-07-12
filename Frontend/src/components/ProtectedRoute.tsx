@@ -17,10 +17,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#fcfbfc] dark:bg-[#121113]">
+      <div className="flex h-screen w-screen items-center justify-center bg-canvas dark:bg-primary">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#121113] dark:border-[#fcfbfc] border-t-transparent dark:border-t-transparent" />
-          <p className="text-sm font-medium text-[#706f72] dark:text-[#a09fa2] animate-pulse">
+          <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary dark:border-canvas border-t-transparent dark:border-t-transparent" />
+          <p className="text-sm font-medium text-ink-subtle dark:text-ink-subtle animate-pulse">
             Verifying credentials...
           </p>
         </div>

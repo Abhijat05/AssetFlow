@@ -74,7 +74,7 @@ export const AuditProgress: React.FC<AuditProgressProps> = ({ stats }) => {
       <div className="flex justify-between items-center text-[11px] font-medium text-slate-500 pt-2 border-t border-slate-100 mt-2">
         <span className="text-slate-400">Total Cycles: <strong className="text-slate-700">{total}</strong></span>
         {stats.discrepancies > 0 ? (
-          <span className="text-[#ff7c65] font-semibold animate-pulse">
+          <span className="text-brand-coral font-semibold animate-pulse">
             ⚠️ {stats.discrepancies} Discrepancies
           </span>
         ) : (

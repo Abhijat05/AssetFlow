@@ -51,7 +51,7 @@ export const AssetTable: React.FC<Props> = ({ data, isLoading, page, totalPages,
       colHelper.accessor("assetTag", {
         header: "Asset Tag",
         cell: ({ getValue }) => (
-          <span className="font-mono text-xs font-semibold text-[#4262ff] bg-[#4262ff]/10 px-2 py-0.5 rounded-md">
+          <span className="font-mono text-xs font-semibold text-brand-blue bg-brand-blue/10 px-2 py-0.5 rounded-md">
             {getValue() as string}
           </span>
         ),
@@ -119,7 +119,7 @@ export const AssetTable: React.FC<Props> = ({ data, isLoading, page, totalPages,
             variant="ghost"
             size="sm"
             onClick={() => navigate(`/assets/${(row as Row<Asset>).original.id}`)}
-            className="h-8 w-8 p-0 rounded-full hover:bg-[#4262ff]/10"
+            className="h-8 w-8 p-0 rounded-full hover:bg-brand-blue/10"
             title="View details"
           >
             <Eye className="h-4 w-4 text-slate-500" />

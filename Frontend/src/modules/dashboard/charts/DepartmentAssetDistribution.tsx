@@ -15,7 +15,7 @@ export const DepartmentAssetDistribution: React.FC<DepartmentAssetDistributionPr
   if (isLoading) {
     return (
       <div className="flex h-[240px] flex-col items-center justify-center space-y-2">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#4262ff] border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-brand-blue border-t-transparent" />
         <span className="text-xs text-slate-400">Loading department data...</span>
       </div>
     );

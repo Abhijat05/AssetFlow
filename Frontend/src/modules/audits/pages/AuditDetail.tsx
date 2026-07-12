@@ -59,15 +59,15 @@ const formatSafeDate = (dateStr: string | null | undefined, template: string = "
 const VerificationStatusBadge: React.FC<{ status: VerificationStatus | null }> = ({ status }) => {
   if (!status) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-500 bg-slate-50">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border border-slate-300 text-slate-700 bg-slate-100">
         Unverified
       </span>
     );
   }
   const styles: Record<VerificationStatus, string> = {
-    VERIFIED: "text-emerald-700 bg-emerald-50 border-emerald-200",
-    MISSING: "text-rose-700 bg-rose-50 border-rose-250 animate-pulse",
-    DAMAGED: "text-amber-700 bg-amber-50 border-amber-250",
+    VERIFIED: "text-emerald-800 bg-emerald-100/90 border-emerald-300",
+    MISSING: "text-rose-800 bg-rose-100/90 border-rose-300 animate-pulse",
+    DAMAGED: "text-amber-800 bg-amber-100/90 border-amber-300",
   };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border ${styles[status]}`}>
@@ -382,7 +382,7 @@ export const AuditDetail: React.FC = () => {
                   <>
                     <Button
                       size="sm"
-                      className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white flex items-center gap-1.5"
+                      className="rounded-full bg-brand-blue hover:bg-brand-blue/90 text-white flex items-center gap-1.5"
                       onClick={() => setIsStatusTransition("ACTIVE")}
                     >
                       <Check className="h-3.5 w-3.5" /> Start Audit
@@ -436,7 +436,7 @@ export const AuditDetail: React.FC = () => {
                     <h2 className="text-sm font-bold text-ink">Reconciliation Verification Progress</h2>
                     <p className="text-xs text-ink-subtle mt-0.5">Summary of physical counts and discrepancy rates.</p>
                   </div>
-                  <span className="text-lg font-extrabold text-[#4262ff]">{progressPercent}%</span>
+                  <span className="text-lg font-extrabold text-brand-blue">{progressPercent}%</span>
                 </div>
 
                 <Progress value={progressPercent} className="h-2" />
@@ -464,11 +464,11 @@ export const AuditDetail: React.FC = () => {
               {/* Main Tabs Container */}
               <Tabs defaultValue="verification" className="w-full">
                 <TabsList className="w-full justify-start rounded-xl border border-slate-200 bg-white p-1 h-fit shadow-sm">
-                  <TabsTrigger value="verification" className="rounded-lg py-2 px-4 text-xs font-bold transition-all data-[state=active]:bg-[#4262ff] data-[state=active]:text-white">
+                  <TabsTrigger value="verification" className="rounded-lg py-2 px-4 text-xs font-bold transition-all data-[state=active]:bg-brand-blue data-[state=active]:text-white">
                     Verification Sheets
                   </TabsTrigger>
                   {canManage && (
-                    <TabsTrigger value="discrepancy" className="rounded-lg py-2 px-4 text-xs font-bold transition-all data-[state=active]:bg-[#4262ff] data-[state=active]:text-white">
+                    <TabsTrigger value="discrepancy" className="rounded-lg py-2 px-4 text-xs font-bold transition-all data-[state=active]:bg-brand-blue data-[state=active]:text-white">
                       Discrepancy Log
                     </TabsTrigger>
                   )}
@@ -484,7 +484,7 @@ export const AuditDetail: React.FC = () => {
                         placeholder="Search verification assets by tag or name..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-9 h-9 text-xs w-full bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4262ff] transition-all"
+                        className="pl-9 h-9 text-xs w-full bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue transition-all"
                       />
                     </div>
                     
@@ -495,7 +495,7 @@ export const AuditDetail: React.FC = () => {
                           key={tab}
                           onClick={() => setStatusTab(tab)}
                           className={`px-3 py-1 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all cursor-pointer ${
-                            statusTab === tab ? "bg-white text-[#4262ff] shadow-sm" : "text-slate-500 hover:text-slate-800"
+                            statusTab === tab ? "bg-white text-brand-blue shadow-sm" : "text-slate-500 hover:text-slate-800"
                           }`}
                         >
                           {tab}
@@ -529,7 +529,7 @@ export const AuditDetail: React.FC = () => {
                           ) : (
                             filteredRecords.map((item) => (
                               <tr key={item.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/40 transition-colors">
-                                <td className="px-4 py-3.5 font-mono text-xs font-semibold text-[#4262ff]">
+                                <td className="px-4 py-3.5 font-mono text-xs font-semibold text-brand-blue">
                                   {item.assetTag}
                                 </td>
                                 <td className="px-4 py-3.5">
@@ -628,7 +628,7 @@ export const AuditDetail: React.FC = () => {
                           className="rounded-full text-slate-700 flex items-center gap-1.5 text-xs font-bold"
                           onClick={handleExportPDF}
                         >
-                          <Printer className="h-4 w-4 text-[#4262ff]" /> Export PDF
+                          <Printer className="h-4 w-4 text-brand-blue" /> Export PDF
                         </Button>
                       </div>
                     </div>
@@ -655,7 +655,7 @@ export const AuditDetail: React.FC = () => {
                           ) : (
                             [...discrepancyData.missing, ...discrepancyData.damaged].map((item) => (
                               <tr key={item.record.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/40 transition-colors">
-                                <td className="px-4 py-3.5 font-mono text-xs font-semibold text-[#4262ff]">
+                                <td className="px-4 py-3.5 font-mono text-xs font-semibold text-brand-blue">
                                   {item.assetTag}
                                 </td>
                                 <td className="px-4 py-3.5">
@@ -693,7 +693,7 @@ export const AuditDetail: React.FC = () => {
               {/* Cycle Info */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <ShieldCheck className="h-4 w-4 text-[#4262ff]" />
+                  <ShieldCheck className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Audit Cycle Details</h2>
                 </div>
 
@@ -753,10 +753,10 @@ export const AuditDetail: React.FC = () => {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-3.5">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                   <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-[#4262ff]" />
+                    <Users className="h-4 w-4 text-brand-blue" />
                     <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Assigned Auditors</h2>
                   </div>
-                  <span className="text-[10px] font-extrabold bg-[#4262ff]/8 text-[#4262ff] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-extrabold bg-brand-blue/8 text-brand-blue px-2 py-0.5 rounded-full">
                     {audit.auditors?.length || 0}
                   </span>
                 </div>
@@ -768,7 +768,7 @@ export const AuditDetail: React.FC = () => {
                     audit.auditors.map((aud) => (
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       <div key={(aud as any).assignment?.id || aud.id} className="flex items-center gap-2 p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs">
-                        <div className="h-5 w-5 rounded-full bg-white flex items-center justify-center font-bold text-[#4262ff] border border-slate-100">
+                        <div className="h-5 w-5 rounded-full bg-white flex items-center justify-center font-bold text-brand-blue border border-slate-100">
                           {aud.auditorName?.charAt(0) || "A"}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -883,7 +883,7 @@ export const AuditDetail: React.FC = () => {
               <DialogHeader>
                 <div className="flex items-center gap-2">
                   {isStatusTransition === "ACTIVE" ? (
-                    <Sparkles className="h-5 w-5 text-[#4262ff]" />
+                    <Sparkles className="h-5 w-5 text-brand-blue" />
                   ) : (
                     <Ban className="h-5 w-5 text-rose-500" />
                   )}
@@ -913,7 +913,7 @@ export const AuditDetail: React.FC = () => {
                   className={`rounded-full text-white font-semibold ${
                     isStatusTransition === "CANCELLED"
                       ? "bg-rose-600 hover:bg-rose-700"
-                      : "bg-[#4262ff] hover:bg-[#3451e0]"
+                      : "bg-brand-blue hover:bg-brand-blue/90"
                   }`}
                 >
                   {isTransitioning ? "Transitioning..." : "Confirm"}

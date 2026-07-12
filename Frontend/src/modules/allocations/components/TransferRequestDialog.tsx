@@ -95,8 +95,8 @@ export const TransferRequestDialog: React.FC<Props> = ({
       <DialogContent className="max-w-md bg-canvas">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-[#4262ff]/10 flex items-center justify-center">
-              <ArrowRightLeft className="h-5 w-5 text-[#4262ff]" />
+            <div className="h-9 w-9 rounded-full bg-brand-blue/10 flex items-center justify-center">
+              <ArrowRightLeft className="h-5 w-5 text-brand-blue" />
             </div>
             <div>
               <DialogTitle className="text-lg font-bold text-ink">Request Asset Transfer</DialogTitle>
@@ -152,7 +152,7 @@ export const TransferRequestDialog: React.FC<Props> = ({
             <Button type="button" variant="outline" onClick={handleClose} disabled={isBusy} className="rounded-full">
               Cancel
             </Button>
-            <Button type="submit" disabled={isBusy} className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white">
+            <Button type="submit" disabled={isBusy} className="rounded-full bg-brand-blue hover:bg-brand-blue/90 text-white">
               {isBusy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Submit Request
             </Button>

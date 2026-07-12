@@ -102,7 +102,7 @@ export const BookingCalendar: React.FC<Props> = ({ onQuickBook, onViewDetail }) 
       {/* Calendar Header / Filters */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-[#4262ff]/10 flex items-center justify-center text-[#4262ff]">
+          <div className="h-10 w-10 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue">
             <Calendar className="h-5 w-5" />
           </div>
           <div>
@@ -188,13 +188,13 @@ export const BookingCalendar: React.FC<Props> = ({ onQuickBook, onViewDetail }) 
                 key={idx}
                 className={`min-h-[100px] p-2 flex flex-col justify-between bg-white relative transition-colors ${
                   !inMonth ? "bg-slate-50/60 text-slate-400" : ""
-                } ${isToday(day) ? "bg-[#4262ff]/3" : ""}`}
+                } ${isToday(day) ? "bg-brand-blue/3" : ""}`}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className={`text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ${
                       isToday(day)
-                        ? "bg-[#4262ff] text-white"
+                        ? "bg-brand-blue text-white"
                         : inMonth
                         ? "text-slate-800"
                         : "text-slate-400"
@@ -251,7 +251,7 @@ export const BookingCalendar: React.FC<Props> = ({ onQuickBook, onViewDetail }) 
         </div>
         {selectedResource && (
           <div className="text-slate-500 flex items-center gap-1">
-            <Info className="h-3.5 w-3.5 text-[#4262ff]" />
+            <Info className="h-3.5 w-3.5 text-brand-blue" />
             Viewing bookings for <span className="font-semibold text-ink">{selectedResource.name}</span>
           </div>
         )}

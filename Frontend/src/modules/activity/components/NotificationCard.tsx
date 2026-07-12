@@ -97,7 +97,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     <Card
       className={cn(
         "group border border-slate-200 hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer",
-        !isRead ? "bg-[#4262ff]/[0.02] border-[#4262ff]/20" : "bg-white"
+        !isRead ? "bg-brand-blue/2 border-brand-blue/20" : "bg-white"
       )}
       onClick={() => onSelect(notification)}
     >
@@ -111,8 +111,8 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           </div>
           {!isRead && (
             <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4262ff] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4262ff]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-blue"></span>
             </span>
           )}
         </div>
@@ -135,8 +135,8 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           </div>
 
           <h3 className={cn(
-            "text-xs font-bold truncate text-[#050038]",
-            !isRead ? "text-[#050038]" : "text-slate-700"
+            "text-xs font-bold truncate text-primary",
+            !isRead ? "text-primary" : "text-slate-700"
           )}>
             {title}
           </h3>
@@ -151,7 +151,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
               {redirectUrl ? (
                 <Link
                   to={redirectUrl}
-                  className="inline-flex items-center gap-1 text-[10px] font-bold text-[#4262ff] hover:underline"
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-brand-blue hover:underline"
                 >
                   View Details
                   <ArrowUpRight className="h-3 w-3" />

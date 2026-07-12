@@ -30,8 +30,8 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   if (isLoading) {
     return (
       <div className="w-full space-y-3 animate-pulse">
-        <div className="h-6 bg-[#f4f3ec] dark:bg-[#2f303a] rounded w-1/3"></div>
-        <div className="h-20 bg-[#f4f3ec] dark:bg-[#2f303a] rounded w-full"></div>
+        <div className="h-6 bg-surface-2 dark:bg-primary rounded w-1/3"></div>
+        <div className="h-20 bg-surface-2 dark:bg-primary rounded w-full"></div>
       </div>
     );
   }

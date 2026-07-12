@@ -148,6 +148,26 @@ body {
   animation: reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@utility animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-slide-in-right {
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@utility hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(5, 0, 56, 0.08);
+  }
+}
+
 @keyframes reveal {
   from {
     opacity: 0;
@@ -157,4 +177,19 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(66, 98, 255, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(66, 98, 255, 0); }
 }

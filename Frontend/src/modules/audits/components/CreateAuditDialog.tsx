@@ -177,8 +177,8 @@ export const CreateAuditDialog: React.FC<Props> = ({ open, onOpenChange }) => {
       <DialogContent className="max-w-md bg-canvas max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-[#4262ff]/10 flex items-center justify-center">
-              <ShieldCheck className="h-5 w-5 text-[#4262ff]" />
+            <div className="h-9 w-9 rounded-full bg-brand-blue/10 flex items-center justify-center">
+              <ShieldCheck className="h-5 w-5 text-brand-blue" />
             </div>
             <div>
               <DialogTitle className="text-lg font-bold text-ink">Create Audit Cycle</DialogTitle>
@@ -312,7 +312,7 @@ export const CreateAuditDialog: React.FC<Props> = ({ open, onOpenChange }) => {
               <Label className="flex items-center gap-1">
                 <Users className="h-4 w-4 text-slate-400" /> Assign Auditors <span className="text-red-500">*</span>
               </Label>
-              <span className="text-[10px] text-[#4262ff] font-bold bg-[#4262ff]/8 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] text-brand-blue font-bold bg-brand-blue/8 px-2 py-0.5 rounded-full">
                 {selectedAuditors.length} Selected
               </span>
             </div>
@@ -356,7 +356,7 @@ export const CreateAuditDialog: React.FC<Props> = ({ open, onOpenChange }) => {
             <Button type="button" variant="outline" onClick={handleClose} disabled={isBusy} className="rounded-full">
               Cancel
             </Button>
-            <Button type="submit" disabled={isBusy} className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white">
+            <Button type="submit" disabled={isBusy} className="rounded-full bg-brand-blue hover:bg-brand-blue/90 text-white">
               {isBusy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Create Cycle
             </Button>

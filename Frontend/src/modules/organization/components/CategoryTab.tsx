@@ -212,7 +212,7 @@ export const CategoryTab: React.FC = () => {
         </div>
         <Button
           onClick={handleCreateOpen}
-          className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-on-primary font-medium flex items-center justify-center gap-2 cursor-pointer transition-all rounded-full"
+          className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white font-medium flex items-center justify-center gap-2 cursor-pointer transition-all rounded-full"
         >
           <Plus className="h-4 w-4" />
           Create Category
@@ -502,7 +502,7 @@ export const CategoryTab: React.FC = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-primary hover:bg-primary-hover text-on-primary font-medium cursor-pointer rounded-full"
+                className="bg-primary hover:bg-primary-hover text-white font-medium cursor-pointer rounded-full"
               >
                 {isSubmitting
                   ? "Saving..."

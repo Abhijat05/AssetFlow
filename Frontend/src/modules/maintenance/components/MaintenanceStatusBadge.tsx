@@ -2,12 +2,12 @@ import React from "react";
 import type { MaintenanceStatus } from "../types";
 
 const STYLES: Record<MaintenanceStatus, string> = {
-  PENDING: "text-amber-700 bg-amber-50/80 border-amber-200 dark:text-amber-400 dark:bg-amber-950/20 dark:border-amber-900/30",
-  APPROVED: "text-indigo-700 bg-indigo-50/80 border-indigo-200 dark:text-indigo-400 dark:bg-indigo-950/20 dark:border-indigo-900/30",
-  REJECTED: "text-rose-700 bg-rose-50/80 border-rose-200 dark:text-rose-400 dark:bg-rose-950/20 dark:border-rose-900/30",
-  TECHNICIAN_ASSIGNED: "text-purple-700 bg-purple-50/80 border-purple-200 dark:text-purple-400 dark:bg-purple-950/20 dark:border-purple-900/30",
-  IN_PROGRESS: "text-blue-700 bg-blue-50/80 border-blue-200 dark:text-blue-400 dark:bg-blue-950/20 dark:border-blue-900/30",
-  RESOLVED: "text-emerald-700 bg-emerald-50/80 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950/20 dark:border-emerald-900/30",
+  PENDING: "text-amber-800 bg-amber-100/90 border-amber-300 dark:text-amber-400 dark:bg-amber-950/20 dark:border-amber-900/30",
+  APPROVED: "text-indigo-800 bg-indigo-100/90 border-indigo-300 dark:text-indigo-400 dark:bg-indigo-950/20 dark:border-indigo-900/30",
+  REJECTED: "text-rose-800 bg-rose-100/90 border-rose-300 dark:text-rose-400 dark:bg-rose-950/20 dark:border-rose-900/30",
+  TECHNICIAN_ASSIGNED: "text-purple-800 bg-purple-100/90 border-purple-300 dark:text-purple-400 dark:bg-purple-950/20 dark:border-purple-900/30",
+  IN_PROGRESS: "text-blue-800 bg-blue-100/90 border-blue-300 dark:text-blue-400 dark:bg-blue-950/20 dark:border-blue-900/30",
+  RESOLVED: "text-emerald-800 bg-emerald-100/90 border-emerald-300 dark:text-emerald-400 dark:bg-emerald-950/20 dark:border-emerald-900/30",
 };
 
 const LABELS: Record<MaintenanceStatus, string> = {

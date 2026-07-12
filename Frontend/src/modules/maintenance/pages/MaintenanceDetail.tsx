@@ -281,7 +281,7 @@ export const MaintenanceDetail: React.FC = () => {
                 {request.status === "APPROVED" && (
                   <Button
                     size="sm"
-                    className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white flex items-center gap-1.5"
+                    className="rounded-full bg-brand-blue hover:bg-brand-blue/90 text-white flex items-center gap-1.5"
                     onClick={() => {
                       setTechId("");
                       setActiveAction("ASSIGN");
@@ -329,7 +329,7 @@ export const MaintenanceDetail: React.FC = () => {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-[#4262ff]" />
+                    <FileText className="h-4 w-4 text-brand-blue" />
                     <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Issue Details</h2>
                   </div>
                   <PriorityBadge priority={request.priority} />
@@ -370,7 +370,7 @@ export const MaintenanceDetail: React.FC = () => {
               {(request.approvalRemarks || request.resolutionNotes) && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
                   <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                    <FileText className="h-4 w-4 text-[#4262ff]" />
+                    <FileText className="h-4 w-4 text-brand-blue" />
                     <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Resolution & Approvals</h2>
                   </div>
 
@@ -404,7 +404,7 @@ export const MaintenanceDetail: React.FC = () => {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <Paperclip className="h-4 w-4 text-[#4262ff]" />
+                    <Paperclip className="h-4 w-4 text-brand-blue" />
                     <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Attachments</h2>
                   </div>
 
@@ -448,9 +448,9 @@ export const MaintenanceDetail: React.FC = () => {
                           href={file.fileUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex items-center gap-2.5 min-w-0 flex-1 hover:text-[#4262ff]"
+                          className="flex items-center gap-2.5 min-w-0 flex-1 hover:text-brand-blue"
                         >
-                          <File className="h-5 w-5 text-[#4262ff] flex-shrink-0" />
+                          <File className="h-5 w-5 text-brand-blue flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-xs font-bold truncate text-slate-700">{file.fileName}</p>
                             {file.fileSize && (
@@ -479,7 +479,7 @@ export const MaintenanceDetail: React.FC = () => {
               {/* Visual Workflow Timeline */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <Clock className="h-4 w-4 text-[#4262ff]" />
+                  <Clock className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Timeline Workflow</h2>
                 </div>
 
@@ -559,7 +559,7 @@ export const MaintenanceDetail: React.FC = () => {
               {/* History / Audit Logs */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <FileText className="h-4 w-4 text-[#4262ff]" />
+                  <FileText className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Activity Log</h2>
                 </div>
 
@@ -576,12 +576,12 @@ export const MaintenanceDetail: React.FC = () => {
                   <ol className="relative border-l border-slate-200 space-y-6 ml-3">
                     {history.map((entry) => (
                       <li key={entry.id} className="ml-6">
-                        <span className="absolute -left-[9px] h-4 w-4 rounded-full border-2 border-white bg-[#4262ff] flex items-center justify-center">
+                        <span className="absolute -left-[9px] h-4 w-4 rounded-full border-2 border-white bg-brand-blue flex items-center justify-center">
                           <span className="h-1.5 w-1.5 rounded-full bg-white" />
                         </span>
                         <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
                           <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="text-xs font-bold text-[#4262ff] uppercase tracking-wide">
+                            <span className="text-xs font-bold text-brand-blue uppercase tracking-wide">
                               {entry.action.replace("MAINTENANCE_", "")}
                             </span>
                             <span className="text-xs text-slate-400">
@@ -603,14 +603,14 @@ export const MaintenanceDetail: React.FC = () => {
             <div className="space-y-6">
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <User className="h-4 w-4 text-[#4262ff]" />
+                  <User className="h-4 w-4 text-brand-blue" />
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Asset Information</h2>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-base font-bold text-ink">{request.assetName}</h3>
-                    <span className="font-mono text-xs font-semibold text-[#4262ff] bg-[#4262ff]/8 px-2 py-0.5 rounded-md mt-1.5 inline-block">
+                    <span className="font-mono text-xs font-semibold text-brand-blue bg-brand-blue/8 px-2 py-0.5 rounded-md mt-1.5 inline-block">
                       {request.assetTag}
                     </span>
                   </div>
@@ -724,7 +724,7 @@ export const MaintenanceDetail: React.FC = () => {
                   onClick={handleWorkflowSubmit}
                   disabled={isMutating || (activeAction === "ASSIGN" && !techId)}
                   className={`rounded-full text-white font-semibold ${
-                    activeAction === "REJECT" ? "bg-rose-600 hover:bg-rose-700" : "bg-[#4262ff] hover:bg-[#3451e0]"
+                    activeAction === "REJECT" ? "bg-rose-600 hover:bg-rose-700" : "bg-brand-blue hover:bg-brand-blue/90"
                   }`}
                 >
                   {isMutating ? "Processing..." : "Confirm"}

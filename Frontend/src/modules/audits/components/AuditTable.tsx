@@ -125,8 +125,8 @@ export const AuditTable: React.FC<Props> = ({
           if (list.length === 0) return <span className="text-xs text-slate-400 italic">None</span>;
           return (
             <div className="flex items-center gap-1.5">
-              <div className="h-6 w-6 rounded-full bg-[#4262ff]/5 border border-[#4262ff]/10 flex items-center justify-center flex-shrink-0">
-                <Users className="h-3.5 w-3.5 text-[#4262ff]" />
+              <div className="h-6 w-6 rounded-full bg-brand-blue/5 border border-brand-blue/10 flex items-center justify-center flex-shrink-0">
+                <Users className="h-3.5 w-3.5 text-brand-blue" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-xs font-semibold text-slate-700 truncate max-w-[120px]">
@@ -166,7 +166,7 @@ export const AuditTable: React.FC<Props> = ({
             variant="ghost"
             size="sm"
             onClick={() => navigate(`/audits/${row.original.cycle.id}`)}
-            className="h-8 w-8 p-0 rounded-full hover:bg-[#4262ff]/8"
+            className="h-8 w-8 p-0 rounded-full hover:bg-brand-blue/8"
             title="View details"
           >
             <Eye className="h-4 w-4 text-slate-500" />

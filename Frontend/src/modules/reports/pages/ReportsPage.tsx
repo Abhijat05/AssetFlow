@@ -241,48 +241,50 @@ export const ReportsPage: React.FC = () => {
   return (
     <AppShell>
       <div className="px-6 py-8 space-y-8 max-w-7xl mx-auto">
-        {/* Header Block */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-100 pb-6">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[10px]">
-              <TrendingUp className="h-3.5 w-3.5" />
-              <span>Operational Analytics</span>
-            </div>
-            <h1 className="text-2xl font-extrabold text-[#050038] tracking-tight">
-              Reports & Dashboard Analytics
-            </h1>
-            <p className="text-xs text-slate-500">
-              Interactive reports, utilization ratios, scheduling breakdowns, and exportable logs.
-            </p>
-          </div>
+        {/* Page Header Card */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary/95 to-brand-blue p-6 text-white shadow-md border border-primary/20 flex flex-col md:flex-row md:items-center justify-between gap-6 animate-reveal">
+          <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-white/[0.03] blur-3xl pointer-events-none transform translate-x-12 -translate-y-12" />
+          <div className="absolute bottom-0 right-1/4 h-32 w-32 rounded-full bg-brand-yellow/8 blur-2xl pointer-events-none" />
 
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 shrink-0">
+              <TrendingUp className="h-6 w-6 text-brand-yellow" />
+            </div>
+            <div>
+              <h1 className="text-xl font-extrabold tracking-tight">Reports & Dashboard Analytics</h1>
+              <p className="text-xs text-slate-300 font-semibold mt-1">
+                Interactive reports, utilization ratios, scheduling breakdowns, and exportable logs.
+              </p>
+            </div>
+          </div>
+          
           {/* Export Controls */}
-          <div className="flex flex-wrap items-center gap-2.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+          <div className="relative z-10 flex flex-wrap items-center gap-2 bg-white/10 p-1.5 rounded-xl border border-white/10 self-start md:self-auto">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => handleExport("pdf")}
-              className="h-8 text-[10px] font-bold rounded-lg hover:bg-white text-slate-600 hover:text-slate-900 gap-1.5"
+              className="h-8 text-[10px] font-bold rounded-lg hover:bg-white text-white hover:text-slate-900 gap-1.5"
             >
-              <FileText className="h-3.5 w-3.5 text-red-500" />
+              <FileText className="h-3.5 w-3.5 text-red-400" />
               Export PDF
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => handleExport("xlsx")}
-              className="h-8 text-[10px] font-bold rounded-lg hover:bg-white text-slate-600 hover:text-slate-900 gap-1.5"
+              className="h-8 text-[10px] font-bold rounded-lg hover:bg-white text-white hover:text-slate-900 gap-1.5"
             >
-              <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-600" />
+              <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-400" />
               Export Excel
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => handleExport("csv")}
-              className="h-8 text-[10px] font-bold rounded-lg hover:bg-white text-slate-600 hover:text-slate-900 gap-1.5"
+              className="h-8 text-[10px] font-bold rounded-lg hover:bg-white text-white hover:text-slate-900 gap-1.5"
             >
-              <FileDown className="h-3.5 w-3.5 text-indigo-600" />
+              <FileDown className="h-3.5 w-3.5 text-indigo-300" />
               Export CSV
             </Button>
           </div>
@@ -310,42 +312,42 @@ export const ReportsPage: React.FC = () => {
           <TabsList className="flex flex-wrap h-auto gap-1 bg-slate-100 rounded-2xl p-1.5 border border-slate-200">
             <TabsTrigger
               value="utilization"
-              className="rounded-xl text-xs py-2 px-3.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500 gap-1.5"
+              className="rounded-xl text-xs py-2 px-3.5 font-bold text-slate-500 flex items-center gap-1.5 cursor-pointer"
             >
               <Activity className="h-3.5 w-3.5" />
               Asset Utilization
             </TabsTrigger>
             <TabsTrigger
               value="maintenance"
-              className="rounded-xl text-xs py-2 px-3.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500 gap-1.5"
+              className="rounded-xl text-xs py-2 px-3.5 font-bold text-slate-500 flex items-center gap-1.5 cursor-pointer"
             >
               <Wrench className="h-3.5 w-3.5" />
               Maintenance Logs
             </TabsTrigger>
             <TabsTrigger
               value="lifecycle"
-              className="rounded-xl text-xs py-2 px-3.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500 gap-1.5"
+              className="rounded-xl text-xs py-2 px-3.5 font-bold text-slate-500 flex items-center gap-1.5 cursor-pointer"
             >
               <CalendarDays className="h-3.5 w-3.5" />
               Lifecycle Status
             </TabsTrigger>
             <TabsTrigger
               value="departments"
-              className="rounded-xl text-xs py-2 px-3.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500 gap-1.5"
+              className="rounded-xl text-xs py-2 px-3.5 font-bold text-slate-500 flex items-center gap-1.5 cursor-pointer"
             >
               <Building2 className="h-3.5 w-3.5" />
               Department Summary
             </TabsTrigger>
             <TabsTrigger
               value="bookings"
-              className="rounded-xl text-xs py-2 px-3.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500 gap-1.5"
+              className="rounded-xl text-xs py-2 px-3.5 font-bold text-slate-500 flex items-center gap-1.5 cursor-pointer"
             >
               <CalendarCheck className="h-3.5 w-3.5" />
               Booking Analytics
             </TabsTrigger>
             <TabsTrigger
               value="audits"
-              className="rounded-xl text-xs py-2 px-3.5 font-bold data-[state=active]:bg-white data-[state=active]:text-[#050038] text-slate-500 gap-1.5"
+              className="rounded-xl text-xs py-2 px-3.5 font-bold text-slate-500 flex items-center gap-1.5 cursor-pointer"
             >
               <ShieldCheck className="h-3.5 w-3.5" />
               Audit Analytics

@@ -51,7 +51,7 @@ export const BookingFilters: React.FC<Props> = ({ filters, onChange, onReset }) 
           <SlidersHorizontal className="h-4 w-4 text-slate-500" />
           <span className="text-sm font-bold text-ink">Filters</span>
           {hasActiveFilters && (
-            <span className="h-5 w-5 rounded-full bg-[#4262ff] text-white text-[10px] font-bold flex items-center justify-center">
+            <span className="h-5 w-5 rounded-full bg-brand-blue text-white text-[10px] font-bold flex items-center justify-center">
               !
             </span>
           )}

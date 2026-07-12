@@ -44,26 +44,26 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
       value: kpis.assetsAvailable,
       icon: <CheckCircle2 className="h-5 w-5" />,
       description: isDeptHead ? "Ready for dept use" : "Ready to allocate",
-      colorClass: "text-[#25a244]",
-      bgClass: "bg-[#25a244]/10",
-      iconColorClass: "text-[#25a244]",
+      colorClass: "text-success-green",
+      bgClass: "bg-success-green/10",
+      iconColorClass: "text-success-green",
     },
     assetsAllocated: {
       title: isEmployee ? "My Allocated Assets" : "Assets Allocated",
       value: kpis.assetsAllocated,
       icon: <UserCheck className="h-5 w-5" />,
       description: isEmployee ? "Currently assigned to you" : "In use by employees",
-      colorClass: "text-[#4262ff]",
-      bgClass: "bg-[#4262ff]/10",
-      iconColorClass: "text-[#4262ff]",
+      colorClass: "text-brand-blue",
+      bgClass: "bg-brand-blue/10",
+      iconColorClass: "text-brand-blue",
     },
     assetsUnderMaintenance: {
       title: "Under Maintenance",
       value: kpis.assetsUnderMaintenance,
       icon: <Wrench className="h-5 w-5" />,
       description: "Assets in servicing",
-      colorClass: "text-[#ffd02f]",
-      bgClass: "bg-[#ffd02f]/15",
+      colorClass: "text-brand-yellow",
+      bgClass: "bg-brand-yellow/15",
       iconColorClass: "text-amber-600",
     },
     assetsReserved: {
@@ -80,9 +80,9 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
       value: kpis.assetsLost,
       icon: <AlertTriangle className="h-5 w-5" />,
       description: "Reported missing",
-      colorClass: "text-[#ff7c65]",
-      bgClass: "bg-[#ff7c65]/10",
-      iconColorClass: "text-[#ff7c65]",
+      colorClass: "text-brand-coral",
+      bgClass: "bg-brand-coral/10",
+      iconColorClass: "text-brand-coral",
     },
     assetsRetired: {
       title: "Assets Retired",
@@ -98,9 +98,9 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
       value: kpis.todaysBookings,
       icon: <CalendarDays className="h-5 w-5" />,
       description: "Active bookings today",
-      colorClass: "text-[#00a3a3]",
-      bgClass: "bg-[#00a3a3]/10",
-      iconColorClass: "text-[#00a3a3]",
+      colorClass: "text-brand-teal",
+      bgClass: "bg-brand-teal/10",
+      iconColorClass: "text-brand-teal",
     },
     pendingTransfers: {
       title: "Pending Transfers",
@@ -125,9 +125,9 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
       value: kpis.overdueReturns,
       icon: <CalendarX className="h-5 w-5" />,
       description: "Expected date passed",
-      colorClass: "text-[#d9383a]",
-      bgClass: "bg-[#d9383a]/10",
-      iconColorClass: "text-[#d9383a]",
+      colorClass: "text-destructive",
+      bgClass: "bg-destructive/10",
+      iconColorClass: "text-destructive",
       isOverdue: kpis.overdueReturns > 0,
     },
     activeAudits: {
@@ -184,8 +184,8 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
           <Card
             key={key}
             className={cn(
-              "group overflow-hidden rounded-2xl border border-slate-200 bg-white hover:shadow-md transition-all duration-200",
-              item.isOverdue && "border-[#d9383a]/40 bg-[#d9383a]/[0.02]"
+              "group overflow-hidden rounded-2xl border border-slate-200 bg-white hover-lift",
+              item.isOverdue && "border-destructive/40 bg-destructive/[0.02]"
             )}
           >
             <CardContent className="p-5 flex flex-col justify-between h-full space-y-4">
@@ -208,7 +208,7 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
                 <h3
                   className={cn(
                     "text-2xl font-extrabold tracking-tight",
-                    item.isOverdue ? "text-[#d9383a]" : "text-[#050038]"
+                    item.isOverdue ? "text-destructive" : "text-primary"
                   )}
                 >
                   {item.value}

@@ -646,7 +646,7 @@ export const EmployeeDirectoryTab: React.FC = () => {
               <Button
                 type="submit"
                 disabled={isSaving}
-                className="bg-primary hover:bg-primary-hover text-on-primary font-medium cursor-pointer rounded-full"
+                className="bg-primary hover:bg-primary-hover text-white font-medium cursor-pointer rounded-full"
               >
                 {isSaving ? "Saving..." : "Save Settings"}
               </Button>

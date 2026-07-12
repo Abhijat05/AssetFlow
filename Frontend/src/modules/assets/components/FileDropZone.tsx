@@ -41,8 +41,8 @@ export const ImageDropZone: React.FC<ImageDropZoneProps> = ({ value, onChange, p
       className={cn(
         "relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed cursor-pointer transition-all duration-200",
         isDragActive
-          ? "border-[#4262ff] bg-[#4262ff]/5 scale-[1.01]"
-          : "border-slate-200 bg-slate-50 hover:border-[#4262ff]/50 hover:bg-[#4262ff]/3",
+          ? "border-brand-blue bg-brand-blue/5 scale-[1.01]"
+          : "border-slate-200 bg-slate-50 hover:border-brand-blue/50 hover:bg-brand-blue/3",
         displayPreview ? "p-0 overflow-hidden h-48" : "p-8 h-48",
         className
       )}
@@ -126,8 +126,8 @@ export const DocumentDropZone: React.FC<DocDropZoneProps> = ({ files, onChange, 
         className={cn(
           "flex flex-col items-center justify-center rounded-xl border-2 border-dashed cursor-pointer transition-all duration-200 p-6",
           isDragActive
-            ? "border-[#4262ff] bg-[#4262ff]/5"
-            : "border-slate-200 bg-slate-50 hover:border-[#4262ff]/50"
+            ? "border-brand-blue bg-brand-blue/5"
+            : "border-slate-200 bg-slate-50 hover:border-brand-blue/50"
         )}
       >
         <input {...getInputProps()} />

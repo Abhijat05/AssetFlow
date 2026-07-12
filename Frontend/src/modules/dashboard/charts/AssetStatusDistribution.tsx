@@ -63,7 +63,7 @@ export const AssetStatusDistribution: React.FC<AssetStatusDistributionProps> = (
         </ResponsiveContainer>
         {/* Center overlay showing total assets */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <span className="text-xl font-extrabold text-[#050038] tracking-tight">{total}</span>
+          <span className="text-xl font-extrabold text-primary tracking-tight">{total}</span>
           <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Total Assets</span>
         </div>
       </div>

@@ -42,14 +42,14 @@ const CONDITIONS = [
 const schema = z.object({
   name: z.string().min(1, "Asset name is required").max(200),
   categoryId: z.string().min(1, "Category is required"),
-  departmentId: z.string().nullish(),
-  serialNumber: z.string().nullish(),
-  description: z.string().nullish(),
-  currentLocation: z.string().nullish(),
+  departmentId: z.string().min(1, "Department is required"),
+  serialNumber: z.string().max(100).nullish(),
+  description: z.string().max(1000).nullish(),
+  currentLocation: z.string().max(300).nullish(),
   acquisitionDate: z.string().nullish(),
   acquisitionCost: z.preprocess(
     (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
-    z.number().min(0).nullable()
+    z.number().positive("Acquisition cost must be positive").nullable()
   ),
   condition: z.enum(["NEW", "EXCELLENT", "GOOD", "FAIR", "POOR", "DAMAGED"]),
   isBookable: z.boolean(),
@@ -83,11 +83,11 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
     defaultValues: {
       name: "",
       categoryId: "",
-      departmentId: null,
-      serialNumber: null,
-      description: null,
-      currentLocation: null,
-      acquisitionDate: null,
+      departmentId: "",
+      serialNumber: "",
+      description: "",
+      currentLocation: "",
+      acquisitionDate: "",
       acquisitionCost: null,
       condition: "GOOD",
       isBookable: false,
@@ -107,11 +107,13 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
       categoryId: values.categoryId,
       condition: values.condition,
       isBookable: values.isBookable,
-      departmentId: values.departmentId ?? null,
-      serialNumber: values.serialNumber ?? null,
-      description: values.description ?? null,
-      currentLocation: values.currentLocation ?? null,
-      acquisitionDate: values.acquisitionDate ?? null,
+      departmentId: values.departmentId,
+      serialNumber: values.serialNumber || null,
+      description: values.description || null,
+      currentLocation: values.currentLocation || null,
+      acquisitionDate: values.acquisitionDate && values.acquisitionDate.trim() !== ""
+        ? new Date(values.acquisitionDate).toISOString()
+        : null,
       acquisitionCost: values.acquisitionCost ?? null,
     });
 
@@ -136,8 +138,8 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-canvas">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-[#4262ff]/10 flex items-center justify-center">
-              <Package className="h-5 w-5 text-[#4262ff]" />
+            <div className="h-9 w-9 rounded-full bg-brand-blue/10 flex items-center justify-center">
+              <Package className="h-5 w-5 text-brand-blue" />
             </div>
             <div>
               <DialogTitle className="text-lg font-bold text-ink">Register New Asset</DialogTitle>
@@ -187,20 +189,19 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
               </div>
 
               <div className="space-y-1.5">
-                <Label>Department</Label>
+                <Label>Department <span className="text-red-500">*</span></Label>
                 <Controller
                   control={control}
                   name="departmentId"
                   render={({ field }) => (
                     <Select
-                      value={field.value ?? "none"}
-                      onValueChange={(v) => field.onChange(v === "none" ? null : v)}
+                      value={field.value ?? ""}
+                      onValueChange={field.onChange}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select department" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">— None —</SelectItem>
                         {departments.map((d) => (
                           <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>
                         ))}
@@ -208,6 +209,7 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
                     </Select>
                   )}
                 />
+                {errors.departmentId && <p className="text-xs text-red-500">{errors.departmentId.message}</p>}
               </div>
             </div>
 
@@ -323,7 +325,7 @@ export const RegisterAssetDialog: React.FC<Props> = ({ open, onOpenChange }) => 
             <Button
               type="submit"
               disabled={isBusy}
-              className="rounded-full bg-[#4262ff] hover:bg-[#3451e0] text-white"
+              className="rounded-full bg-brand-blue hover:bg-brand-blue/90 text-white"
             >
               {isBusy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Register Asset

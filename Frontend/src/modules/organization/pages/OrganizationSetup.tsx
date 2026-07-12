@@ -30,7 +30,7 @@ export const OrganizationSetup: React.FC = () => {
                 <TabsPrimitive.Trigger
                   key={tab.value}
                   value={tab.value}
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-500 transition-all data-[state=active]:bg-white data-[state=active]:text-[#4262ff] data-[state=active]:shadow-sm"
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-500 transition-all data-[state=active]:bg-white data-[state=active]:text-brand-blue data-[state=active]:shadow-sm"
                 >
                   {tab.icon}
                   {tab.label}

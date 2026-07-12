@@ -2,20 +2,20 @@ import React from "react";
 import type { AssetCondition, AssetStatus } from "../types";
 
 const conditionConfig: Record<AssetCondition, { label: string; className: string }> = {
-  NEW:       { label: "New",       className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-  EXCELLENT: { label: "Excellent", className: "bg-sky-50 text-sky-700 border-sky-200" },
-  GOOD:      { label: "Good",      className: "bg-blue-50 text-blue-700 border-blue-200" },
-  FAIR:      { label: "Fair",      className: "bg-amber-50 text-amber-700 border-amber-200" },
-  POOR:      { label: "Poor",      className: "bg-orange-50 text-orange-700 border-orange-200" },
-  DAMAGED:   { label: "Damaged",   className: "bg-red-50 text-red-700 border-red-200" },
+  NEW:       { label: "New",       className: "bg-emerald-100/90 text-emerald-800 border-emerald-300" },
+  EXCELLENT: { label: "Excellent", className: "bg-sky-100/90 text-sky-800 border-sky-300" },
+  GOOD:      { label: "Good",      className: "bg-blue-100/90 text-blue-800 border-blue-300" },
+  FAIR:      { label: "Fair",      className: "bg-amber-100/90 text-amber-800 border-amber-300" },
+  POOR:      { label: "Poor",      className: "bg-orange-100/90 text-orange-800 border-orange-300" },
+  DAMAGED:   { label: "Damaged",   className: "bg-red-100/90 text-red-800 border-red-300" },
 };
 
 const statusConfig: Record<AssetStatus, { label: string; className: string }> = {
-  AVAILABLE:          { label: "Available",          className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-  IN_USE:             { label: "In Use",             className: "bg-blue-50 text-blue-700 border-blue-200" },
-  UNDER_MAINTENANCE:  { label: "Maintenance",        className: "bg-amber-50 text-amber-700 border-amber-200" },
-  RETIRED:            { label: "Retired",            className: "bg-slate-100 text-slate-500 border-slate-200" },
-  LOST:               { label: "Lost",               className: "bg-red-50 text-red-700 border-red-200" },
+  AVAILABLE:          { label: "Available",          className: "bg-emerald-100/90 text-emerald-800 border-emerald-300" },
+  IN_USE:             { label: "In Use",             className: "bg-blue-100/90 text-blue-800 border-blue-300" },
+  UNDER_MAINTENANCE:  { label: "Maintenance",        className: "bg-amber-100/90 text-amber-800 border-amber-300" },
+  RETIRED:            { label: "Retired",            className: "bg-slate-100 text-slate-700 border-slate-300" },
+  LOST:               { label: "Lost",               className: "bg-red-100/90 text-red-800 border-red-300" },
 };
 
 export const ConditionBadge: React.FC<{ condition: AssetCondition }> = ({ condition }) => {

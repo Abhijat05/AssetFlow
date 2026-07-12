@@ -79,7 +79,7 @@ export const BookingTable: React.FC<Props> = ({
           return (
             <div className="flex flex-col">
               <span className="font-semibold text-ink text-sm">{res?.name ?? "—"}</span>
-              <span className="font-mono text-[10px] text-[#4262ff] bg-[#4262ff]/8 px-1.5 py-0.5 rounded w-fit mt-0.5">
+              <span className="font-mono text-[10px] text-brand-blue bg-brand-blue/8 px-1.5 py-0.5 rounded w-fit mt-0.5">
                 {res?.assetTag ?? "—"}
               </span>
             </div>
@@ -145,7 +145,7 @@ export const BookingTable: React.FC<Props> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate(`/bookings/${b.id}`)}
-                className="h-8 w-8 p-0 rounded-full hover:bg-[#4262ff]/8"
+                className="h-8 w-8 p-0 rounded-full hover:bg-brand-blue/8"
                 title="View details"
               >
                 <Eye className="h-4 w-4 text-slate-500" />

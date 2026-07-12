@@ -119,12 +119,12 @@ const HistoryTimeline: React.FC<{ assetId: string }> = ({ assetId }) => {
     <ol className="relative border-l border-slate-200 space-y-6 ml-3">
       {history.map((entry) => (
         <li key={entry.id} className="ml-6">
-          <span className="absolute -left-[9px] h-4 w-4 rounded-full border-2 border-white bg-[#4262ff] flex items-center justify-center">
+          <span className="absolute -left-[9px] h-4 w-4 rounded-full border-2 border-white bg-brand-blue flex items-center justify-center">
             <span className="h-1.5 w-1.5 rounded-full bg-white" />
           </span>
           <div className="rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-xs font-bold text-[#4262ff] uppercase tracking-wide">{entry.action}</span>
+              <span className="text-xs font-bold text-brand-blue uppercase tracking-wide">{entry.action}</span>
               <span className="text-xs text-slate-400">
                 {format(new Date(entry.createdAt), "MMM d, yyyy · h:mm a")}
               </span>
@@ -200,7 +200,7 @@ export const AssetDetail: React.FC = () => {
             <Separator orientation="vertical" className="h-6" />
             <div>
               <h1 className="text-base font-bold text-ink leading-tight">{asset.name}</h1>
-              <span className="font-mono text-xs text-[#4262ff] font-semibold">{asset.assetTag}</span>
+              <span className="font-mono text-xs text-brand-blue font-semibold">{asset.assetTag}</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -240,7 +240,7 @@ export const AssetDetail: React.FC = () => {
                 <InfoRow
                   icon={<Tag className="h-4 w-4 text-slate-400" />}
                   label="Asset Tag"
-                  value={<span className="font-mono text-[#4262ff]">{asset.assetTag}</span>}
+                  value={<span className="font-mono text-brand-blue">{asset.assetTag}</span>}
                 />
                 <InfoRow
                   icon={<Package className="h-4 w-4 text-slate-400" />}
@@ -309,7 +309,7 @@ export const AssetDetail: React.FC = () => {
                   {asset.documents.map((doc) => (
                     <li key={doc.id} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
                       <div className="h-8 w-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0">
-                        <FileText className="h-4 w-4 text-[#4262ff]" />
+                        <FileText className="h-4 w-4 text-brand-blue" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-ink truncate">{doc.fileName}</p>

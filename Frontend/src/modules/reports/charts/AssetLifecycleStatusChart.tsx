@@ -76,7 +76,7 @@ export const AssetLifecycleStatusChart: React.FC<AssetLifecycleStatusChartProps>
       </ResponsiveContainer>
       {/* Center Text displaying total assets */}
       <div className="absolute flex flex-col items-center justify-center pointer-events-none">
-        <span className="text-2xl font-extrabold text-[#050038] tracking-tight">
+        <span className="text-2xl font-extrabold text-primary tracking-tight">
           {total}
         </span>
         <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">

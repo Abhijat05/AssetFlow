@@ -59,8 +59,8 @@ export const ActivityFilters: React.FC<ActivityFiltersProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4 shadow-sm animate-reveal">
-      <div className="flex items-center gap-2 text-[#050038] font-bold text-sm">
-        <Filter className="h-4 w-4 text-[#4262ff]" />
+      <div className="flex items-center gap-2 text-primary font-bold text-sm">
+        <Filter className="h-4 w-4 text-brand-blue" />
         <span>Filter Activity Logs</span>
       </div>
 
