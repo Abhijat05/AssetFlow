@@ -51,6 +51,25 @@ export const bookingStatusEnum = pgEnum("booking_status", [
   "CANCELLED",
 ]);
 
+export const auditStatusEnum = pgEnum("audit_status", [
+  "PLANNED",
+  "ACTIVE",
+  "COMPLETED",
+  "CANCELLED",
+]);
+
+export const auditScopeTypeEnum = pgEnum("audit_scope_type", [
+  "ORGANIZATION",
+  "DEPARTMENT",
+  "LOCATION",
+]);
+
+export const verificationStatusEnum = pgEnum("verification_status", [
+  "VERIFIED",
+  "MISSING",
+  "DAMAGED",
+]);
+
 export const maintenancePriorityEnum = pgEnum("maintenance_priority", [
   "LOW",
   "MEDIUM",
