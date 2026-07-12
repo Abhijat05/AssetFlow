@@ -133,6 +133,7 @@ export const MaintenanceTable: React.FC<Props> = ({
     [navigate]
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

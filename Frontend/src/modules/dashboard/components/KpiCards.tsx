@@ -142,42 +142,37 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ kpis, role }) => {
   };
 
   // Determine which cards to show based on the user's role
-  let visibleKeys: string[] = [];
-
-  if (isEmployee) {
-    visibleKeys = [
-      "assetsAllocated",
-      "todaysBookings",
-      "upcomingReturns",
-      "overdueReturns",
-    ];
-  } else if (isDeptHead) {
-    visibleKeys = [
-      "assetsAvailable",
-      "assetsAllocated",
-      "assetsUnderMaintenance",
-      "todaysBookings",
-      "pendingTransfers",
-      "upcomingReturns",
-      "overdueReturns",
-      "activeAudits",
-    ];
-  } else {
-    // ADMIN or ASSET_MANAGER
-    visibleKeys = [
-      "assetsAvailable",
-      "assetsAllocated",
-      "assetsUnderMaintenance",
-      "assetsReserved",
-      "assetsLost",
-      "assetsRetired",
-      "todaysBookings",
-      "pendingTransfers",
-      "upcomingReturns",
-      "overdueReturns",
-      "activeAudits",
-    ];
-  }
+  const visibleKeys = isEmployee
+    ? [
+        "assetsAllocated",
+        "todaysBookings",
+        "upcomingReturns",
+        "overdueReturns",
+      ]
+    : isDeptHead
+    ? [
+        "assetsAvailable",
+        "assetsAllocated",
+        "assetsUnderMaintenance",
+        "todaysBookings",
+        "pendingTransfers",
+        "upcomingReturns",
+        "overdueReturns",
+        "activeAudits",
+      ]
+    : [
+        "assetsAvailable",
+        "assetsAllocated",
+        "assetsUnderMaintenance",
+        "assetsReserved",
+        "assetsLost",
+        "assetsRetired",
+        "todaysBookings",
+        "pendingTransfers",
+        "upcomingReturns",
+        "overdueReturns",
+        "activeAudits",
+      ];
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-reveal">

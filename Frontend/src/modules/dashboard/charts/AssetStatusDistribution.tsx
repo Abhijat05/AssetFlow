@@ -45,6 +45,7 @@ export const AssetStatusDistribution: React.FC<AssetStatusDistributionProps> = (
               ))}
             </Pie>
             <Tooltip
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(value: any) => [
                 `${value} (${((value / total) * 100).toFixed(0)}%)`,
                 "Assets",

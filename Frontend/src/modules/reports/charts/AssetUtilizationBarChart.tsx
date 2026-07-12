@@ -61,6 +61,7 @@ export const AssetUtilizationBarChart: React.FC<AssetUtilizationBarChartProps> =
               fontSize: "11px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter={(value: any, _: any, props: any) => [
               `${value} Allocations`,
               `${props.payload.tag || "Asset"}`,

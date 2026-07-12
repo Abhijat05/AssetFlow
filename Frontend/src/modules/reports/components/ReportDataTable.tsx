@@ -16,11 +16,13 @@ import { cn } from "../../../lib/utils";
 export interface ColumnDefinition {
   key: string;
   label: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (value: any, row: any) => React.ReactNode;
 }
 
 interface ReportDataTableProps {
   columns: ColumnDefinition[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   searchPlaceholder?: string;
   defaultPageSize?: number;

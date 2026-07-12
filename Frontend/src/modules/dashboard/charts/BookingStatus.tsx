@@ -56,6 +56,7 @@ export const BookingStatus: React.FC<BookingStatusProps> = ({ bookings }) => {
                 fontSize: "12px",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               }}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(value: any) => [`${value} Bookings`, "Total"]}
             />
             <Bar dataKey="value" radius={[0, 6, 6, 0]} maxBarSize={20}>

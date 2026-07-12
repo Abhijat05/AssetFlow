@@ -74,6 +74,7 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activity }) => {
     try {
       const date = new Date(isoString);
       // If today, show e.g. "2 hours ago" or time, else show short date
+      // eslint-disable-next-line react-hooks/purity
       const diffMs = Date.now() - date.getTime();
       const diffMins = Math.floor(diffMs / 60000);
       const diffHours = Math.floor(diffMins / 60);

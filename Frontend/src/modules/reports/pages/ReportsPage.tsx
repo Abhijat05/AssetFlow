@@ -96,42 +96,39 @@ export const ReportsPage: React.FC = () => {
 
   // ── 2. Manage Active Tab & Filter State ─────────────────────────────────────
   const [activeTab, setActiveTab] = useState<ReportType>("utilization");
-  const [filters, setFilters] = useState<FiltersType>(() => {
-    return {
-      departmentId: userRole === "DEPARTMENT_HEAD" ? (userDeptId || undefined) : undefined,
-    };
-  });
+  const [filters, setFilters] = useState<FiltersType>({});
 
-  // Sync departmentId if departments list loads later for Dept Head
-  React.useEffect(() => {
-    if (userRole === "DEPARTMENT_HEAD" && userDeptId && !filters.departmentId) {
-      setFilters((prev) => ({ ...prev, departmentId: userDeptId }));
+  // Scopes filters to userDeptId if logged in user is a Department Head
+  const activeFilters = useMemo(() => {
+    if (userRole === "DEPARTMENT_HEAD" && userDeptId) {
+      return { ...filters, departmentId: userDeptId };
     }
-  }, [userRole, userDeptId, filters.departmentId]);
+    return filters;
+  }, [filters, userRole, userDeptId]);
 
   // ── 3. Query Report Data (Only when tab is active) ──────────────────────────
   const { data: utilizationData, isLoading: loadingUtil } = useUtilizationReport(
-    filters,
+    activeFilters,
     activeTab === "utilization"
   );
   const { data: maintenanceData, isLoading: loadingMaint } = useMaintenanceReport(
-    filters,
+    activeFilters,
     activeTab === "maintenance"
   );
   const { data: lifecycleData, isLoading: loadingLife } = useLifecycleReport(
-    filters,
+    activeFilters,
     activeTab === "lifecycle"
   );
   const { data: departmentData, isLoading: loadingDept } = useDepartmentReport(
-    filters,
+    activeFilters,
     activeTab === "departments"
   );
   const { data: bookingData, isLoading: loadingBook } = useBookingReport(
-    filters,
+    activeFilters,
     activeTab === "bookings"
   );
   const { data: auditData, isLoading: loadingAudit } = useAuditReport(
-    filters,
+    activeFilters,
     activeTab === "audits"
   );
 
@@ -146,12 +143,13 @@ export const ReportsPage: React.FC = () => {
   // ── 4. Export Action Handler ───────────────────────────────────────────────
   const handleExport = (format: "pdf" | "xlsx" | "csv") => {
     try {
-      const url = reportsApi.getExportUrl(activeTab, format, filters);
+      const url = reportsApi.getExportUrl(activeTab, format, activeFilters);
       toast.success(`Generating ${format.toUpperCase()} export...`);
       // Trigger browser download by opening the attachment URL
       window.open(url, "_blank");
-    } catch (err: any) {
-      toast.error(err.message || "Failed to trigger export");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to trigger export";
+      toast.error(msg);
     }
   };
 

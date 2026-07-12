@@ -183,6 +183,7 @@ export const BookingTable: React.FC<Props> = ({
     [navigate, currentUserId, isAdminOrManagerOrDeptHead, onEdit]
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

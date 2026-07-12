@@ -178,6 +178,7 @@ export const AuditDetail: React.FC = () => {
 
   // Check if current user is an assigned auditor (supporting both flat structure and backend's nested database format)
   const isAssignedAuditor = audit.auditors?.some((a) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const audId = a.auditorId || (a as any).assignment?.auditorId;
     return audId === currentUserId;
   }) || false;
@@ -765,6 +766,7 @@ export const AuditDetail: React.FC = () => {
                     <p className="text-xs text-slate-400 italic">No auditors allocated.</p>
                   ) : (
                     audit.auditors.map((aud) => (
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       <div key={(aud as any).assignment?.id || aud.id} className="flex items-center gap-2 p-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs">
                         <div className="h-5 w-5 rounded-full bg-white flex items-center justify-center font-bold text-[#4262ff] border border-slate-100">
                           {aud.auditorName?.charAt(0) || "A"}

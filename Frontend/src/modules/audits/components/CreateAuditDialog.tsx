@@ -113,6 +113,7 @@ export const CreateAuditDialog: React.FC<Props> = ({ open, onOpenChange }) => {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const scopeType = watch("scopeType");
   const selectedAuditors = watch("auditorIds") || [];
 
